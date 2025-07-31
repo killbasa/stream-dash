@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"prisma.prisma",
+		"bradlc.vscode-tailwindcss",
+		"editorconfig.editorconfig",
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"svelte.svelte-vscode"
+	]
+}

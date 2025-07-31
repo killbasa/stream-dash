@@ -1,0 +1,8 @@
+.svelte-kit/
+.wrangler/
+.yarn/install-state.gz
+node_modules/
+src/lib/server/db/generated/
+.env*
+!.env.example
+*.vars
