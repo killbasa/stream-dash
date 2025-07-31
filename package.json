@@ -4,6 +4,7 @@
 	"author": "killbasa <contact@killbasa.com>",
 	"type": "module",
 	"private": true,
+	"license": "Apache-2.0",
 	"scripts": {
 		"build": "vite build",
 		"dev": "vite dev",
