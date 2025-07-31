@@ -4,7 +4,7 @@ generator client {
 
     previewFeatures = ["queryCompiler", "driverAdapters"]
 
-    runtime      = "workerd"
+    runtime      = "nodejs"
     moduleFormat = "esm"
 }
 

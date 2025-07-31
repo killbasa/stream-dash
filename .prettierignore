@@ -1,4 +1,5 @@
 .svelte-kit/
+.yarn/
 build/
 node_modules/
 static/
