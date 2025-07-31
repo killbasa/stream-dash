@@ -3,5 +3,5 @@
 </svelte:head>
 
 <section class="mx-auto flex w-full max-w-6xl flex-col items-center gap-8">
-	<h1>Landing</h1>
+	<h1>Landing Page</h1>
 </section>
