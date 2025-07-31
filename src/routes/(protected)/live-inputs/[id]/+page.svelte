@@ -7,5 +7,11 @@
 <section class="mx-auto flex w-full max-w-6xl flex-col items-center gap-8">
 	<h1>Live-Input</h1>
 
-	<p>{data.liveInput.uid}</p>
+	<div>
+		<span>Ingest:</span>
+		<pre>{data.liveInput.webRTC?.url}</pre>
+
+		<span>Playback:</span>
+		<pre>{data.liveInput.webRTCPlayback?.url}</pre>
+	</div>
 </section>

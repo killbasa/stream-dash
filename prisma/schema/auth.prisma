@@ -6,6 +6,8 @@ model User {
     image         String?
     createdAt     DateTime
     updatedAt     DateTime
+    role          String
+    scopes        String[]
     sessions      Session[]
     accounts      Account[]
 
