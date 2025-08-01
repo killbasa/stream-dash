@@ -7,7 +7,8 @@
 	"license": "Apache-2.0",
 	"scripts": {
 		"build": "vite build",
-		"dev": "vite dev",
+		"serve": "wrangler dev --compatibility-date=2025-07-30 --live-reload",
+		"watch": "npm run build -- -w",
 		"sync": "svelte-kit sync",
 		"check": "yarn sync && svelte-check --tsconfig ./tsconfig.json",
 		"lint": "eslint --fix",
@@ -49,6 +50,9 @@
 		"typescript": "^5.9.2",
 		"vite": "7.0.6",
 		"wrangler": "^4.27.0"
+	},
+	"resolutions": {
+		"@sveltejs/kit": "2.26.1"
 	},
 	"lint-staged": {
 		"*.{js,ts,svelte}": [

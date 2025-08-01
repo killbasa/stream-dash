@@ -6,12 +6,7 @@ import { resolve } from 'node:path';
 const config = {
 	preprocess: vitePreprocess(),
 	kit: {
-		adapter: adapter({
-			routes: {
-				include: ['/*'],
-				exclude: ['<all>'],
-			},
-		}),
+		adapter: adapter(),
 		alias: {
 			$components: resolve('./src/components'),
 		},
