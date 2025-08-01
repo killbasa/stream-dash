@@ -23,13 +23,10 @@ RUN yarn install --immutable && \
 FROM base AS app
 
 ENV NODE_ENV=production
-ENV PORT=8787
 
 COPY ./static static/
 COPY --from=builder /temp/node_modules node_modules/
 COPY --from=builder /temp/build build/
 COPY --from=builder /temp/package.json ./
-
-EXPOSE 8787
 
 CMD ["node", "--enable-source-maps", "build/index.js"]
