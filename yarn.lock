@@ -1436,6 +1436,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/sdp-transform@npm:^2.4.10":
+  version: 2.4.10
+  resolution: "@types/sdp-transform@npm:2.4.10"
+  checksum: 10c0/3482950907edc1b841a9d550c391b89b1d56f078bed33e83fb01d2de3097c6045d4627fb50b192712ff34c71784b476dce044c4df735808a9d0bfeca1e77df7d
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:8.34.0, @typescript-eslint/eslint-plugin@npm:^8.34.0":
   version: 8.34.0
   resolution: "@typescript-eslint/eslint-plugin@npm:8.34.0"
@@ -2647,7 +2654,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.25.0":
+"es6-promise@npm:^4.2.5":
+  version: 4.2.8
+  resolution: "es6-promise@npm:4.2.8"
+  checksum: 10c0/2373d9c5e9a93bdd9f9ed32ff5cb6dd3dd785368d1c21e9bbbfd07d16345b3774ae260f2bd24c8f836a6903f432b4151e7816a7fa8891ccb4e1a55a028ec42c3
+  languageName: node
+  linkType: hard
+
+"esbuild@npm:^0.25.0, esbuild@npm:~0.25.0":
   version: 0.25.8
   resolution: "esbuild@npm:0.25.8"
   dependencies:
@@ -3202,9 +3216,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flowbite-svelte@npm:^1.10.22":
-  version: 1.10.22
-  resolution: "flowbite-svelte@npm:1.10.22"
+"flowbite-svelte@npm:^1.11.0":
+  version: 1.11.0
+  resolution: "flowbite-svelte@npm:1.11.0"
   dependencies:
     "@floating-ui/dom": "npm:^1.7.2"
     "@floating-ui/utils": "npm:^0.2.10"
@@ -3217,7 +3231,7 @@ __metadata:
   peerDependencies:
     svelte: ^5.29.0
     tailwindcss: ^4.1.4
-  checksum: 10c0/996ade267fe50244a272536318775d181694ab2a3ed495f84daccfd7f79231ad7004d60652a4c941dd4733bf92183a7354183ffef14502dbebaf42136284212e
+  checksum: 10c0/5a713f05998783b749bcdfd4ec68795e1776f4ffc85691e806f4bc2c711f5e521c5489845c718113ab32ec8aa1c4d8c5c23b8dd0eae899949ca6c18c61f74234
   languageName: node
   linkType: hard
 
@@ -3395,7 +3409,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-tsconfig@npm:^4.10.1":
+"get-tsconfig@npm:^4.10.1, get-tsconfig@npm:^4.7.5":
   version: 4.10.1
   resolution: "get-tsconfig@npm:4.10.1"
   dependencies:
@@ -4509,6 +4523,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mpegts.js@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "mpegts.js@npm:1.8.0"
+  dependencies:
+    es6-promise: "npm:^4.2.5"
+    webworkify-webpack: "github:xqq/webworkify-webpack"
+  checksum: 10c0/6e7873c916856c7499d13ab0c65eb5c6d8e2d8d1fab2fd472c9ec9191386c4fddad9bfa356dc30e0940ef2e5ed16e57438e19cfcd3225635c513fc0da522c396
+  languageName: node
+  linkType: hard
+
 "mri@npm:^1.1.0":
   version: 1.2.0
   resolution: "mri@npm:1.2.0"
@@ -5420,6 +5444,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sdp-transform@npm:^2.15.0":
+  version: 2.15.0
+  resolution: "sdp-transform@npm:2.15.0"
+  bin:
+    sdp-verify: checker.js
+  checksum: 10c0/96c060f113a3d5418defa168db609f7e23e5bd7954fa1cf7784f103dbe702e24d667e5310d2ac6d88abdb32322af83d6ebd0df08e07f4f172d5ed5888f921386
+  languageName: node
+  linkType: hard
+
+"sdp@npm:^3.2.0":
+  version: 3.2.1
+  resolution: "sdp@npm:3.2.1"
+  checksum: 10c0/a534d91972d6c26016f0e814d8e0ca4db6ae714d1da58056d3bcf4660137aeddb71d9085a5dd5eb764d5cffca83ab3ee7446cb6eed36411cd1e93d2c929d7d80
+  languageName: node
+  linkType: hard
+
 "semver@npm:^6.3.1":
   version: 6.3.1
   resolution: "semver@npm:6.3.1"
@@ -6001,6 +6041,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tsx@npm:^4.20.3":
+  version: 4.20.3
+  resolution: "tsx@npm:4.20.3"
+  dependencies:
+    esbuild: "npm:~0.25.0"
+    fsevents: "npm:~2.3.3"
+    get-tsconfig: "npm:^4.7.5"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    tsx: dist/cli.mjs
+  checksum: 10c0/6ff0d91ed046ec743fac7ed60a07f3c025e5b71a5aaf58f3d2a6b45e4db114c83e59ebbb078c8e079e48d3730b944a02bc0de87695088aef4ec8bbc705dc791b
+  languageName: node
+  linkType: hard
+
 "type-check@npm:^0.4.0, type-check@npm:~0.4.0":
   version: 0.4.0
   resolution: "type-check@npm:0.4.0"
@@ -6337,6 +6393,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"webrtc-adapter@npm:^9.0.3":
+  version: 9.0.3
+  resolution: "webrtc-adapter@npm:9.0.3"
+  dependencies:
+    sdp: "npm:^3.2.0"
+  checksum: 10c0/bb8c1626cc0e18bd34c03074fc6a541666dbe473c8f063c5d0ea2a3a3a4887f498212a131c936777f660382185f44941476609a50df5f1543015240623375725
+  languageName: node
+  linkType: hard
+
+"webworkify-webpack@github:xqq/webworkify-webpack":
+  version: 2.1.5
+  resolution: "webworkify-webpack@https://github.com/xqq/webworkify-webpack.git#commit=24d1e719b4a6cac37a518b2bb10fe124527ef4ef"
+  checksum: 10c0/056f5bb3043f46f138b44b218245b1a21ce2712da047f654aafe1bef6ff64d0d8bc032a3083249462cd9bcc0a1f92fbdd803356f0eae1a26ab2cf4e0c16a9453
+  languageName: node
+  linkType: hard
+
 "whatwg-url@npm:^5.0.0":
   version: 5.0.0
   resolution: "whatwg-url@npm:5.0.0"
@@ -6449,23 +6521,28 @@ __metadata:
     "@sveltejs/vite-plugin-svelte": "npm:^6.1.0"
     "@tailwindcss/vite": "npm:^4.1.11"
     "@types/node": "npm:^24.1.0"
+    "@types/sdp-transform": "npm:^2.4.10"
     better-auth: "npm:^1.3.4"
     cloudflare: "npm:^4.5.0"
     eslint: "npm:9.32.0"
     eslint-config-prettier: "npm:^10.1.8"
     flowbite: "npm:^3.1.2"
-    flowbite-svelte: "npm:^1.10.22"
+    flowbite-svelte: "npm:^1.11.0"
     flowbite-svelte-icons: "npm:^2.2.1"
     husky: "npm:^9.1.7"
     lint-staged: "npm:^16.1.2"
+    mpegts.js: "npm:^1.8.0"
     prettier: "npm:^3.6.2"
     prettier-plugin-svelte: "npm:^3.4.0"
     prisma: "npm:^6.13.0"
+    sdp-transform: "npm:^2.15.0"
     svelte: "npm:^5.37.2"
     svelte-check: "npm:^4.3.0"
     tailwindcss: "npm:^4.1.11"
+    tsx: "npm:^4.20.3"
     typescript: "npm:^5.9.2"
     vite: "npm:7.0.6"
+    webrtc-adapter: "npm:^9.0.3"
     zod: "npm:^4.0.14"
   languageName: unknown
   linkType: soft

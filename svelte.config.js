@@ -10,6 +10,16 @@ const config = {
 		alias: {
 			$components: resolve('./src/components'),
 		},
+		csp: {
+			// directives: {
+			// 	'default-src': ['none'],
+			// 	'font-src': ['self'],
+			// 	'img-src': ['self', 'https://lh3.googleusercontent.com'],
+			// 	'connect-src': ['self'],
+			// 	'script-src': ['self'],
+			// 	'style-src': ['self', 'unsafe-inline'],
+			// },
+		},
 	},
 };
 

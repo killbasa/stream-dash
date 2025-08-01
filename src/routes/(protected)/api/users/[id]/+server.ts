@@ -64,3 +64,29 @@ export const PUT: RequestHandler = async (event) => {
 
 	return json(newUser);
 };
+
+export const DELETE: RequestHandler = async (event) => {
+	if (event.locals.user?.role !== 'admin') {
+		return json({ message: 'Unauthorized' }, { status: 403 });
+	}
+
+	const userId = event.params.id;
+	const user = await prisma.user.findUnique({
+		where: { id: userId },
+		select: { id: true, role: true },
+	});
+
+	if (!user) {
+		return json({ message: 'User not found' }, { status: 404 });
+	}
+
+	if (user.role === 'admin') {
+		return json({ message: 'Cannot delete admin users' }, { status: 400 });
+	}
+
+	await prisma.user.delete({
+		where: { id: userId },
+	});
+
+	return json({ message: 'User deleted successfully' });
+};

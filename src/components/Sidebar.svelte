@@ -33,6 +33,7 @@
 				<Button
 					type="button"
 					class="cursor-pointer"
+					size="xs"
 					onclick={async () => {
 						await authClient.signOut({
 							fetchOptions: {

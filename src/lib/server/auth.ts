@@ -14,7 +14,6 @@ export const auth = betterAuth({
 		google: {
 			clientId: env.GOOGLE_CLIENT_ID,
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
-			disableSignUp: import.meta.env.PROD,
 		},
 	},
 	user: {
@@ -30,6 +29,35 @@ export const auth = betterAuth({
 				required: false,
 				defaultValue: [],
 				input: false,
+			},
+		},
+	},
+	databaseHooks: {
+		user: {
+			create: {
+				before: async (user) => {
+					try {
+						const whitelist = await prisma.whitelist.findUnique({
+							where: { email: user.email },
+						});
+
+						if (!whitelist) {
+							return false;
+						}
+
+						return Promise.resolve({
+							data: {
+								...user,
+								role: whitelist.defaultRole,
+								scopes: [],
+							},
+						});
+					} catch (error) {
+						console.error('Error in user creation hook:', error);
+					}
+
+					return false;
+				},
 			},
 		},
 	},

@@ -67,7 +67,9 @@
 		<Skeleton size="2xl" />
 	{:then liveInputs}
 		<div>
-			<Button onclick={() => (openCreateModal = true)} class="cursor-pointer">Create</Button>
+			<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs">
+				Create
+			</Button>
 		</div>
 
 		<Table>

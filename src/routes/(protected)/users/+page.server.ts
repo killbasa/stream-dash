@@ -7,17 +7,27 @@ export const load: PageServerLoad = async ({ locals }) => {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
-	const users = await prisma.user.findMany({
-		select: {
-			id: true,
-			name: true,
-			email: true,
-			role: true,
-			scopes: true,
-		},
-	});
+	const [users, whitelists] = await prisma.$transaction([
+		prisma.user.findMany({
+			select: {
+				id: true,
+				name: true,
+				email: true,
+				role: true,
+				scopes: true,
+			},
+		}),
+		prisma.whitelist.findMany({
+			select: {
+				id: true,
+				email: true,
+				defaultRole: true,
+			},
+		}),
+	]);
 
 	return {
 		users,
+		whitelists,
 	};
 };

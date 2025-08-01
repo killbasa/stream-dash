@@ -12,3 +12,11 @@ datasource database {
     provider = "postgresql"
     url      = env("DATABASE_URL")
 }
+
+model Whitelist {
+    id          String  @id @default(uuid())
+    email       String  @unique
+    defaultRole String?
+
+    @@map("whitelist")
+}

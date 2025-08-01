@@ -1,5 +1,5 @@
 ## Base ##
-FROM node:22.17.1-alpine3.22 AS base
+FROM node:24.4.1-alpine3.22 AS base
 
 RUN apk update --no-cache
 
@@ -8,6 +8,7 @@ FROM base AS builder
 
 WORKDIR /temp
 
+COPY ./static static/
 COPY .yarn .yarn/
 COPY prisma prisma/
 COPY .yarnrc.yml tsconfig.json yarn.lock package.json prisma.config.ts vite.config.ts svelte.config.js ./
@@ -24,7 +25,7 @@ FROM base AS app
 
 ENV NODE_ENV=production
 
-COPY ./static static/
+COPY --from=builder /temp/static static/
 COPY --from=builder /temp/node_modules node_modules/
 COPY --from=builder /temp/build build/
 COPY --from=builder /temp/package.json ./
