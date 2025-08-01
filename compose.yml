@@ -1,0 +1,10 @@
+services:
+  stream-dash:
+    image: killbasa/stream-dash
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 127.0.0.1:8787:8787
+    env_file:
+      - .env
