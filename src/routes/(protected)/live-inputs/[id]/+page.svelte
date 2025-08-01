@@ -1,17 +1,25 @@
 <script lang="ts">
+	import Container from '$components/Container.svelte';
+	import { Skeleton } from 'flowbite-svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 </script>
 
-<section class="mx-auto flex w-full max-w-6xl flex-col items-center gap-8">
-	<h1>Live-Input</h1>
+<Container>
+	<h1>Live Input</h1>
 
 	<div>
-		<span>Ingest:</span>
-		<pre>{data.liveInput.webRTC?.url}</pre>
+		{#await data.liveInput}
+			<Skeleton size="2xl" />
+		{:then liveInput}
+			<span>Ingest:</span>
+			<pre class="text-sm">{liveInput.webRTC?.url}</pre>
 
-		<span>Playback:</span>
-		<pre>{data.liveInput.webRTCPlayback?.url}</pre>
+			<span>Playback:</span>
+			<pre class="text-sm">{liveInput.webRTCPlayback?.url}</pre>
+		{:catch error}
+			<p style="color: red">{error.message}</p>
+		{/await}
 	</div>
-</section>
+</Container>

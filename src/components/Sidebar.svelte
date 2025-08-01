@@ -13,7 +13,7 @@
 	const session = authClient.useSession();
 </script>
 
-<aside class="sticky top-0 flex h-screen w-64 flex-col justify-between bg-gray-50">
+<aside class="sticky top-0 flex h-screen w-64 flex-col justify-between bg-gray-800">
 	<div class="overflow-y-auto px-3 py-4">
 		<ul class="space-y-2">
 			{@render items()}
@@ -22,11 +22,17 @@
 	<div class="overflow-y-auto px-3 py-4">
 		<ul class="space-y-2">
 			<div class="flex items-center gap-2 justify-between">
-				<p>
+				<div class="flex items-center gap-2">
+					<img
+						src={$session.data?.user.image}
+						alt="User Avatar"
+						class="h-8 w-8 rounded-full"
+					/>
 					{$session?.data?.user.name}
-				</p>
+				</div>
 				<Button
 					type="button"
+					class="cursor-pointer"
 					onclick={async () => {
 						await authClient.signOut({
 							fetchOptions: {

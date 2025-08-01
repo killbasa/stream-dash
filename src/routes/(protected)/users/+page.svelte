@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Container from '$components/Container.svelte';
 	import {
 		Button,
 		Table,
@@ -28,16 +29,49 @@
 	);
 
 	const scopes: { value: string; name: string }[] = [
-		{ value: 'live-inputs', name: 'Live-Inputs' },
+		{ value: 'live-inputs', name: 'Live Inputs' },
 		{ value: 'wizard', name: 'Wizard' },
 	];
+
+	const handleAction = async (
+		entry: (typeof data.users)[number],
+		event: {
+			data: FormData;
+		},
+	) => {
+		const response = await fetch(`/api/users/${entry.id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				id: entry.id,
+				role: event.data.get('role') ?? undefined,
+				scopes: event.data.getAll('scopes'),
+			}),
+		});
+
+		if (!response.ok) {
+			const error = await response.json();
+			alert(`Error: ${error.message}`);
+			return;
+		}
+
+		const updatedUser = await response.json();
+		const index = users.findIndex((user) => user.id === updatedUser.id);
+
+		if (index !== -1) {
+			users[index] = updatedUser;
+			users = [...users];
+		}
+	};
 </script>
 
 <svelte:head>
 	<title>User Management</title>
 </svelte:head>
 
-<section class="mx-auto flex w-full max-w-6xl flex-col items-center gap-8">
+<Container>
 	<h1>User Management</h1>
 
 	<Table>
@@ -56,7 +90,13 @@
 					<TableBodyCell>{entry.role}</TableBodyCell>
 					<TableBodyCell>[{entry.scopes}]</TableBodyCell>
 					<TableBodyCell>
-						<Button color="alternative" onclick={() => modals.set(entry.email, true)}>
+						<Button
+							type="button"
+							class="cursor-pointer"
+							size="xs"
+							color="alternative"
+							onclick={() => modals.set(entry.email, true)}
+						>
 							Edit
 						</Button>
 					</TableBodyCell>
@@ -70,38 +110,7 @@
 						classes={{ body: 'h-64' }}
 						oncancel={() => modals.set(entry.email, false)}
 						onaction={async (event) => {
-							if (event.action === 'decline') {
-								modals.set(entry.email, false);
-								return;
-							}
-
-							const response = await fetch(`/api/users/${entry.id}`, {
-								method: 'PUT',
-								headers: {
-									'Content-Type': 'application/json',
-								},
-								body: JSON.stringify({
-									id: entry.id,
-									role: event.data.get('role') ?? undefined,
-									scopes: event.data.getAll('scopes'),
-								}),
-							});
-
-							if (!response.ok) {
-								const error = await response.json();
-								alert(`Error: ${error.message}`);
-								modals.set(entry.email, false);
-								return;
-							}
-
-							const updatedUser = await response.json();
-							const index = users.findIndex((user) => user.id === updatedUser.id);
-
-							if (index !== -1) {
-								users[index] = updatedUser;
-								users = [...users];
-							}
-
+							await handleAction(entry, event);
 							modals.set(entry.email, false);
 						}}
 					>
@@ -119,8 +128,15 @@
 						<MultiSelect name="scopes" items={scopes} value={entry.scopes} />
 
 						{#snippet footer()}
-							<Button type="submit" value="success">Save</Button>
-							<Button type="submit" value="decline" color="alternative">
+							<Button type="submit" value="success" class="cursor-pointer"
+								>Save</Button
+							>
+							<Button
+								type="button"
+								color="alternative"
+								class="cursor-pointer"
+								onclick={() => modals.set(entry.email, false)}
+							>
 								Cancel
 							</Button>
 						{/snippet}
@@ -129,4 +145,4 @@
 			{/each}
 		</TableBody>
 	</Table>
-</section>
+</Container>
