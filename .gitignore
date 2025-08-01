@@ -1,6 +1,7 @@
 .svelte-kit/
 .wrangler/
 .yarn/install-state.gz
+build/
 node_modules/
 src/lib/server/db/generated/
 .env*

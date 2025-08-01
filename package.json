@@ -7,8 +7,7 @@
 	"license": "Apache-2.0",
 	"scripts": {
 		"build": "vite build",
-		"serve": "wrangler dev --compatibility-date=2025-07-30 --live-reload",
-		"watch": "npm run build -- -w",
+		"dev": "vite dev",
 		"sync": "svelte-kit sync",
 		"check": "yarn sync && svelte-check --tsconfig ./tsconfig.json",
 		"lint": "eslint --fix",
@@ -29,7 +28,7 @@
 	},
 	"devDependencies": {
 		"@killbasa/eslint-config": "^3.1.5",
-		"@sveltejs/adapter-cloudflare": "^7.1.2",
+		"@sveltejs/adapter-node": "^5.2.13",
 		"@sveltejs/kit": "^2.27.0",
 		"@sveltejs/vite-plugin-svelte": "^6.1.0",
 		"@tailwindcss/vite": "^4.1.11",
@@ -48,11 +47,7 @@
 		"svelte-check": "^4.3.0",
 		"tailwindcss": "^4.1.11",
 		"typescript": "^5.9.2",
-		"vite": "7.0.6",
-		"wrangler": "^4.27.0"
-	},
-	"resolutions": {
-		"@sveltejs/kit": "2.26.1"
+		"vite": "7.0.6"
 	},
 	"lint-staged": {
 		"*.{js,ts,svelte}": [
