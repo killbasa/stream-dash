@@ -2,7 +2,6 @@
 	import Sidebar from '$components/Sidebar.svelte';
 	import SidebarItem from '$components/SidebarItem.svelte';
 	import TelevisionIcon from '$components/svg/TelevisionIcon.svelte';
-	import ExternalIcon from '$components/svg/ExternalIcon.svelte';
 	import HomeSolid from 'flowbite-svelte-icons/HomeSolid.svelte';
 	import UsersGroupSolid from 'flowbite-svelte-icons/UsersGroupSolid.svelte';
 	import type { LayoutProps } from './$types';
@@ -28,16 +27,10 @@
 					<UsersGroupSolid />
 				{/snippet}
 			</SidebarItem>
-
-			<SidebarItem label="Player" href="/player" external>
-				{#snippet icon()}
-					<ExternalIcon class="h-5 w-5" />
-				{/snippet}
-			</SidebarItem>
 		{/snippet}
 	</Sidebar>
 
-	<main class="flex flex-1 flex-col p-4">
+	<main class="flex flex-1 flex-col p-4 overflow-x-auto">
 		{@render children()}
 	</main>
 </div>

@@ -74,10 +74,10 @@
 
 		<Table>
 			<TableHead>
-				<TableHeadCell>UID name</TableHeadCell>
+				<TableHeadCell>UID</TableHeadCell>
 				<TableHeadCell>Name</TableHeadCell>
 				<TableHeadCell>Talent</TableHeadCell>
-				<TableHeadCell>Scheduled for</TableHeadCell>
+				<TableHeadCell>Scheduled</TableHeadCell>
 				<TableHeadCell>Actions</TableHeadCell>
 			</TableHead>
 			<TableBody>
