@@ -54,12 +54,14 @@
 
 		<div class="flex items-center">
 			<span>Status:</span>
-			{#if data.liveInput.status == 'connected'}
+			{#if data.liveInput.status === 'connected'}
 				<Badge color="green" class="ml-2">Online</Badge>
-			{:else if data.liveInput.status == 'disconnected'}
+			{:else if data.liveInput.status === 'disconnected'}
 				<Badge color="red" class="ml-2">Offline</Badge>
-			{:else if data.liveInput.status == 'error'}
-				<Badge color="yellow" class="ml-2">Unknown</Badge>
+			{:else if data.liveInput.status === 'errored'}
+				<Badge color="yellow" class="ml-2">Error</Badge>
+			{:else}
+				<Badge color="gray" class="ml-2">Unknown</Badge>
 			{/if}
 		</div>
 

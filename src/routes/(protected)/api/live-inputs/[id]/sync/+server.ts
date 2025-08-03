@@ -1,6 +1,7 @@
 import { cloudflare } from '$lib/server/cloudflare/client';
 import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
+import { LiveInputStatus } from '$lib/server/db/generated/client';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
@@ -12,7 +13,7 @@ const LiveInputStatusResponseObj = z
 			.object({
 				current: z
 					.object({
-						state: z.enum(['connected', 'disconnected']),
+						state: z.enum(LiveInputStatus),
 					})
 					.optional(),
 			})

@@ -34,7 +34,7 @@ model LiveInput {
     ingestWebrtcUrl   String         @unique
     playbackWebrtcUrl String         @unique
 
-    status LiveInputStatus @default(disconnected)
+    status LiveInputStatus? @default(disconnected)
 
     ingestFor   Block[] @relation("LiveInputIngestForBlocks")
     playbackFor Block[] @relation("LiveInputPlaybackForBlocks")
@@ -51,6 +51,7 @@ enum LiveInputType {
 enum LiveInputStatus {
     connected
     disconnected
+    errored
 }
 
 model Talent {

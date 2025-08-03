@@ -155,12 +155,14 @@
 						{/if}
 					</TableBodyCell>
 					<TableBodyCell>
-						{#if entry.status == 'connected'}
+						{#if entry.status === 'connected'}
 							<Badge color="green" class="ml-2">Online</Badge>
-						{:else if entry.status == 'disconnected'}
+						{:else if entry.status === 'disconnected'}
 							<Badge color="red" class="ml-2">Offline</Badge>
-						{:else if entry.status == 'error'}
-							<Badge color="yellow" class="ml-2">Unknown</Badge>
+						{:else if entry.status === 'errored'}
+							<Badge color="yellow" class="ml-2">Error</Badge>
+						{:else}
+							<Badge color="gray" class="ml-2">Unknown</Badge>
 						{/if}
 					</TableBodyCell>
 					<TableBodyCell class="flex gap-2">
@@ -252,12 +254,14 @@
 						{/if}
 					</TableBodyCell>
 					<TableBodyCell>
-						{#if entry.status == 'connected'}
+						{#if entry.status === 'connected'}
 							<Badge color="green" class="ml-2">Online</Badge>
-						{:else if entry.status == 'disconnected'}
+						{:else if entry.status === 'disconnected'}
 							<Badge color="red" class="ml-2">Offline</Badge>
-						{:else if entry.status == 'error'}
-							<Badge color="yellow" class="ml-2">Unknown</Badge>
+						{:else if entry.status === 'errored'}
+							<Badge color="yellow" class="ml-2">Error</Badge>
+						{:else}
+							<Badge color="gray" class="ml-2">Unknown</Badge>
 						{/if}
 					</TableBodyCell>
 					<TableBodyCell class="flex gap-2">
