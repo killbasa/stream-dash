@@ -1,39 +1,33 @@
 import { ok } from '$lib/server/api';
 import { zWebhookPayload } from '$lib/server/cloudflare/webhooks';
 import { json } from '@sveltejs/kit';
-import { createHmac, timingSafeEqual } from 'node:crypto';
+import { timingSafeEqual } from 'node:crypto';
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
+
+const BufferSecret = Buffer.from(env.CLOUDFLARE_WEBHOOK_SECRET);
 
 export const POST: RequestHandler = async (event) => {
 	if (event.request.headers.get('Content-Type') !== 'application/json') {
 		console.log('Invalid content type:', event.request.headers.get('Content-Type'));
-		return json({ message: 'Invalid content type' }, { status: 400 });
+		return json({ message: 'Invalid request' }, { status: 400 });
 	}
 
 	if (!event.request.body) {
 		console.log('No body provided');
-		return json({ message: 'No body provided' }, { status: 400 });
-	}
-
-	const header = event.request.headers.get('Webhook-Signature');
-	if (!header) {
-		console.log('No Webhook-Signature header found:', event.request.headers);
 		return json({ message: 'Invalid request' }, { status: 400 });
 	}
 
-	// Parse the JSON body
+	const header = event.request.headers.get('cf-webhook-auth');
+	if (!header) {
+		console.log('No auth header found');
+		return json({ message: 'Invalid request' }, { status: 400 });
+	}
+
 	try {
-		const [time, sig1] = header.split(',');
-		const message = time + '.' + JSON.stringify(event.request.body);
-
-		const hmac = createHmac('sha256', env.CLOUDFLARE_WEBHOOK_SECRET)
-			.update(message)
-			.digest('hex');
-
-		if (timingSafeEqual(Buffer.from(sig1, 'hex'), Buffer.from(hmac, 'hex'))) {
+		if (timingSafeEqual(Buffer.from(header), BufferSecret)) {
 			console.log('Webhook signature is valid');
-			return json({ message: 'Invalid signature' }, { status: 400 });
+			return json({ message: 'Invalid request' }, { status: 400 });
 		}
 
 		const raw = await event.request.json();
@@ -42,7 +36,7 @@ export const POST: RequestHandler = async (event) => {
 		const data = zWebhookPayload.safeParse(raw);
 		if (!data.success) {
 			console.log('Invalid payload:', data.error);
-			return json({ message: 'Invalid payload' }, { status: 400 });
+			return json({ message: 'Invalid request' }, { status: 400 });
 		}
 
 		console.log('parsed:', data.data);
