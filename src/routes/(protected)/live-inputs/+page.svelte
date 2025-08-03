@@ -273,7 +273,7 @@
 							<Modal
 								form
 								open
-								title="Import Live Input"
+								title="Import: {entry.name}"
 								oncancel={() => liveInputImportModals.set(entry.id, false)}
 								onaction={async (event) => {
 									await handleImport(entry.id, event);
@@ -281,7 +281,7 @@
 								}}
 							>
 								<div>
-									<Label for="liveinput_type" class="mb-2">Live Input Type</Label>
+									<Label for="liveinput_type" class="mb-2">Type</Label>
 									<Select
 										name="liveinput_type"
 										placeholder="Select a type"

@@ -12,22 +12,18 @@
 	const handleUpdate: SubmitFunction = () => {
 		return function ({ result }) {
 			if (result.type === 'failure') {
-				console.error('Failed to update webhook:', result.data?.errors);
+				// console.error('Failed to update webhook:', result.data?.errors);
 				toast.error('Failed to update webhook');
 				return;
 			}
 
 			if (result.type === 'error') {
-				console.error('Error updating webhook:', result.error);
+				// console.error('Error updating webhook:', result.error);
 				toast.error('Error updating webhook');
 				return;
 			}
 
-			if (result.status === 204) {
-				toast.success('Webhook deleted');
-			} else {
-				toast.success('Webhook updated');
-			}
+			toast.success('Webhook updated');
 		};
 	};
 </script>
@@ -48,6 +44,7 @@
 					id="webhook_url"
 					name="webhook_url"
 					value={webhook?.notificationUrl}
+					disabled
 				/>
 			</div>
 
