@@ -121,10 +121,16 @@
 								<p>Are you sure you want to delete "{entry.name}"?</p>
 
 								{#snippet footer()}
-									<Button type="submit" value="success" class="cursor-pointer">
+									<Button
+										size="xs"
+										type="submit"
+										value="success"
+										class="cursor-pointer"
+									>
 										Delete
 									</Button>
 									<Button
+										size="xs"
 										type="button"
 										color="alternative"
 										class="cursor-pointer"
@@ -160,8 +166,9 @@
 	</div>
 
 	{#snippet footer()}
-		<Button type="submit" value="success" class="cursor-pointer">Save</Button>
+		<Button size="xs" type="submit" value="success" class="cursor-pointer">Save</Button>
 		<Button
+			size="xs"
 			type="button"
 			color="alternative"
 			class="cursor-pointer"

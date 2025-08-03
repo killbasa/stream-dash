@@ -2,6 +2,7 @@ import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import type { LiveInput } from '$lib/server/db/generated/client';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
 	if (!hasPermission(locals.user, ['editor', 'reader'], 'live-inputs')) {
@@ -12,7 +13,18 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 
 	const liveInputs = await prisma.liveInput.findMany();
 
+	const validLiveInputs: LiveInput[] = [];
+	const pendingLiveInputs: LiveInput[] = [];
+	for (const liveInput of liveInputs) {
+		if (liveInput.type) {
+			validLiveInputs.push(liveInput);
+		} else {
+			pendingLiveInputs.push(liveInput);
+		}
+	}
+
 	return {
-		liveInputs,
+		liveInputs: validLiveInputs,
+		pendingLiveInputs,
 	};
 };

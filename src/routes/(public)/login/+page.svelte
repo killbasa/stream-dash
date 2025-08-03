@@ -15,6 +15,7 @@
 
 		<div class="flex flex-col w-80">
 			<Button
+				size="xs"
 				type="button"
 				class="cursor-pointer"
 				onclick={async () => {

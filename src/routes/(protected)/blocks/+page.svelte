@@ -99,7 +99,6 @@
 				}}
 			/>
 			<Select
-				class="w-64"
 				placeholder="Filter by Location"
 				items={data.locations.map((location) => ({
 					value: location.id,
@@ -195,13 +194,19 @@
 								<p>Are you sure you want to delete "{entry.name}"?</p>
 
 								{#snippet footer()}
-									<Button type="submit" value="success" class="cursor-pointer">
+									<Button
+										type="submit"
+										value="success"
+										class="cursor-pointer"
+										size="xs"
+									>
 										Delete
 									</Button>
 									<Button
 										type="button"
 										color="alternative"
 										class="cursor-pointer"
+										size="xs"
 										onclick={() => blockDeleteModals.set(entry.id, false)}
 									>
 										Cancel

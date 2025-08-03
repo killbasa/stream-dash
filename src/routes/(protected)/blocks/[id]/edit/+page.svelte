@@ -164,7 +164,7 @@
 			</div>
 
 			<div>
-				<Button type="submit">Save</Button>
+				<Button type="submit" size="xs">Save</Button>
 			</div>
 		</Card>
 	</form>

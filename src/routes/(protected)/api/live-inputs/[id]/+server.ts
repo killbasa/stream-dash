@@ -2,9 +2,40 @@ import { cloudflare } from '$lib/server/cloudflare/client';
 import { ok } from '$lib/server/api';
 import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
+import { LiveInputType } from '$lib/server/db/generated/client';
 import { json } from '@sveltejs/kit';
+import z from 'zod';
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
+
+const LiveInputPutBody = z.object({
+	type: z.enum([LiveInputType.ingest, LiveInputType.return]),
+});
+
+export const PUT: RequestHandler = async ({ locals, request, params }) => {
+	if (!hasPermission(locals.user, ['editor'], 'live-inputs')) {
+		return json({ message: 'Unauthorized' }, { status: 403 });
+	}
+
+	const data = LiveInputPutBody.safeParse(await request.json());
+	if (!data.success) {
+		return json(
+			{ message: 'Invalid request body', errors: data.error.issues },
+			{ status: 400 },
+		);
+	}
+
+	const liveInput = await prisma.liveInput.update({
+		where: {
+			id: params.id,
+		},
+		data: {
+			type: data.data.type,
+		},
+	});
+
+	return json(liveInput);
+};
 
 export const DELETE: RequestHandler = async ({ locals, params }) => {
 	if (!hasPermission(locals.user, ['editor'], 'live-inputs')) {

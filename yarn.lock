@@ -355,15 +355,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@event-calendar/core@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "@event-calendar/core@npm:4.5.0"
-  dependencies:
-    svelte: "npm:^5.34.8"
-  checksum: 10c0/55138cb0344fff22756f30710178781a5412ddc62ba7d57533a1428f4964b6bd8bc61f63e811b70a82de5359cc12675fe4d29a1bd7702a2aaf2d6fcbdd3c7bc6
-  languageName: node
-  linkType: hard
-
 "@floating-ui/core@npm:^1.7.3":
   version: 1.7.3
   resolution: "@floating-ui/core@npm:1.7.3"
@@ -1366,15 +1357,6 @@ __metadata:
   version: 1.0.8
   resolution: "@types/estree@npm:1.0.8"
   checksum: 10c0/39d34d1afaa338ab9763f37ad6066e3f349444f9052b9676a7cc0252ef9485a41c6d81c9c4e0d26e9077993354edf25efc853f3224dd4b447175ef62bdcc86a5
-  languageName: node
-  linkType: hard
-
-"@types/event-calendar__core@npm:^4.4.0":
-  version: 4.4.0
-  resolution: "@types/event-calendar__core@npm:4.4.0"
-  dependencies:
-    svelte: "npm:^5"
-  checksum: 10c0/99fa2cb244d0991f42243b223451f10436c92f41c83dcc8dffb7f2e8ded196a1772fc5fb4a5b849c59cf53d9ba0de79ac130879618a99d3cf0f7b95bd89870d7
   languageName: node
   linkType: hard
 
@@ -3234,9 +3216,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flowbite-svelte@npm:^1.11.1":
-  version: 1.11.1
-  resolution: "flowbite-svelte@npm:1.11.1"
+"flowbite-svelte@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "flowbite-svelte@npm:1.11.2"
   dependencies:
     "@floating-ui/dom": "npm:^1.7.2"
     "@floating-ui/utils": "npm:^0.2.10"
@@ -3249,7 +3231,7 @@ __metadata:
   peerDependencies:
     svelte: ^5.29.0
     tailwindcss: ^4.1.4
-  checksum: 10c0/048b053195fcb12ab58f893ba188817a7d0d246ecd068aab73ef7c8933ec10e32d95a838eb8a8291b2931a1c0d2053543f797542733aa3abbf03cab93b269629
+  checksum: 10c0/dd2353b9f8ffbd78ed12f8c94ddeb849cdfe19f5eb1af5589a0ce4a28e086ecff152ab6b3c3bdb71b38d1a246e977e066708d52be961b27558b48d23a4e0995c
   languageName: node
   linkType: hard
 
@@ -4270,15 +4252,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^16.1.2":
-  version: 16.1.2
-  resolution: "lint-staged@npm:16.1.2"
+"lint-staged@npm:^16.1.3":
+  version: 16.1.3
+  resolution: "lint-staged@npm:16.1.3"
   dependencies:
     chalk: "npm:^5.4.1"
     commander: "npm:^14.0.0"
     debug: "npm:^4.4.1"
     lilconfig: "npm:^3.1.3"
-    listr2: "npm:^8.3.3"
+    listr2: "npm:^9.0.1"
     micromatch: "npm:^4.0.8"
     nano-spawn: "npm:^1.0.2"
     pidtree: "npm:^0.6.0"
@@ -4286,13 +4268,13 @@ __metadata:
     yaml: "npm:^2.8.0"
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/2a299fc0d56e0a64ed0af8caf937e00eac47cb270df2917e2d4b939074eaa63ecd7f16d3b70b7e5e57bff75ffbbbf8aae5768dedf3dfd45e3ca1b9caaf7740cc
+  checksum: 10c0/0d91ecb30fd021dbe86304342e4f2bde00f9ddd54397c000d226f5e8982ef13cf56ef0b3d56404cc8fd80d7ec2c4b7b8f291e772541dd8ced529268a742d167a
   languageName: node
   linkType: hard
 
-"listr2@npm:^8.3.3":
-  version: 8.3.3
-  resolution: "listr2@npm:8.3.3"
+"listr2@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "listr2@npm:9.0.1"
   dependencies:
     cli-truncate: "npm:^4.0.0"
     colorette: "npm:^2.0.20"
@@ -4300,7 +4282,7 @@ __metadata:
     log-update: "npm:^6.1.0"
     rfdc: "npm:^1.4.1"
     wrap-ansi: "npm:^9.0.0"
-  checksum: 10c0/0792f8a7fd482fa516e21689e012e07081cab3653172ca606090622cfa0024c784a1eba8095a17948a0e9a4aa98a80f7c9c90f78a0dd35173d6802f9cc123a82
+  checksum: 10c0/73462e84a3c4f05de5a3cdea5eaa0209c6ab04a2fdb4046545049806e9ba17b6ee84a097ebf7ffc0e903b0f2a9094c0c480cd2f2bb21d7d21e20969e17a3c32b
   languageName: node
   linkType: hard
 
@@ -5870,9 +5852,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-check@npm:^4.3.0":
-  version: 4.3.0
-  resolution: "svelte-check@npm:4.3.0"
+"svelte-check@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "svelte-check@npm:4.3.1"
   dependencies:
     "@jridgewell/trace-mapping": "npm:^0.3.25"
     chokidar: "npm:^4.0.1"
@@ -5884,7 +5866,7 @@ __metadata:
     typescript: ">=5.0.0"
   bin:
     svelte-check: bin/svelte-check
-  checksum: 10c0/1e422eb673f88692c0c034db443148fa150c87fc00d230ba20ac905c7daa66e4d5a744d5d792914b46889b629c1b25d4fcebc445a6ad836b24121597258809b1
+  checksum: 10c0/e3aa6b8be4d46054699740e4625acf846e6b4a085f63c5a1621b3429367ecfd9e1f6fae36b6169cd375826b22c5a70c77c83c998ac9ef2fd2435b4bebf932788
   languageName: node
   linkType: hard
 
@@ -5907,9 +5889,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:^5, svelte@npm:^5.34.8, svelte@npm:^5.37.2":
-  version: 5.37.2
-  resolution: "svelte@npm:5.37.2"
+"svelte@npm:^5.37.3":
+  version: 5.37.3
+  resolution: "svelte@npm:5.37.3"
   dependencies:
     "@ampproject/remapping": "npm:^2.3.0"
     "@jridgewell/sourcemap-codec": "npm:^1.5.0"
@@ -5925,7 +5907,7 @@ __metadata:
     locate-character: "npm:^3.0.0"
     magic-string: "npm:^0.30.11"
     zimmerframe: "npm:^1.1.2"
-  checksum: 10c0/1b91f7d7c238f8bdb94e3b277f176c7280b49f4c1ff705e06cc3b36e5eaa89154fbe138e8f02a90aefe731e5a618d5a2b3b8e4ba184bac982b067244c094c1fc
+  checksum: 10c0/c76e287641ac7c5ac0795ab3576ffdf17097fb86920e47ccfc402726bca3ee0f00a50f0e49f9eb50eb2574da364df1bbf9916d34c8ce03fe62c91a98ed38d580
   languageName: node
   linkType: hard
 
@@ -6531,7 +6513,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "worker-web@workspace:."
   dependencies:
-    "@event-calendar/core": "npm:^4.5.0"
     "@killbasa/eslint-config": "npm:^3.1.5"
     "@prisma/adapter-neon": "npm:6.13.0"
     "@prisma/client": "npm:6.13.0"
@@ -6539,7 +6520,6 @@ __metadata:
     "@sveltejs/kit": "npm:^2.27.0"
     "@sveltejs/vite-plugin-svelte": "npm:^6.1.0"
     "@tailwindcss/vite": "npm:^4.1.11"
-    "@types/event-calendar__core": "npm:^4.4.0"
     "@types/node": "npm:^24.1.0"
     "@types/sdp-transform": "npm:^2.4.10"
     better-auth: "npm:^1.3.4"
@@ -6547,17 +6527,17 @@ __metadata:
     eslint: "npm:9.32.0"
     eslint-config-prettier: "npm:^10.1.8"
     flowbite: "npm:^3.1.2"
-    flowbite-svelte: "npm:^1.11.1"
+    flowbite-svelte: "npm:^1.11.2"
     flowbite-svelte-icons: "npm:^2.2.1"
     husky: "npm:^9.1.7"
-    lint-staged: "npm:^16.1.2"
+    lint-staged: "npm:^16.1.3"
     mpegts.js: "npm:^1.8.0"
     prettier: "npm:^3.6.2"
     prettier-plugin-svelte: "npm:^3.4.0"
     prisma: "npm:^6.13.0"
     sdp-transform: "npm:^2.15.0"
-    svelte: "npm:^5.37.2"
-    svelte-check: "npm:^4.3.0"
+    svelte: "npm:^5.37.3"
+    svelte-check: "npm:^4.3.1"
     tailwindcss: "npm:^4.1.11"
     tsx: "npm:^4.20.3"
     typescript: "npm:5.9.2"

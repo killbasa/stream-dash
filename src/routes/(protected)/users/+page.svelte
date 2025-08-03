@@ -165,18 +165,18 @@
 					<TableBodyCell>[{entry.scopes.join(', ')}]</TableBodyCell>
 					<TableBodyCell>
 						<Button
+							size="xs"
 							type="button"
 							class="cursor-pointer"
-							size="xs"
 							color="alternative"
 							onclick={() => userEditModals.set(entry.id, true)}
 						>
 							Edit
 						</Button>
 						<Button
+							size="xs"
 							type="button"
 							class="cursor-pointer"
-							size="xs"
 							color="alternative"
 							onclick={() => userDeleteModdals.set(entry.id, true)}
 						>
@@ -216,10 +216,11 @@
 						</div>
 
 						{#snippet footer()}
-							<Button type="submit" value="success" class="cursor-pointer">
+							<Button size="xs" type="submit" value="success" class="cursor-pointer">
 								Save
 							</Button>
 							<Button
+								size="xs"
 								type="button"
 								color="alternative"
 								class="cursor-pointer"
@@ -246,10 +247,11 @@
 						<p>This will also remove the whitelist entry.</p>
 
 						{#snippet footer()}
-							<Button type="submit" value="success" class="cursor-pointer">
+							<Button size="xs" type="submit" value="success" class="cursor-pointer">
 								Delete
 							</Button>
 							<Button
+								size="xs"
 								type="button"
 								color="alternative"
 								class="cursor-pointer"
@@ -266,41 +268,9 @@
 
 	<h1>Whitelist</h1>
 	<div>
-		<Button onclick={() => (openWhitelistModal = true)} class="cursor-pointer" size="xs">
+		<Button size="xs" onclick={() => (openWhitelistModal = true)} class="cursor-pointer">
 			Create
 		</Button>
-		<Modal
-			form
-			bind:open={openWhitelistModal}
-			title="Whitelist a user"
-			onaction={handleWhitelistCreate}
-		>
-			<div>
-				<Label for="whitelist_email" class="mb-2">Email</Label>
-				<Input type="email" id="whitelist_email" name="whitelist_email" required />
-			</div>
-
-			<div>
-				<Label for="whitelist_role" class="mb-2">Default Role</Label>
-				<Select name="whitelist_role" placeholder="Select a role" clearable>
-					<option value="admin">Admin</option>
-					<option value="editor">Editor</option>
-					<option value="reader">Reader</option>
-				</Select>
-			</div>
-
-			{#snippet footer()}
-				<Button type="submit" value="success" class="cursor-pointer">Save</Button>
-				<Button
-					type="button"
-					color="alternative"
-					class="cursor-pointer"
-					onclick={() => (openWhitelistModal = false)}
-				>
-					Cancel
-				</Button>
-			{/snippet}
-		</Modal>
 	</div>
 
 	<Table>
@@ -316,9 +286,9 @@
 					<TableBodyCell>{entry.defaultRole}</TableBodyCell>
 					<TableBodyCell>
 						<Button
+							size="xs"
 							type="button"
 							class="cursor-pointer"
-							size="xs"
 							color="alternative"
 							onclick={() => whitelistRevokeModals.set(entry.id, true)}
 						>
@@ -341,10 +311,11 @@
 						<p>Are you sure you want to revoke the whitelist for "{entry.email}"?</p>
 
 						{#snippet footer()}
-							<Button type="submit" value="success" class="cursor-pointer">
+							<Button size="xs" type="submit" value="success" class="cursor-pointer">
 								Revoke
 							</Button>
 							<Button
+								size="xs"
 								type="button"
 								color="alternative"
 								class="cursor-pointer"
@@ -358,4 +329,38 @@
 			{/each}
 		</TableBody>
 	</Table>
+
+	<Modal
+		form
+		bind:open={openWhitelistModal}
+		title="Whitelist a user"
+		onaction={handleWhitelistCreate}
+	>
+		<div>
+			<Label for="whitelist_email" class="mb-2">Email</Label>
+			<Input type="email" id="whitelist_email" name="whitelist_email" required />
+		</div>
+
+		<div>
+			<Label for="whitelist_role" class="mb-2">Default Role</Label>
+			<Select name="whitelist_role" placeholder="Select a role" clearable>
+				<option value="admin">Admin</option>
+				<option value="editor">Editor</option>
+				<option value="reader">Reader</option>
+			</Select>
+		</div>
+
+		{#snippet footer()}
+			<Button size="xs" type="submit" value="success" class="cursor-pointer">Save</Button>
+			<Button
+				size="xs"
+				type="button"
+				color="alternative"
+				class="cursor-pointer"
+				onclick={() => (openWhitelistModal = false)}
+			>
+				Cancel
+			</Button>
+		{/snippet}
+	</Modal>
 </Container>

@@ -28,11 +28,11 @@ model LiveInput {
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
 
-    type              LiveInputType
+    type              LiveInputType?
     name              String
     description       String?
-    ingestWebrtcUrl   String        @unique
-    playbackWebrtcUrl String        @unique
+    ingestWebrtcUrl   String         @unique
+    playbackWebrtcUrl String         @unique
 
     status LiveInputStatus @default(disconnected)
 
@@ -104,4 +104,16 @@ model Block {
     location   Location? @relation(fields: [locationId], references: [id], onDelete: Restrict)
 
     @@map("block")
+}
+
+model Webhook {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    accountId       String @unique
+    notificationUrl String
+    secret          String
+
+    @@map("webhook")
 }

@@ -15,8 +15,8 @@
 		return `${baseUrl}${url}`;
 	};
 
-	const handleRefresh = async () => {
-		const response = await fetch(`/api/live-inputs/${params.id}/refresh`, {
+	const handleSync = async () => {
+		const response = await fetch(`/api/live-inputs/${params.id}/sync`, {
 			method: 'POST',
 		});
 
@@ -26,7 +26,7 @@
 			return;
 		}
 
-		toast.success('Live Input refreshed');
+		toast.success('Live Input synchronized');
 		await invalidate('api:live-inputs');
 	};
 </script>
@@ -46,7 +46,7 @@
 			color="alternative"
 			target="_blank">Watch</Button
 		>
-		<Button class="cursor-pointer" size="xs" onclick={handleRefresh}>Refresh</Button>
+		<Button class="cursor-pointer" size="xs" onclick={handleSync}>Sync</Button>
 	</div>
 
 	<Card class="p-4 gap-4" size="xl">

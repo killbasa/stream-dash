@@ -3,11 +3,11 @@
 	import SidebarItem from '$components/SidebarItem.svelte';
 	import TelevisionIcon from '$components/svg/TelevisionIcon.svelte';
 	import Toaster from '$components/Toaster.svelte';
+	import NotificationIcon from '$components/svg/NotificationIcon.svelte';
 	import HomeSolid from 'flowbite-svelte-icons/HomeSolid.svelte';
 	import UsersGroupSolid from 'flowbite-svelte-icons/UsersGroupSolid.svelte';
 	import RectangleListSolid from 'flowbite-svelte-icons/RectangleListSolid.svelte';
 	import GlobeSolid from 'flowbite-svelte-icons/GlobeSolid.svelte';
-	import CalendarMonthSolid from 'flowbite-svelte-icons/CalendarMonthSolid.svelte';
 	import type { LayoutProps } from './$types';
 
 	let { children }: LayoutProps = $props();
@@ -47,11 +47,6 @@
 								<RectangleListSolid />
 							{/snippet}
 						</SidebarItem>
-						<SidebarItem label="Schedule" href="/schedule">
-							{#snippet icon()}
-								<CalendarMonthSolid />
-							{/snippet}
-						</SidebarItem>
 					</ul>
 				</div>
 				<div>
@@ -60,6 +55,11 @@
 						<SidebarItem label="Users" href="/users">
 							{#snippet icon()}
 								<UsersGroupSolid />
+							{/snippet}
+						</SidebarItem>
+						<SidebarItem label="Notifications" href="/notifications">
+							{#snippet icon()}
+								<NotificationIcon class="h-5 w-5" />
 							{/snippet}
 						</SidebarItem>
 					</ul>

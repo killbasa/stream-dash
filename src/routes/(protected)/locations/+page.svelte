@@ -93,11 +93,12 @@
 			</div>
 
 			{#snippet footer()}
-				<Button type="submit" value="success" class="cursor-pointer">Save</Button>
+				<Button type="submit" value="success" class="cursor-pointer" size="xs">Save</Button>
 				<Button
 					type="button"
 					color="alternative"
 					class="cursor-pointer"
+					size="xs"
 					onclick={() => (openCreateModal = false)}
 				>
 					Cancel
@@ -141,13 +142,19 @@
 								<p>Are you sure you want to delete "{entry.name}"?</p>
 
 								{#snippet footer()}
-									<Button type="submit" value="success" class="cursor-pointer">
+									<Button
+										type="submit"
+										value="success"
+										class="cursor-pointer"
+										size="xs"
+									>
 										Delete
 									</Button>
 									<Button
 										type="button"
 										color="alternative"
 										class="cursor-pointer"
+										size="xs"
 										onclick={() => locationDeleteModals.set(entry.id, false)}
 									>
 										Cancel
