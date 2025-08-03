@@ -7,15 +7,18 @@ import { env } from '$env/dynamic/private';
 
 export const POST: RequestHandler = async (event) => {
 	if (event.request.headers.get('Content-Type') !== 'application/json') {
+		console.log('Invalid content type:', event.request.headers.get('Content-Type'));
 		return json({ message: 'Invalid content type' }, { status: 400 });
 	}
 
 	if (!event.request.body) {
+		console.log('No body provided');
 		return json({ message: 'No body provided' }, { status: 400 });
 	}
 
 	const header = event.request.headers.get('Webhook-Signature');
 	if (!header) {
+		console.log('No Webhook-Signature header found:', event.request.headers);
 		return json({ message: 'Invalid request' }, { status: 400 });
 	}
 
@@ -29,6 +32,7 @@ export const POST: RequestHandler = async (event) => {
 			.digest('hex');
 
 		if (timingSafeEqual(Buffer.from(sig1, 'hex'), Buffer.from(hmac, 'hex'))) {
+			console.log('Webhook signature is valid');
 			return json({ message: 'Invalid signature' }, { status: 400 });
 		}
 
@@ -37,6 +41,7 @@ export const POST: RequestHandler = async (event) => {
 
 		const data = zWebhookPayload.safeParse(raw);
 		if (!data.success) {
+			console.log('Invalid payload:', data.error);
 			return json({ message: 'Invalid payload' }, { status: 400 });
 		}
 
