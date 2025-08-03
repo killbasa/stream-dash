@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { toast } from '$lib/client/stores/toasts';
 	import FileCopyAltSolid from 'flowbite-svelte-icons/FileCopyAltSolid.svelte';
 
 	let {
@@ -18,6 +19,7 @@
 			class="cursor-pointer"
 			onclick={() => {
 				navigator.clipboard.writeText(content);
+				toast.success('Copied to clipboard');
 			}}
 		>
 			<FileCopyAltSolid class="shrink-0 h-6 w-6" />

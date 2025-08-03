@@ -10,8 +10,8 @@ if (!email) {
 
 const role = process.argv[3];
 
-if (!['admin', 'editor', 'reader'].includes(role)) {
-	console.error('Invalid role. Use "admin", "editor", or "reader".');
+if (!['superadmin', 'admin', 'editor', 'reader'].includes(role)) {
+	console.error('Invalid role. Use "superadmin", "admin", "editor", or "reader".');
 	process.exit(1);
 }
 

@@ -1,9 +1,10 @@
 import { prisma } from '$lib/server/db/client';
+import { hasPermission } from '$lib/server/utils';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const DELETE: RequestHandler = async (event) => {
-	if (event.locals.user?.role !== 'admin') {
+	if (!hasPermission(event.locals.user, ['admin'])) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

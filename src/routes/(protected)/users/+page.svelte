@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Container from '$components/Container.svelte';
+	import { toast } from '$lib/client/stores/toasts';
 	import {
 		Button,
 		Table,
@@ -16,6 +17,7 @@
 	} from 'flowbite-svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { PageProps } from './$types';
+	import { invalidate } from '$app/navigation';
 
 	let { data }: PageProps = $props();
 
@@ -53,7 +55,9 @@
 
 	const scopes: { value: string; name: string }[] = [
 		{ value: 'live-inputs', name: 'Live Inputs' },
-		{ value: 'wizard', name: 'Wizard' },
+		{ value: 'talents', name: 'Talents' },
+		{ value: 'locations', name: 'Locations' },
+		{ value: 'blocks', name: 'Blocks' },
 	];
 
 	const handleUserEdit = async (
@@ -76,17 +80,12 @@
 
 		if (!response.ok) {
 			const error = await response.json();
-			alert(`Error: ${error.message}`);
+			toast.error(`Error: ${error.message}`);
 			return;
 		}
 
-		const updatedUser = await response.json();
-		const index = users.findIndex((user) => user.id === updatedUser.id);
-
-		if (index !== -1) {
-			users[index] = updatedUser;
-			users = [...users];
-		}
+		toast.success('User updated');
+		await invalidate('api:users');
 	};
 
 	const handleUserDelete = async (entry: (typeof data.users)[number]) => {
@@ -96,11 +95,12 @@
 
 		if (!response.ok) {
 			const error = await response.json();
-			alert(`Error: ${error.message}`);
+			toast.error(`Error: ${error.message}`);
 			return;
 		}
 
-		users = users.filter((user) => user.id !== entry.id);
+		toast.success('User deleted');
+		await invalidate('api:users');
 	};
 
 	const handleWhitelistCreate = async (event: { data: FormData }) => {
@@ -117,12 +117,12 @@
 
 		if (!response.ok) {
 			const error = await response.json();
-			alert(`Error: ${error.message}`);
+			toast.error(`Error: ${error.message}`);
 			return;
 		}
 
-		const data = await response.json();
-		whitelists = [...whitelists, data];
+		toast.success('Whitelist entry created');
+		await invalidate('api:users');
 	};
 
 	const handleWhitelistRevoke = async (entry: (typeof data.whitelists)[number]) => {
@@ -132,11 +132,12 @@
 
 		if (!response.ok) {
 			const error = await response.json();
-			alert(`Error: ${error.message}`);
+			toast.error(`Error: ${error.message}`);
 			return;
 		}
 
-		whitelists = whitelists.filter((whitelist) => whitelist.id !== entry.id);
+		toast.success('Whitelist entry revoked');
+		await invalidate('api:users');
 	};
 </script>
 
@@ -161,7 +162,7 @@
 					<TableBodyCell>{entry.name}</TableBodyCell>
 					<TableBodyCell>{entry.email}</TableBodyCell>
 					<TableBodyCell>{entry.role}</TableBodyCell>
-					<TableBodyCell>[{entry.scopes}]</TableBodyCell>
+					<TableBodyCell>[{entry.scopes.join(', ')}]</TableBodyCell>
 					<TableBodyCell>
 						<Button
 							type="button"
@@ -189,25 +190,30 @@
 						form
 						open
 						title="Edit user"
-						classes={{ body: 'h-64' }}
 						oncancel={() => userEditModals.set(entry.id, false)}
 						onaction={async (event) => {
 							await handleUserEdit(entry, event);
 							userEditModals.set(entry.id, false);
 						}}
 					>
-						<Select
-							name="role"
-							placeholder="Select a role"
-							value={entry.role}
-							disabled={entry.role === 'admin'}
-						>
-							<option value="admin">Admin</option>
-							<option value="editor">Editor</option>
-							<option value="reader">Reader</option>
-						</Select>
+						<div>
+							<Label for="user_role" class="mb-2">Role</Label>
+							<Select
+								name="user_role"
+								placeholder="Select a role"
+								value={entry.role}
+								disabled={entry.role === 'admin'}
+							>
+								<option value="admin">Admin</option>
+								<option value="editor">Editor</option>
+								<option value="reader">Reader</option>
+							</Select>
+						</div>
 
-						<MultiSelect name="scopes" items={scopes} value={entry.scopes} />
+						<div>
+							<Label for="user_scopes" class="mb-2">Scopes</Label>
+							<MultiSelect name="scopes" items={scopes} value={entry.scopes} />
+						</div>
 
 						{#snippet footer()}
 							<Button type="submit" value="success" class="cursor-pointer">
@@ -230,7 +236,6 @@
 						form
 						open
 						title="Delete user"
-						classes={{ body: 'h-32' }}
 						oncancel={() => userDeleteModdals.set(entry.id, false)}
 						onaction={async () => {
 							await handleUserDelete(entry);
@@ -268,7 +273,6 @@
 			form
 			bind:open={openWhitelistModal}
 			title="Whitelist a user"
-			classes={{ body: 'h-64' }}
 			onaction={handleWhitelistCreate}
 		>
 			<div>
@@ -328,7 +332,6 @@
 						form
 						open
 						title="Delete whitelist"
-						classes={{ body: 'h-32' }}
 						oncancel={() => whitelistRevokeModals.set(entry.id, false)}
 						onaction={async () => {
 							await handleWhitelistRevoke(entry);

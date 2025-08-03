@@ -1,0 +1,62 @@
+import { cloudflare } from '$lib/server/cloudflare/client';
+import { hasPermission } from '$lib/server/utils';
+import { prisma } from '$lib/server/db/client';
+import { json } from '@sveltejs/kit';
+import z from 'zod';
+import type { RequestHandler } from './$types';
+import { env } from '$env/dynamic/private';
+
+const LiveInputStatusResponseObj = z
+	.object({
+		status: z
+			.object({
+				current: z
+					.object({
+						state: z.enum(['connected', 'disconnected']),
+					})
+					.optional(),
+			})
+			.nullish(),
+	})
+	.optional();
+
+// Prevent concurrent refresh requests
+const lock = new Set<string>();
+
+export const POST: RequestHandler = async ({ locals, params }) => {
+	if (!hasPermission(locals.user, ['admin', 'editor'], 'live-inputs')) {
+		return json({ message: 'Unauthorized' }, { status: 403 });
+	}
+
+	if (lock.has(params.id)) {
+		return json({ message: 'Refresh already in progress' }, { status: 429 });
+	}
+
+	lock.add(params.id);
+
+	const result = await prisma.$transaction(async (tx) => {
+		const dbLiveInput = await tx.liveInput.findUniqueOrThrow({
+			where: { id: params.id },
+			select: {
+				cloudflareId: true,
+			},
+		});
+
+		const liveInput = await cloudflare.stream.liveInputs.get(dbLiveInput.cloudflareId, {
+			account_id: env.CLOUDFLARE_ACCOUNT_ID,
+		});
+
+		const data = LiveInputStatusResponseObj.parse(liveInput);
+
+		return tx.liveInput.update({
+			where: { id: params.id },
+			data: {
+				status: data?.status?.current?.state,
+			},
+		});
+	});
+
+	lock.delete(params.id);
+
+	return json(result, { status: 201 });
+};

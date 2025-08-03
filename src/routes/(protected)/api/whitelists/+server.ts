@@ -1,15 +1,16 @@
 import { prisma } from '$lib/server/db/client';
+import { hasPermission } from '$lib/server/utils';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
 
 const WhitelistPostBody = z.object({
-	email: z.string().email(),
+	email: z.email(),
 	defaultRole: z.enum(['admin', 'editor', 'reader']).optional(),
 });
 
 export const POST: RequestHandler = async (event) => {
-	if (event.locals.user?.role !== 'admin') {
+	if (!hasPermission(event.locals.user, ['admin'])) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -19,6 +20,11 @@ export const POST: RequestHandler = async (event) => {
 			{ message: 'Invalid request body', errors: data.error.issues },
 			{ status: 400 },
 		);
+	}
+
+	// @ts-expect-error - Types blah blah
+	if (data.data.defaultRole === 'superadmin') {
+		return json({ message: 'Cannot set default role to admin' }, { status: 400 });
 	}
 
 	const newWhitelist = await prisma.whitelist.create({

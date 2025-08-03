@@ -1,16 +1,18 @@
 import { prisma } from '$lib/server/db/client';
+import { hasPermission } from '$lib/server/utils';
+import { AuthScopes } from '$lib/client/constants';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
 
 const UserPutBody = z.object({
 	id: z.string(),
-	role: z.enum(['admin', 'editor', 'reader']).optional(),
-	scopes: z.array(z.enum(['live-inputs', 'wizard'])).optional(),
+	role: z.enum(['superadmin', 'admin', 'editor', 'reader']).optional(),
+	scopes: z.array(z.enum(AuthScopes)).optional(),
 });
 
 export const PUT: RequestHandler = async (event) => {
-	if (event.locals.user?.role !== 'admin') {
+	if (!hasPermission(event.locals.user, ['admin'])) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -36,7 +38,10 @@ export const PUT: RequestHandler = async (event) => {
 	}
 
 	if (data.data.role !== undefined) {
-		if (user.role === 'admin' && data.data.role !== 'admin') {
+		if (
+			(user.role === 'superadmin' && data.data.role !== 'superadmin') ||
+			(user.role === 'admin' && data.data.role !== 'admin')
+		) {
 			return json({ message: 'Cannot demote admins through the dashboard' }, { status: 400 });
 		}
 
@@ -66,7 +71,7 @@ export const PUT: RequestHandler = async (event) => {
 };
 
 export const DELETE: RequestHandler = async (event) => {
-	if (event.locals.user?.role !== 'admin') {
+	if (!hasPermission(event.locals.user, ['admin'])) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

@@ -1,0 +1,173 @@
+<script lang="ts">
+	import Container from '$components/Container.svelte';
+	import { toast } from '$lib/client/stores/toasts';
+	import {
+		Button,
+		Input,
+		Label,
+		Modal,
+		Fileupload,
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+		Textarea,
+		Helper,
+	} from 'flowbite-svelte';
+	import { SvelteMap } from 'svelte/reactivity';
+	import type { PageProps } from './$types';
+	import { invalidate } from '$app/navigation';
+
+	let { data }: PageProps = $props();
+
+	let talents = $derived(data.talents);
+	let openCreateModal = $state(false);
+
+	const talentDeleteModals = $derived(
+		new SvelteMap<string, boolean>(
+			talents.reduce((acc, talent) => {
+				acc.set(talent.id, false);
+				return acc;
+			}, new Map<string, boolean>()),
+		),
+	);
+
+	const handleCreate = async (event: { data: FormData }) => {
+		const response = await fetch('/api/talents', {
+			method: 'POST',
+			body: event.data,
+		});
+
+		if (!response.ok) {
+			const error = await response.json();
+			toast.error(`Error: ${error.message}`);
+			return;
+		}
+
+		toast.success('Talent created');
+		await invalidate('api:talents');
+	};
+
+	const handleDelete = async (id: string) => {
+		const response = await fetch(`/api/talents/${id}`, {
+			method: 'DELETE',
+		});
+
+		if (!response.ok) {
+			const error = await response.json();
+			toast.error(`Error: ${error.message}`);
+			return;
+		}
+
+		toast.success('Talent deleted');
+		await invalidate('api:talents');
+	};
+</script>
+
+<svelte:head>
+	<title>Talents</title>
+</svelte:head>
+
+<Container>
+	<h1>Talents</h1>
+
+	<div>
+		<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs"
+			>Create</Button
+		>
+	</div>
+
+	<Table>
+		<TableHead>
+			<TableHeadCell></TableHeadCell>
+			<TableHeadCell>Name</TableHeadCell>
+			<TableHeadCell>Actions</TableHeadCell>
+		</TableHead>
+		<TableBody>
+			{#each talents as entry (entry.id)}
+				<TableBodyRow>
+					<TableBodyCell class="w-24 pr-0">
+						<img src={entry.imageUrl} alt={entry.name} class="w-12 h-12 rounded-full" />
+					</TableBodyCell>
+					<TableBodyCell>{entry.name}</TableBodyCell>
+					<TableBodyCell>
+						<Button size="xs" color="alternative" href="/talents/{entry.id}"
+							>View</Button
+						>
+						<Button size="xs" color="alternative" href="/blocks?talent={entry.id}"
+							>Blocks</Button
+						>
+						<Button
+							type="button"
+							class="cursor-pointer"
+							size="xs"
+							color="alternative"
+							onclick={() => talentDeleteModals.set(entry.id, true)}>Delete</Button
+						>
+
+						{#if talentDeleteModals.get(entry.id)}
+							<Modal
+								form
+								open
+								title="Delete talent"
+								oncancel={() => talentDeleteModals.set(entry.id, false)}
+								onaction={async () => {
+									await handleDelete(entry.id);
+									talentDeleteModals.set(entry.id, false);
+								}}
+							>
+								<p>Are you sure you want to delete "{entry.name}"?</p>
+
+								{#snippet footer()}
+									<Button type="submit" value="success" class="cursor-pointer">
+										Delete
+									</Button>
+									<Button
+										type="button"
+										color="alternative"
+										class="cursor-pointer"
+										onclick={() => talentDeleteModals.set(entry.id, false)}
+									>
+										Cancel
+									</Button>
+								{/snippet}
+							</Modal>
+						{/if}
+					</TableBodyCell>
+				</TableBodyRow>
+			{/each}
+		</TableBody>
+	</Table>
+</Container>
+
+<Modal form bind:open={openCreateModal} title="Create a Live Input" onaction={handleCreate}>
+	<div>
+		<Label for="talent_name" class="mb-2">Name</Label>
+		<Input type="text" id="talent_name" name="talent_name" required />
+	</div>
+
+	<div>
+		<Label for="talent_description" class="mb-2">Description</Label>
+		<Textarea id="talent_description" name="talent_description" class="w-full" />
+	</div>
+
+	<div>
+		<Label for="talent_image" class="mb-2">Image</Label>
+		<Fileupload id="talent_image" name="talent_image" accept="image/*" class="mb-2" />
+		<Helper>SVG, PNG, JPG or GIF.</Helper>
+	</div>
+
+	{#snippet footer()}
+		<Button type="submit" value="success" class="cursor-pointer">Save</Button>
+		<Button
+			type="button"
+			color="alternative"
+			class="cursor-pointer"
+			onclick={() => (openCreateModal = false)}
+		>
+			Cancel
+		</Button>
+	{/snippet}
+</Modal>

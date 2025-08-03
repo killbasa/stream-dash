@@ -14,9 +14,94 @@ datasource database {
 }
 
 model Whitelist {
-    id          String  @id @default(uuid())
+    id String @id @default(uuid())
+
     email       String  @unique
     defaultRole String?
 
     @@map("whitelist")
+}
+
+model LiveInput {
+    id           String   @id @default(uuid())
+    cloudflareId String   @unique
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    type              LiveInputType
+    name              String
+    description       String?
+    ingestWebrtcUrl   String        @unique
+    playbackWebrtcUrl String        @unique
+
+    status LiveInputStatus @default(disconnected)
+
+    ingestFor   Block[] @relation("LiveInputIngestForBlocks")
+    playbackFor Block[] @relation("LiveInputPlaybackForBlocks")
+
+    @@unique([type, name])
+    @@map("live_input")
+}
+
+enum LiveInputType {
+    ingest
+    return
+}
+
+enum LiveInputStatus {
+    connected
+    disconnected
+}
+
+model Talent {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String  @unique
+    description String?
+
+    imageId  String?
+    imageUrl String?
+
+    blocks Block[]
+
+    @@map("talent")
+}
+
+model Location {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String  @unique
+    description String?
+
+    blocks Block[]
+
+    @@map("location")
+}
+
+model Block {
+    id        String   @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String
+    description String?
+    start       DateTime
+    end         DateTime
+
+    talents Talent[]
+
+    ingestLiveInputId String?
+    ingestLiveInput   LiveInput? @relation("LiveInputIngestForBlocks", fields: [ingestLiveInputId], references: [id], onDelete: Restrict)
+
+    playbackLiveInputId String?
+    playbackLiveInput   LiveInput? @relation("LiveInputPlaybackForBlocks", fields: [playbackLiveInputId], references: [id], onDelete: Restrict)
+
+    locationId String?
+    location   Location? @relation(fields: [locationId], references: [id], onDelete: Restrict)
+
+    @@map("block")
 }

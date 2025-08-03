@@ -19,7 +19,7 @@ export const auth = betterAuth({
 	user: {
 		additionalFields: {
 			role: {
-				type: ['admin', 'editor', 'reader'],
+				type: ['superadmin', 'admin', 'editor', 'reader'],
 				required: false,
 				defaultValue: 'reader',
 				input: false,
@@ -42,6 +42,12 @@ export const auth = betterAuth({
 						});
 
 						if (!whitelist) {
+							console.warn('User not found in whitelist.');
+							return false;
+						}
+
+						if (whitelist.defaultRole === 'superadmin') {
+							console.error('Attempt to create superadmin user from whitelist.');
 							return false;
 						}
 
