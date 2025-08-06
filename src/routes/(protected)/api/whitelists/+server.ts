@@ -1,12 +1,13 @@
 import { prisma } from '$lib/server/db/client';
 import { hasPermission } from '$lib/server/utils';
+import { AuthRoles } from '$lib/client/constants';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
 
 const WhitelistPostBody = z.object({
 	email: z.email(),
-	defaultRole: z.enum(['admin', 'editor', 'reader']).optional(),
+	defaultRole: z.enum(AuthRoles).optional(),
 });
 
 export const POST: RequestHandler = async (event) => {
@@ -22,7 +23,6 @@ export const POST: RequestHandler = async (event) => {
 		);
 	}
 
-	// @ts-expect-error - Types blah blah
 	if (data.data.defaultRole === 'superadmin') {
 		return json({ message: 'Cannot set default role to admin' }, { status: 400 });
 	}

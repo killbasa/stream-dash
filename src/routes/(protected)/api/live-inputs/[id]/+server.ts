@@ -13,7 +13,7 @@ const LiveInputPutBody = z.object({
 });
 
 export const PUT: RequestHandler = async ({ locals, request, params }) => {
-	if (!hasPermission(locals.user, ['editor'], 'live-inputs')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'live-inputs-edit')) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -38,7 +38,7 @@ export const PUT: RequestHandler = async ({ locals, request, params }) => {
 };
 
 export const DELETE: RequestHandler = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['editor'], 'live-inputs')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'live-inputs-edit')) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

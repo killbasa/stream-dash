@@ -112,6 +112,8 @@
 								form
 								open
 								title="Delete talent"
+								class="overflow-visible"
+								classes={{ body: 'overflow-y-visible' }}
 								oncancel={() => talentDeleteModals.set(entry.id, false)}
 								onaction={async () => {
 									await handleDelete(entry.id);
@@ -148,7 +150,14 @@
 	</Table>
 </Container>
 
-<Modal form bind:open={openCreateModal} title="Create a Live Input" onaction={handleCreate}>
+<Modal
+	form
+	title="Create a Live Input"
+	class="overflow-visible"
+	classes={{ body: 'overflow-y-visible' }}
+	bind:open={openCreateModal}
+	onaction={handleCreate}
+>
 	<div>
 		<Label for="talent_name" class="mb-2">Name</Label>
 		<Input type="text" id="talent_name" name="talent_name" required />

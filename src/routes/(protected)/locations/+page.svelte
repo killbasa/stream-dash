@@ -81,7 +81,14 @@
 		<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs"
 			>Create</Button
 		>
-		<Modal form bind:open={openCreateModal} title="Create a location" onaction={handleCreate}>
+		<Modal
+			form
+			title="Create a location"
+			class="overflow-visible"
+			classes={{ body: 'overflow-y-visible' }}
+			bind:open={openCreateModal}
+			onaction={handleCreate}
+		>
 			<div>
 				<Label for="location_name">Name</Label>
 				<Input type="text" id="location_name" name="location_name" required />
@@ -133,6 +140,8 @@
 								form
 								open
 								title="Delete location"
+								class="overflow-visible"
+								classes={{ body: 'overflow-y-visible' }}
 								oncancel={() => locationDeleteModals.set(entry.id, false)}
 								onaction={async () => {
 									await handleDelete(entry.id);

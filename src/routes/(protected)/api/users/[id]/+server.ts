@@ -1,13 +1,13 @@
 import { prisma } from '$lib/server/db/client';
 import { hasPermission } from '$lib/server/utils';
-import { AuthScopes } from '$lib/client/constants';
+import { AuthRoles, AuthScopes } from '$lib/client/constants';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
 
 const UserPutBody = z.object({
 	id: z.string(),
-	role: z.enum(['superadmin', 'admin', 'editor', 'reader']).optional(),
+	role: z.enum(AuthRoles).optional(),
 	scopes: z.array(z.enum(AuthScopes)).optional(),
 });
 

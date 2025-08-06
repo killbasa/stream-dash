@@ -4,7 +4,7 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['editor', 'reader'], 'locations')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'locations-read')) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 

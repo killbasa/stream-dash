@@ -185,6 +185,8 @@
 								form
 								open
 								title="Delete talent"
+								class="overflow-visible"
+								classes={{ body: 'overflow-y-visible' }}
 								oncancel={() => blockDeleteModals.set(entry.id, false)}
 								onaction={async () => {
 									await handleDelete(entry.id);

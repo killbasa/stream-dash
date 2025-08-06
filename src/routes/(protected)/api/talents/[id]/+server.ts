@@ -7,7 +7,7 @@ import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
 
 export const PUT: RequestHandler = async ({ locals, params, request }) => {
-	if (!hasPermission(locals.user, ['editor'], 'talents')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'talents-edit')) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -51,7 +51,7 @@ export const PUT: RequestHandler = async ({ locals, params, request }) => {
 };
 
 export const DELETE: RequestHandler = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['editor'], 'talents')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'talents-edit')) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

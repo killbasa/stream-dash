@@ -1,4 +1,5 @@
 import { prisma } from './db/client';
+import { AuthRoles } from '$lib/client/constants';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { env } from '$env/dynamic/private';
@@ -19,7 +20,7 @@ export const auth = betterAuth({
 	user: {
 		additionalFields: {
 			role: {
-				type: ['superadmin', 'admin', 'editor', 'reader'],
+				type: [...Object.values(AuthRoles)],
 				required: false,
 				defaultValue: 'reader',
 				input: false,

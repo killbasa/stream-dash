@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Container from '$components/Container.svelte';
 	import { toast } from '$lib/client/stores/toasts';
+	import { ReadableScopes } from '$lib/client/constants';
 	import {
 		Button,
 		Table,
@@ -52,13 +53,6 @@
 			}, new Map<string, boolean>()),
 		),
 	);
-
-	const scopes: { value: string; name: string }[] = [
-		{ value: 'live-inputs', name: 'Live Inputs' },
-		{ value: 'talents', name: 'Talents' },
-		{ value: 'locations', name: 'Locations' },
-		{ value: 'blocks', name: 'Blocks' },
-	];
 
 	const handleUserEdit = async (
 		entry: (typeof data.users)[number],
@@ -190,6 +184,8 @@
 						form
 						open
 						title="Edit user"
+						class="overflow-visible"
+						classes={{ body: 'overflow-y-visible' }}
 						oncancel={() => userEditModals.set(entry.id, false)}
 						onaction={async (event) => {
 							await handleUserEdit(entry, event);
@@ -205,14 +201,17 @@
 								disabled={entry.role === 'admin'}
 							>
 								<option value="admin">Admin</option>
-								<option value="editor">Editor</option>
-								<option value="reader">Reader</option>
+								<option value="editor">User</option>
 							</Select>
 						</div>
 
 						<div>
 							<Label for="user_scopes" class="mb-2">Scopes</Label>
-							<MultiSelect name="scopes" items={scopes} value={entry.scopes} />
+							<MultiSelect
+								name="scopes"
+								items={ReadableScopes}
+								value={entry.scopes}
+							/>
 						</div>
 
 						{#snippet footer()}
@@ -237,6 +236,8 @@
 						form
 						open
 						title="Delete user"
+						class="overflow-visible"
+						classes={{ body: 'overflow-y-visible' }}
 						oncancel={() => userDeleteModdals.set(entry.id, false)}
 						onaction={async () => {
 							await handleUserDelete(entry);
@@ -302,6 +303,8 @@
 						form
 						open
 						title="Delete whitelist"
+						class="overflow-visible"
+						classes={{ body: 'overflow-y-visible' }}
 						oncancel={() => whitelistRevokeModals.set(entry.id, false)}
 						onaction={async () => {
 							await handleWhitelistRevoke(entry);
@@ -332,8 +335,10 @@
 
 	<Modal
 		form
-		bind:open={openWhitelistModal}
 		title="Whitelist a user"
+		class="overflow-visible"
+		classes={{ body: 'overflow-y-visible' }}
+		bind:open={openWhitelistModal}
 		onaction={handleWhitelistCreate}
 	>
 		<div>
@@ -345,8 +350,7 @@
 			<Label for="whitelist_role" class="mb-2">Default Role</Label>
 			<Select name="whitelist_role" placeholder="Select a role" clearable>
 				<option value="admin">Admin</option>
-				<option value="editor">Editor</option>
-				<option value="reader">Reader</option>
+				<option value="user">User</option>
 			</Select>
 		</div>
 

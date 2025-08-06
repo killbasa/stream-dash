@@ -45,7 +45,7 @@ const LiveInputResponseObj = z.object({
 let lock = false;
 
 export const POST: RequestHandler = async ({ locals }) => {
-	if (!hasPermission(locals.user, ['admin', 'editor'], 'live-inputs')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'live-inputs-edit')) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

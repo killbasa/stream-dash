@@ -6,7 +6,7 @@ import type { Actions, PageServerLoad } from './$types';
 import type { LiveInput } from '$lib/server/db/generated/client';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	if (!hasPermission(locals.user, ['editor', 'reader'], 'blocks')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'blocks-edit')) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
@@ -47,7 +47,7 @@ const CreateActionSchema = z.object({
 
 export const actions: Actions = {
 	create: async ({ request, locals }) => {
-		if (!hasPermission(locals.user, ['editor'], 'blocks')) {
+		if (!hasPermission(locals.user, ['admin', 'user'], 'blocks-edit')) {
 			error(403, 'Forbidden: You do not have permission to create blocks.');
 		}
 

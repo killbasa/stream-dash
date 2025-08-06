@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 import type { LiveInput } from '$lib/server/db/generated/client';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['editor', 'reader'], 'live-inputs')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'live-inputs-read')) {
 		throw error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 

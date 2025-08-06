@@ -1,22 +1,25 @@
 import type { Session } from '$lib/client/auth';
-import type { AuthScope } from '$lib/client/constants';
+import type { AuthRole, AuthScope } from '$lib/client/constants';
 
 export const hasPermission = (
 	user: Session['user'] | undefined,
-	roles: ('superadmin' | 'admin' | 'editor' | 'reader')[],
+	roles: AuthRole[],
 	scope?: AuthScope,
 ) => {
 	if (!user) return false;
 	if (!user.role) return false;
 
-	if (user.role === 'superadmin' || user.role === 'admin') return true;
+	if (user.role === 'superadmin') return true;
+	if (user.role === 'admin' && !scope) return true;
+
+	if (!roles.includes(user.role)) {
+		return false;
+	}
 
 	if (roles.includes(user.role)) {
-		if (scope && !hasScope(user, scope)) {
-			return false;
+		if (scope && hasScope(user, scope)) {
+			return true;
 		}
-
-		return true;
 	}
 
 	return false;

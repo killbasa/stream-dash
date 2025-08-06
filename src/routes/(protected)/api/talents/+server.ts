@@ -12,7 +12,7 @@ const TalentPostBody = z.object({
 });
 
 export const POST: RequestHandler = async ({ locals, request }) => {
-	if (!hasPermission(locals.user, ['admin', 'editor'], 'talents')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'talents-edit')) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

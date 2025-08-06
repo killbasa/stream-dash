@@ -5,7 +5,7 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const DELETE: RequestHandler = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['editor'], 'blocks')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'blocks-edit')) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

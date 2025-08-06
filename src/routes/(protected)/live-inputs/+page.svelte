@@ -182,6 +182,8 @@
 								form
 								open
 								title="Delete Live Input"
+								class="overflow-visible"
+								classes={{ body: 'overflow-y-visible' }}
 								oncancel={() => liveInputDeleteModals.set(entry.id, false)}
 								onaction={async () => {
 									await handleDelete(entry.id);
@@ -278,6 +280,8 @@
 								form
 								open
 								title="Import: {entry.name}"
+								class="overflow-visible"
+								classes={{ body: 'overflow-y-visible' }}
 								oncancel={() => liveInputImportModals.set(entry.id, false)}
 								onaction={async (event) => {
 									await handleImport(entry.id, event);
@@ -324,7 +328,14 @@
 	</Table>
 </Container>
 
-<Modal form bind:open={openCreateModal} title="Create a Live Input" onaction={handleCreate}>
+<Modal
+	form
+	title="Create a Live Input"
+	class="overflow-visible"
+	classes={{ body: 'overflow-y-visible' }}
+	bind:open={openCreateModal}
+	onaction={handleCreate}
+>
 	<div>
 		<Label for="liveinput_name" class="mb-2">Name</Label>
 		<Input type="text" id="liveinput_name" name="liveinput_name" required />

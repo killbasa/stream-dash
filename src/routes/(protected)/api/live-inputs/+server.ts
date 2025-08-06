@@ -27,7 +27,7 @@ const LiveInputResponseObj = z.object({
 });
 
 export const POST: RequestHandler = async ({ locals, request }) => {
-	if (!hasPermission(locals.user, ['admin', 'editor'], 'live-inputs')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'live-inputs-edit')) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -48,11 +48,6 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		});
 
 		const obj = LiveInputResponseObj.parse(liveInput);
-
-		// await cloudflare.stream.webhooks.update({
-		// 	account_id: env.CLOUDFLARE_ACCOUNT_ID,
-		// 	notificationUrl: `${env.PUBLIC_BASE_URL}/api/webhooks/${obj.uid}`,
-		// });
 
 		return tx.liveInput.create({
 			data: {

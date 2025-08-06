@@ -364,7 +364,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/dom@npm:^1.7.2":
+"@floating-ui/dom@npm:^1.7.3":
   version: 1.7.3
   resolution: "@floating-ui/dom@npm:1.7.3"
   dependencies:
@@ -1061,9 +1061,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/kit@npm:^2.27.0":
-  version: 2.27.0
-  resolution: "@sveltejs/kit@npm:2.27.0"
+"@sveltejs/kit@npm:^2.27.1":
+  version: 2.27.1
+  resolution: "@sveltejs/kit@npm:2.27.1"
   dependencies:
     "@standard-schema/spec": "npm:^1.0.0"
     "@sveltejs/acorn-typescript": "npm:^1.0.5"
@@ -1084,7 +1084,7 @@ __metadata:
     vite: ^5.0.3 || ^6.0.0 || ^7.0.0-beta.0
   bin:
     svelte-kit: svelte-kit.js
-  checksum: 10c0/34f1699b45d87fb86d50a5c38de64f5267b5ce119c6ebe66a99885ddc769aa58af7bbbfd158ca07033e7059cd93536b3efea6af11765eb60322b2194e0ae46fc
+  checksum: 10c0/b0b00faf23614d816452a4415d802d0609ed1267b74ce068c9bc5c95db355951acfb967429ba5da6e9253ecb0049346e38bde78edcc6eb14204d8f0dbf01aa8d
   languageName: node
   linkType: hard
 
@@ -1384,12 +1384,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^24.1.0":
-  version: 24.1.0
-  resolution: "@types/node@npm:24.1.0"
+"@types/node@npm:*, @types/node@npm:^24.2.0":
+  version: 24.2.0
+  resolution: "@types/node@npm:24.2.0"
   dependencies:
-    undici-types: "npm:~7.8.0"
-  checksum: 10c0/6c4686bc144f6ce7bffd4cadc3e1196e2217c1da4c639c637213719c8a3ee58b6c596b994befcbffeacd9d9eb0c3bff6529d2bc27da5d1cb9d58b1da0056f9f4
+    undici-types: "npm:~7.10.0"
+  checksum: 10c0/0b55af4d7b37fea47bbeffffaff908462fa19ea9b1a18f92d9ed6d8415d97971b254f8cb3f629cd238916e94711fdb6ac939aa750cb353dfd6df6c0339435740
   languageName: node
   linkType: hard
 
@@ -1433,13 +1433,6 @@ __metadata:
   version: 1.20.2
   resolution: "@types/resolve@npm:1.20.2"
   checksum: 10c0/c5b7e1770feb5ccfb6802f6ad82a7b0d50874c99331e0c9b259e415e55a38d7a86ad0901c57665d93f75938be2a6a0bc9aa06c9749192cadb2e4512800bbc6e6
-  languageName: node
-  linkType: hard
-
-"@types/sdp-transform@npm:^2.4.10":
-  version: 2.4.10
-  resolution: "@types/sdp-transform@npm:2.4.10"
-  checksum: 10c0/3482950907edc1b841a9d550c391b89b1d56f078bed33e83fb01d2de3097c6045d4627fb50b192712ff34c71784b476dce044c4df735808a9d0bfeca1e77df7d
   languageName: node
   linkType: hard
 
@@ -2654,13 +2647,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es6-promise@npm:^4.2.5":
-  version: 4.2.8
-  resolution: "es6-promise@npm:4.2.8"
-  checksum: 10c0/2373d9c5e9a93bdd9f9ed32ff5cb6dd3dd785368d1c21e9bbbfd07d16345b3774ae260f2bd24c8f836a6903f432b4151e7816a7fa8891ccb4e1a55a028ec42c3
-  languageName: node
-  linkType: hard
-
 "esbuild@npm:^0.25.0, esbuild@npm:~0.25.0":
   version: 0.25.8
   resolution: "esbuild@npm:0.25.8"
@@ -3216,11 +3202,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flowbite-svelte@npm:^1.11.2":
-  version: 1.11.2
-  resolution: "flowbite-svelte@npm:1.11.2"
+"flowbite-svelte@npm:^1.11.3":
+  version: 1.11.3
+  resolution: "flowbite-svelte@npm:1.11.3"
   dependencies:
-    "@floating-ui/dom": "npm:^1.7.2"
+    "@floating-ui/dom": "npm:^1.7.3"
     "@floating-ui/utils": "npm:^0.2.10"
     apexcharts: "npm:^4.7.0"
     clsx: "npm:^2.1.1"
@@ -3231,7 +3217,7 @@ __metadata:
   peerDependencies:
     svelte: ^5.29.0
     tailwindcss: ^4.1.4
-  checksum: 10c0/dd2353b9f8ffbd78ed12f8c94ddeb849cdfe19f5eb1af5589a0ce4a28e086ecff152ab6b3c3bdb71b38d1a246e977e066708d52be961b27558b48d23a4e0995c
+  checksum: 10c0/5a36197896c4227697f2d4f362f16f938063aa872be8a4ce0bd418d94184cb542581e0a05081196d2af54be03cdc3314e18970937d21230192bd305969a9e1de
   languageName: node
   linkType: hard
 
@@ -4252,9 +4238,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^16.1.3":
-  version: 16.1.3
-  resolution: "lint-staged@npm:16.1.3"
+"lint-staged@npm:^16.1.4":
+  version: 16.1.4
+  resolution: "lint-staged@npm:16.1.4"
   dependencies:
     chalk: "npm:^5.4.1"
     commander: "npm:^14.0.0"
@@ -4268,7 +4254,7 @@ __metadata:
     yaml: "npm:^2.8.0"
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/0d91ecb30fd021dbe86304342e4f2bde00f9ddd54397c000d226f5e8982ef13cf56ef0b3d56404cc8fd80d7ec2c4b7b8f291e772541dd8ced529268a742d167a
+  checksum: 10c0/dd1caa079a37598e1a8e25661f0ab387c584b83f06364e112d73fcfea3896ea920bbadbe89a7150de1bf02130efd16ce0cc8cd217e1db94570fddc93e77878ac
   languageName: node
   linkType: hard
 
@@ -4520,16 +4506,6 @@ __metadata:
   bin:
     mkdirp: dist/cjs/src/bin.js
   checksum: 10c0/9f2b975e9246351f5e3a40dcfac99fcd0baa31fbfab615fe059fb11e51f10e4803c63de1f384c54d656e4db31d000e4767e9ef076a22e12a641357602e31d57d
-  languageName: node
-  linkType: hard
-
-"mpegts.js@npm:^1.8.0":
-  version: 1.8.0
-  resolution: "mpegts.js@npm:1.8.0"
-  dependencies:
-    es6-promise: "npm:^4.2.5"
-    webworkify-webpack: "github:xqq/webworkify-webpack"
-  checksum: 10c0/6e7873c916856c7499d13ab0c65eb5c6d8e2d8d1fab2fd472c9ec9191386c4fddad9bfa356dc30e0940ef2e5ed16e57438e19cfcd3225635c513fc0da522c396
   languageName: node
   linkType: hard
 
@@ -5444,22 +5420,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sdp-transform@npm:^2.15.0":
-  version: 2.15.0
-  resolution: "sdp-transform@npm:2.15.0"
-  bin:
-    sdp-verify: checker.js
-  checksum: 10c0/96c060f113a3d5418defa168db609f7e23e5bd7954fa1cf7784f103dbe702e24d667e5310d2ac6d88abdb32322af83d6ebd0df08e07f4f172d5ed5888f921386
-  languageName: node
-  linkType: hard
-
-"sdp@npm:^3.2.0":
-  version: 3.2.1
-  resolution: "sdp@npm:3.2.1"
-  checksum: 10c0/a534d91972d6c26016f0e814d8e0ca4db6ae714d1da58056d3bcf4660137aeddb71d9085a5dd5eb764d5cffca83ab3ee7446cb6eed36411cd1e93d2c929d7d80
-  languageName: node
-  linkType: hard
-
 "semver@npm:^6.3.1":
   version: 6.3.1
   resolution: "semver@npm:6.3.1"
@@ -6193,10 +6153,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~7.8.0":
-  version: 7.8.0
-  resolution: "undici-types@npm:7.8.0"
-  checksum: 10c0/9d9d246d1dc32f318d46116efe3cfca5a72d4f16828febc1918d94e58f6ffcf39c158aa28bf5b4fc52f410446bc7858f35151367bd7a49f21746cab6497b709b
+"undici-types@npm:~7.10.0":
+  version: 7.10.0
+  resolution: "undici-types@npm:7.10.0"
+  checksum: 10c0/8b00ce50e235fe3cc601307f148b5e8fb427092ee3b23e8118ec0a5d7f68eca8cee468c8fc9f15cbb2cf2a3797945ebceb1cbd9732306a1d00e0a9b6afa0f635
   languageName: node
   linkType: hard
 
@@ -6393,22 +6353,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webrtc-adapter@npm:^9.0.3":
-  version: 9.0.3
-  resolution: "webrtc-adapter@npm:9.0.3"
-  dependencies:
-    sdp: "npm:^3.2.0"
-  checksum: 10c0/bb8c1626cc0e18bd34c03074fc6a541666dbe473c8f063c5d0ea2a3a3a4887f498212a131c936777f660382185f44941476609a50df5f1543015240623375725
-  languageName: node
-  linkType: hard
-
-"webworkify-webpack@github:xqq/webworkify-webpack":
-  version: 2.1.5
-  resolution: "webworkify-webpack@https://github.com/xqq/webworkify-webpack.git#commit=24d1e719b4a6cac37a518b2bb10fe124527ef4ef"
-  checksum: 10c0/056f5bb3043f46f138b44b218245b1a21ce2712da047f654aafe1bef6ff64d0d8bc032a3083249462cd9bcc0a1f92fbdd803356f0eae1a26ab2cf4e0c16a9453
-  languageName: node
-  linkType: hard
-
 "whatwg-url@npm:^5.0.0":
   version: 5.0.0
   resolution: "whatwg-url@npm:5.0.0"
@@ -6517,33 +6461,29 @@ __metadata:
     "@prisma/adapter-neon": "npm:6.13.0"
     "@prisma/client": "npm:6.13.0"
     "@sveltejs/adapter-node": "npm:^5.2.13"
-    "@sveltejs/kit": "npm:^2.27.0"
+    "@sveltejs/kit": "npm:^2.27.1"
     "@sveltejs/vite-plugin-svelte": "npm:^6.1.0"
     "@tailwindcss/vite": "npm:^4.1.11"
-    "@types/node": "npm:^24.1.0"
-    "@types/sdp-transform": "npm:^2.4.10"
+    "@types/node": "npm:^24.2.0"
     better-auth: "npm:^1.3.4"
     cloudflare: "npm:^4.5.0"
     eslint: "npm:9.32.0"
     eslint-config-prettier: "npm:^10.1.8"
     flowbite: "npm:^3.1.2"
-    flowbite-svelte: "npm:^1.11.2"
+    flowbite-svelte: "npm:^1.11.3"
     flowbite-svelte-icons: "npm:^2.2.1"
     husky: "npm:^9.1.7"
-    lint-staged: "npm:^16.1.3"
-    mpegts.js: "npm:^1.8.0"
+    lint-staged: "npm:^16.1.4"
     prettier: "npm:^3.6.2"
     prettier-plugin-svelte: "npm:^3.4.0"
     prisma: "npm:^6.13.0"
-    sdp-transform: "npm:^2.15.0"
     svelte: "npm:^5.37.3"
     svelte-check: "npm:^4.3.1"
     tailwindcss: "npm:^4.1.11"
     tsx: "npm:^4.20.3"
     typescript: "npm:5.9.2"
     vite: "npm:7.0.6"
-    webrtc-adapter: "npm:^9.0.3"
-    zod: "npm:^4.0.14"
+    zod: "npm:^4.0.15"
   languageName: unknown
   linkType: soft
 
@@ -6631,9 +6571,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^4.0.14, zod@npm:^4.0.5":
-  version: 4.0.14
-  resolution: "zod@npm:4.0.14"
-  checksum: 10c0/ec8681050d393f3be1c2c8f30d7dd4f56bec3746855fb17288be856185a0fe65e68d1b24aec657bbf956f64c05e69332d3751eafd6c103d19385bcc46075612b
+"zod@npm:^4.0.15, zod@npm:^4.0.5":
+  version: 4.0.15
+  resolution: "zod@npm:4.0.15"
+  checksum: 10c0/c4d5b0c6668fe32fb6040d713d75dbf65e2e46cb68c77755b7b66426e8583d5dacf49a44f90beb6b12aa1aa2545cc0d3c186e368711021e11dd3c1f0addb9100
   languageName: node
   linkType: hard

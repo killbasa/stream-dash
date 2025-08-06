@@ -10,7 +10,7 @@ const LocationPostBody = z.object({
 });
 
 export const POST: RequestHandler = async ({ locals, request }) => {
-	if (!hasPermission(locals.user, ['admin', 'editor'], 'locations')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], 'locations-edit')) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

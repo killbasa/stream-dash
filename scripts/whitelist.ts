@@ -1,4 +1,5 @@
 import { PrismaClient } from '../src/lib/server/db/generated/client';
+import { AuthRole, AuthRoles } from '../src/lib/client/constants';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import { loadEnvFile } from 'node:process';
 
@@ -10,8 +11,8 @@ if (!email) {
 
 const role = process.argv[3];
 
-if (!['superadmin', 'admin', 'editor', 'reader'].includes(role)) {
-	console.error('Invalid role. Use "superadmin", "admin", "editor", or "reader".');
+if (!AuthRoles.includes(role as AuthRole)) {
+	console.error('Invalid role. Use "superadmin", "admin", or "user".');
 	process.exit(1);
 }
 
