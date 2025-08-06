@@ -49,8 +49,8 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 const UpdateActionSchema = z.object({
 	name: z.string().min(3),
 	description: z.string().nullish(),
-	start: z.number(),
-	end: z.number(),
+	start: z.coerce.number(),
+	end: z.coerce.number(),
 	talents: z.array(z.string()),
 	ingestLiveInputId: z.string(),
 	playbackLiveInputId: z.string(),
@@ -68,8 +68,8 @@ export const actions: Actions = {
 		const data = UpdateActionSchema.safeParse({
 			name: formData.get('block_name')?.toString(),
 			description: formData.get('block_description')?.toString(),
-			start: Number(formData.get('block_start')),
-			end: Number(formData.get('block_end')),
+			start: formData.get('block_start'),
+			end: formData.get('block_end'),
 			talents: formData.getAll('block_talents').map((id) => id.toString()),
 			ingestLiveInputId: formData.get('block_ingest')?.toString(),
 			playbackLiveInputId: formData.get('block_return')?.toString(),
