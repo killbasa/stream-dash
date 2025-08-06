@@ -2,16 +2,20 @@
 	import Sidebar from '$components/layout/Sidebar.svelte';
 	import Toaster from '$components/Toaster.svelte';
 	import { Drawer, NavHamburger } from 'flowbite-svelte';
+	import { setContext } from 'svelte';
+	import { writable } from 'svelte/store';
+	import type { Writable } from 'svelte/store';
 	import type { LayoutProps } from './$types';
 
 	let { children }: LayoutProps = $props();
 
-	let hidden = $state(true);
+	let hidden = writable(true);
+	setContext<Writable<boolean>>('drawer', hidden);
 </script>
 
 <Toaster />
 
-<Drawer bind:hidden class="bg-gray-900 text-gray-300 w-48 p-0">
+<Drawer bind:hidden={$hidden} class="bg-gray-900 text-gray-300 w-48 p-0">
 	<Sidebar />
 </Drawer>
 
@@ -21,7 +25,7 @@
 	</div>
 	<div class="block sm:hidden">
 		<NavHamburger
-			onclick={() => (hidden = false)}
+			onclick={() => hidden.set(false)}
 			class="mx-4 my-2 bg-gray-700 cursor-pointer"
 		/>
 	</div>
