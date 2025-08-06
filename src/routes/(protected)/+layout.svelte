@@ -2,15 +2,19 @@
 	import Sidebar from '$components/layout/Sidebar.svelte';
 	import Toaster from '$components/Toaster.svelte';
 	import { Drawer, NavHamburger } from 'flowbite-svelte';
-	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
-	import type { Writable } from 'svelte/store';
 	import type { LayoutProps } from './$types';
+	import { onNavigate } from '$app/navigation';
 
 	let { children }: LayoutProps = $props();
 
 	let hidden = writable(true);
-	setContext<Writable<boolean>>('drawer', hidden);
+
+	onNavigate(() => {
+		if (!$hidden) {
+			hidden.set(true);
+		}
+	});
 </script>
 
 <Toaster />
