@@ -36,7 +36,7 @@
 </svelte:head>
 
 <Container>
-	<h1>Live Input</h1>
+	<h1 class="text-xl">Live Inputs</h1>
 
 	<div>
 		<Button

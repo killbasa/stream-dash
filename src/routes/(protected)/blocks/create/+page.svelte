@@ -58,7 +58,7 @@
 </svelte:head>
 
 <Container>
-	<h1>Create Block</h1>
+	<h1 class="text-xl">Create a Block</h1>
 
 	<form method="POST" action="?/create" use:enhance={handleCreate}>
 		<Card class="p-4 gap-4" size="xl">

@@ -70,7 +70,7 @@
 </svelte:head>
 
 <Container>
-	<h1>Locations</h1>
+	<h1 class="text-xl">Locations</h1>
 
 	<div>
 		<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs"
@@ -120,6 +120,9 @@
 					<TableBodyRow>
 						<TableBodyCell>{entry.name}</TableBodyCell>
 						<TableBodyCell>
+							<Button size="xs" color="alternative" href="/locations/{entry.id}"
+								>View</Button
+							>
 							<Button size="xs" color="alternative" href="/blocks?location={entry.id}"
 								>Blocks</Button
 							>

@@ -74,7 +74,7 @@
 </svelte:head>
 
 <Container>
-	<h1>Talents</h1>
+	<h1 class="text-xl">Talents</h1>
 
 	<div>
 		<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs"

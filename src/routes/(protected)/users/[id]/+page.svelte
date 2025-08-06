@@ -12,7 +12,7 @@
 </svelte:head>
 
 <Container>
-	<h1>{data.user.name}</h1>
+	<h1 class="text-xl">Users</h1>
 
 	<Card class="p-4 gap-4" size="xl">
 		<div>

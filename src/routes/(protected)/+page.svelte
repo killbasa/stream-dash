@@ -7,5 +7,5 @@
 </svelte:head>
 
 <Container>
-	<h1>Landing Page</h1>
+	<h1 class="text-xl">Landing Page</h1>
 </Container>

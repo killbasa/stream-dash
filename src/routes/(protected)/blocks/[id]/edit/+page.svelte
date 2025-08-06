@@ -58,11 +58,11 @@
 </script>
 
 <svelte:head>
-	<title>Create | Blocks</title>
+	<title>Edit: {data.block.name} | Blocks</title>
 </svelte:head>
 
 <Container>
-	<h1>Edit Block</h1>
+	<h1 class="text-xl">Editing: {data.block.name}</h1>
 
 	<form method="POST" action="?/update" use:enhance={handleEdit}>
 		<Card class="p-4 gap-4" size="xl">

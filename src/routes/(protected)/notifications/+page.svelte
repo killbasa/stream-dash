@@ -33,7 +33,7 @@
 </svelte:head>
 
 <Container>
-	<h1>Notifications</h1>
+	<h1 class="text-xl">Notifications</h1>
 
 	<form method="POST" action="?/update" use:enhance={handleUpdate}>
 		<Card class="p-4 gap-4" size="xl">

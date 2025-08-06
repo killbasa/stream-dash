@@ -9,8 +9,8 @@
 
 <main class="flex flex-1 flex-col p-4 h-screen bg-gray-900 text-gray-300">
 	<div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/3 flex flex-col">
-		<div class="select-none p-2 text-3xl flex justify-center">
-			<h1>Stream Dashboard</h1>
+		<div class="p-2 flex justify-center">
+			<h1 class="text-3xl select-none">Stream Dashboard</h1>
 		</div>
 
 		<div class="flex flex-col w-80">

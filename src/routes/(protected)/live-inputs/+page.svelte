@@ -120,7 +120,7 @@
 </svelte:head>
 
 <Container>
-	<h1>Live Inputs</h1>
+	<h1 class="text-xl">Live Inputs</h1>
 
 	<div>
 		<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs">

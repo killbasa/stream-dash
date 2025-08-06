@@ -131,11 +131,11 @@
 </script>
 
 <svelte:head>
-	<title>User Management</title>
+	<title>Users</title>
 </svelte:head>
 
 <Container>
-	<h1>User Management</h1>
+	<h1 class="text-xl">Users</h1>
 
 	<Card class="overflow-hidden" size="xl">
 		<Table>
@@ -281,7 +281,7 @@
 		</Table>
 	</Card>
 
-	<h1>Whitelist</h1>
+	<h2 class="text-xl">Whitelist</h2>
 	<div>
 		<Button size="xs" onclick={() => (openWhitelistModal = true)} class="cursor-pointer">
 			Create

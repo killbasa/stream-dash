@@ -16,6 +16,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 			locals.session = session?.session;
 			locals.user = session?.user;
 
+			const url = new URL(request.url);
+			if (url.pathname === '/') {
+				redirect(307, '/blocks');
+			}
+
 			return svelteKitHandler({ event, resolve, auth, building });
 		} else {
 			redirect(307, '/login');

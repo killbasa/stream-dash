@@ -4,7 +4,6 @@
 	import TelevisionIcon from '$components/svg/TelevisionIcon.svelte';
 	import NotificationIcon from '$components/svg/NotificationIcon.svelte';
 	import { Button } from 'flowbite-svelte';
-	import HomeSolid from 'flowbite-svelte-icons/HomeSolid.svelte';
 	import UsersGroupSolid from 'flowbite-svelte-icons/UsersGroupSolid.svelte';
 	import RectangleListSolid from 'flowbite-svelte-icons/RectangleListSolid.svelte';
 	import GlobeSolid from 'flowbite-svelte-icons/GlobeSolid.svelte';
@@ -21,9 +20,9 @@
 			<div>
 				<h2 class="mb-2">Event</h2>
 				<ul class="space-y-2">
-					<SidebarItem label="Home" href="/">
+					<SidebarItem label="Blocks" href="/blocks">
 						{#snippet icon()}
-							<HomeSolid />
+							<RectangleListSolid />
 						{/snippet}
 					</SidebarItem>
 					<SidebarItem label="Live Inputs" href="/live-inputs">
@@ -39,11 +38,6 @@
 					<SidebarItem label="Locations" href="/locations">
 						{#snippet icon()}
 							<GlobeSolid />
-						{/snippet}
-					</SidebarItem>
-					<SidebarItem label="Blocks" href="/blocks">
-						{#snippet icon()}
-							<RectangleListSolid />
 						{/snippet}
 					</SidebarItem>
 				</ul>

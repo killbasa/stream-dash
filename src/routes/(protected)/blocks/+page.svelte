@@ -83,7 +83,7 @@
 </svelte:head>
 
 <Container>
-	<h1>Blocks</h1>
+	<h1 class="text-xl">Blocks</h1>
 
 	<div>
 		<Button href="/blocks/create" class="cursor-pointer" size="xs">Create</Button>
@@ -156,15 +156,29 @@
 								{/each}
 							</div>
 						</TableBodyCell>
-						<TableBodyCell>{entry.location?.name ?? 'Unknown'}</TableBodyCell>
-						<TableBodyCell
-							>{entry.start
-								? formatter.format(entry.start)
-								: 'Unknown'}</TableBodyCell
-						>
-						<TableBodyCell
-							>{entry.end ? formatter.format(entry.end) : 'Unknown'}</TableBodyCell
-						>
+						<TableBodyCell>
+							{#if entry.location}
+								<a class="underline" href="/locations/{entry.location.id}"
+									>{entry.location.name}</a
+								>
+							{:else}
+								<span class="text-gray-500">Unknown</span>
+							{/if}
+						</TableBodyCell>
+						<TableBodyCell>
+							{#if entry.start}
+								<span>{formatter.format(entry.start)}</span>
+							{:else}
+								<span class="text-gray-500">Unknown</span>
+							{/if}
+						</TableBodyCell>
+						<TableBodyCell>
+							{#if entry.end}
+								<span>{formatter.format(entry.end)}</span>
+							{:else}
+								<span class="text-gray-500">Unknown</span>
+							{/if}
+						</TableBodyCell>
 						<TableBodyCell>
 							<Button
 								size="xs"
