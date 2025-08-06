@@ -147,7 +147,6 @@
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Email</TableHeadCell>
 			<TableHeadCell>Role</TableHeadCell>
-			<TableHeadCell>Scopes</TableHeadCell>
 			<TableHeadCell>Actions</TableHeadCell>
 		</TableHead>
 		<TableBody>
@@ -156,8 +155,16 @@
 					<TableBodyCell>{entry.name}</TableBodyCell>
 					<TableBodyCell>{entry.email}</TableBodyCell>
 					<TableBodyCell>{entry.role}</TableBodyCell>
-					<TableBodyCell>[{entry.scopes.join(', ')}]</TableBodyCell>
 					<TableBodyCell>
+						<Button
+							href="/users/{entry.id}"
+							size="xs"
+							type="button"
+							class="cursor-pointer"
+							color="alternative"
+						>
+							View
+						</Button>
 						<Button
 							size="xs"
 							type="button"

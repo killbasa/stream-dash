@@ -16,10 +16,8 @@ export const hasPermission = (
 		return false;
 	}
 
-	if (roles.includes(user.role)) {
-		if (scope && hasScope(user, scope)) {
-			return true;
-		}
+	if (scope && hasScope(user, scope)) {
+		return true;
 	}
 
 	return false;

@@ -1,13 +1,26 @@
 import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import { configDefaults } from 'vitest/config';
+import type { CommonServerOptions } from 'vite';
+
+const serverOptions: CommonServerOptions = {
+	port: 5173,
+	strictPort: true,
+};
 
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
-	server: {
-		port: 5173,
-	},
-	preview: {
-		port: 5173,
+	server: serverOptions,
+	preview: serverOptions,
+	test: {
+		globals: true,
+		coverage: {
+			provider: 'v8',
+			reporter: ['text'],
+			exclude: [...(configDefaults.coverage.exclude ?? []), './src/lib/components/**'],
+		},
+		clearMocks: true,
+		mockReset: true,
 	},
 });

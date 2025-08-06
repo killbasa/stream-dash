@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Container from '$components/Container.svelte';
 	import { toast } from '$lib/client/stores/toasts';
+	import { getUnixTime } from '$lib/client/utils';
 	import {
 		Button,
 		Card,
@@ -24,23 +25,13 @@
 
 	const handleCreate: SubmitFunction = (event) => {
 		if (start_date && start_time) {
-			const start_temp = new Date(start_date);
-			start_temp.setHours(
-				Number(start_time?.split(':')[0]),
-				Number(start_time?.split(':')[1]),
-				0,
-			);
-			event.formData.set('block_start_time', start_temp.getTime().toString());
+			const time = getUnixTime(start_date, start_time);
+			event.formData.set('block_start_time', time.toString());
 		}
 
 		if (end_date && end_time) {
-			const end_temp = new Date(end_date);
-			end_temp.setHours(
-				Number(end_time?.split(':')[0]), //
-				Number(end_time?.split(':')[1]),
-				0,
-			);
-			event.formData.set('block_end_time', end_temp.getTime().toString());
+			const time = getUnixTime(end_date, end_time);
+			event.formData.set('block_end_time', time.toString());
 		}
 
 		return async function ({ result }) {
@@ -94,7 +85,7 @@
 			<div class="grid grid-cols-2 gap-4">
 				<div>
 					<Label for="block_start_time" class="mb-2">Start time:</Label>
-					<Timepicker id="block_start_time" divClass="w-full" value={start_time} />
+					<Timepicker id="block_start_time" divClass="w-full" bind:value={start_time} />
 				</div>
 
 				<div>
