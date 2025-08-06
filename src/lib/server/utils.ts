@@ -10,7 +10,7 @@ export const hasPermission = (
 	if (!user.role) return false;
 
 	if (user.role === 'superadmin') return true;
-	if (user.role === 'admin' && !scope) return true;
+	if (user.role === 'admin') return true;
 
 	if (!roles.includes(user.role)) {
 		return false;
