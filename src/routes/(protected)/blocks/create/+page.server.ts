@@ -1,12 +1,13 @@
 import { prisma } from '$lib/server/db/client';
 import { hasPermission } from '$lib/server/utils';
+import { AuthScopes } from '$lib/client/constants';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import type { LiveInput } from '$lib/server/db/generated/client';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], 'blocks-edit')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.BlocksEdit)) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
@@ -47,21 +48,21 @@ const CreateActionSchema = z.object({
 
 export const actions: Actions = {
 	create: async ({ request, locals }) => {
-		if (!hasPermission(locals.user, ['admin', 'user'], 'blocks-edit')) {
+		if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.BlocksEdit)) {
 			error(403, 'Forbidden: You do not have permission to create blocks.');
 		}
 
 		const formData = await request.formData();
 
 		const data = CreateActionSchema.safeParse({
-			name: formData.get('block_name')?.toString(),
-			description: formData.get('block_description')?.toString(),
-			start: Number(formData.get('block_start')),
-			end: Number(formData.get('block_end')),
-			talents: formData.getAll('block_talents').map((id) => id.toString()),
-			ingestLiveInputId: formData.get('block_ingest')?.toString(),
-			playbackLiveInputId: formData.get('block_return')?.toString(),
-			locationId: formData.get('block_location')?.toString(),
+			name: formData.get('block_name'),
+			description: formData.get('block_description'),
+			start: formData.get('block_start'),
+			end: formData.get('block_end'),
+			talents: formData.getAll('block_talents'),
+			ingestLiveInputId: formData.get('block_ingest'),
+			playbackLiveInputId: formData.get('block_return'),
+			locationId: formData.get('block_location'),
 		});
 
 		if (!data.success) {

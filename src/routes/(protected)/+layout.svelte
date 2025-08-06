@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Sidebar from '$components/Sidebar.svelte';
+	import Sidebar from '$components/layout/Sidebar.svelte';
 	import Toaster from '$components/Toaster.svelte';
 	import { Drawer, NavHamburger } from 'flowbite-svelte';
 	import type { LayoutProps } from './$types';

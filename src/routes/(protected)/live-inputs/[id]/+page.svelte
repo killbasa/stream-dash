@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Container from '$components/Container.svelte';
-	import CopyBlock from '$components/CopyBlock.svelte';
+	import Container from '$components/layout/Container.svelte';
+	import CopyBlock from '$components/forms/CopyBlock.svelte';
 	import { toast } from '$lib/client/stores/toasts';
 	import { Badge, Button, Card } from 'flowbite-svelte';
 	import type { PageProps } from './$types';

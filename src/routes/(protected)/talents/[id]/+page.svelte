@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Container from '$components/Container.svelte';
+	import Container from '$components/layout/Container.svelte';
 	import { toast } from '$lib/client/stores/toasts';
+	import PlaceholderAvatar from '$components/PlaceholderAvatar.svelte';
 	import { Avatar, Card } from 'flowbite-svelte';
 	import UserEditSolid from 'flowbite-svelte-icons/UserEditSolid.svelte';
-	import UserSolid from 'flowbite-svelte-icons/UserSolid.svelte';
 	import type { PageProps } from './$types';
 	import type { ChangeEventHandler } from 'svelte/elements';
 	import { invalidate } from '$app/navigation';
@@ -13,8 +13,8 @@
 	let avatarSrc = $derived(data.talent.imageUrl);
 
 	const updateProfilePicture: ChangeEventHandler<HTMLInputElement> = async (event) => {
-		const file = event.currentTarget.files?.[0];
-		if (!file || !(file instanceof File)) return;
+		const file = event.currentTarget.files?.item(0);
+		if (!file) return;
 
 		const payload = new FormData();
 		payload.append('image', file);
@@ -56,9 +56,7 @@
 					{#if avatarSrc}
 						<Avatar src={avatarSrc} class="w-full h-full" />
 					{:else}
-						<div class="rounded-full bg-gray-600">
-							<UserSolid class="w-full h-full" />
-						</div>
+						<PlaceholderAvatar />
 					{/if}
 
 					<input

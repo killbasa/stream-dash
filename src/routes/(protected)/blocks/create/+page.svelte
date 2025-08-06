@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Container from '$components/Container.svelte';
+	import Container from '$components/layout/Container.svelte';
 	import { toast } from '$lib/client/stores/toasts';
 	import { getUnixTime } from '$lib/client/utils';
 	import {
@@ -26,12 +26,12 @@
 	const handleCreate: SubmitFunction = (event) => {
 		if (start_date && start_time) {
 			const time = getUnixTime(start_date, start_time);
-			event.formData.set('block_start_time', time.toString());
+			event.formData.set('block_start', time.toString());
 		}
 
 		if (end_date && end_time) {
 			const time = getUnixTime(end_date, end_time);
-			event.formData.set('block_end_time', time.toString());
+			event.formData.set('block_end', time.toString());
 		}
 
 		return async function ({ result }) {
@@ -84,13 +84,13 @@
 
 			<div class="grid grid-cols-2 gap-4">
 				<div>
-					<Label for="block_start_time" class="mb-2">Start time:</Label>
-					<Timepicker id="block_start_time" divClass="w-full" bind:value={start_time} />
+					<Label for="block_start" class="mb-2">Start time:</Label>
+					<Timepicker id="block_start" divClass="w-full" bind:value={start_time} />
 				</div>
 
 				<div>
-					<Label for="block_end_time" class="mb-2">End time:</Label>
-					<Timepicker id="block_end_time" divClass="w-full" bind:value={end_time} />
+					<Label for="block_end" class="mb-2">End time:</Label>
+					<Timepicker id="block_end" divClass="w-full" bind:value={end_time} />
 				</div>
 			</div>
 

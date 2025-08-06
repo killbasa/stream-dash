@@ -1,12 +1,13 @@
 import { prisma } from '$lib/server/db/client';
 import { hasPermission } from '$lib/server/utils';
+import { AuthScopes } from '$lib/client/constants';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import type { LiveInput } from '$lib/server/db/generated/client';
 
 export const load: PageServerLoad = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], 'blocks-edit')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.BlocksEdit)) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
@@ -47,33 +48,33 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 };
 
 const UpdateActionSchema = z.object({
-	name: z.string().min(3),
-	description: z.string().nullish(),
-	start: z.coerce.number(),
-	end: z.coerce.number(),
-	talents: z.array(z.string()),
-	ingestLiveInputId: z.string(),
-	playbackLiveInputId: z.string(),
-	locationId: z.string(),
+	name: z.string().min(3).optional(),
+	description: z.string().nullish().optional(),
+	start: z.coerce.number().optional(),
+	end: z.coerce.number().optional(),
+	talents: z.array(z.string()).optional(),
+	ingestLiveInputId: z.string().optional(),
+	playbackLiveInputId: z.string().optional(),
+	locationId: z.string().optional(),
 });
 
 export const actions: Actions = {
 	update: async ({ request, locals, params }) => {
-		if (!hasPermission(locals.user, ['admin', 'user'], 'blocks-edit')) {
-			error(403, 'Forbidden: You do not have permission to create blocks.');
+		if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.BlocksEdit)) {
+			error(403, 'Forbidden: You do not have permission to edit blocks.');
 		}
 
 		const formData = await request.formData();
 
 		const data = UpdateActionSchema.safeParse({
-			name: formData.get('block_name')?.toString(),
-			description: formData.get('block_description')?.toString(),
-			start: formData.get('block_start'),
-			end: formData.get('block_end'),
-			talents: formData.getAll('block_talents').map((id) => id.toString()),
-			ingestLiveInputId: formData.get('block_ingest')?.toString(),
-			playbackLiveInputId: formData.get('block_return')?.toString(),
-			locationId: formData.get('block_location')?.toString(),
+			name: formData.get('block_name'),
+			description: formData.get('block_description'),
+			start: formData.get('block_start') ?? undefined,
+			end: formData.get('block_end') ?? undefined,
+			talents: formData.getAll('block_talents'),
+			ingestLiveInputId: formData.get('block_ingest'),
+			playbackLiveInputId: formData.get('block_return'),
+			locationId: formData.get('block_location'),
 		});
 
 		if (!data.success) {
@@ -92,10 +93,10 @@ export const actions: Actions = {
 			data: {
 				name: data.data.name,
 				description: data.data.description,
-				start: new Date(data.data.start),
-				end: new Date(data.data.end),
+				start: data.data.start ? new Date(data.data.start) : undefined,
+				end: data.data.end ? new Date(data.data.end) : undefined,
 				talents: {
-					connect: data.data.talents.map((id) => ({ id })),
+					connect: data.data.talents?.map((id) => ({ id })),
 				},
 				ingestLiveInputId: data.data.ingestLiveInputId,
 				playbackLiveInputId: data.data.playbackLiveInputId,

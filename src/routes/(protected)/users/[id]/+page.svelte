@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Container from '$components/Container.svelte';
+	import Container from '$components/layout/Container.svelte';
 	import { ReadableScopes } from '$lib/client/constants';
 	import { Card, Input, Label, MultiSelect, Select } from 'flowbite-svelte';
 	import type { PageProps } from './$types';

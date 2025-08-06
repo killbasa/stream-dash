@@ -1,8 +1,9 @@
 <script lang="ts">
-	import Container from '$components/Container.svelte';
+	import Container from '$components/layout/Container.svelte';
 	import { toast } from '$lib/client/stores/toasts';
 	import {
 		Button,
+		Card,
 		Input,
 		Label,
 		Modal,
@@ -33,15 +34,9 @@
 	);
 
 	const handleCreate = async (event: { data: FormData }) => {
-		const response = await fetch('/api/locations', {
+		const response = await fetch('?/create', {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				name: event.data.get('location_name'),
-				description: event.data.get('location_description'),
-			}),
+			body: event.data,
 		});
 
 		if (!response.ok) {
@@ -114,66 +109,70 @@
 		</Modal>
 	</div>
 
-	<Table>
-		<TableHead>
-			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Actions</TableHeadCell>
-		</TableHead>
-		<TableBody>
-			{#each locations as entry (entry.id)}
-				<TableBodyRow>
-					<TableBodyCell>{entry.name}</TableBodyCell>
-					<TableBodyCell>
-						<Button size="xs" color="alternative" href="/blocks?location={entry.id}"
-							>Blocks</Button
-						>
-						<Button
-							type="button"
-							class="cursor-pointer"
-							size="xs"
-							color="alternative"
-							onclick={() => locationDeleteModals.set(entry.id, true)}>Delete</Button
-						>
-
-						{#if locationDeleteModals.get(entry.id)}
-							<Modal
-								form
-								open
-								title="Delete location"
-								class="overflow-visible"
-								classes={{ body: 'overflow-y-visible' }}
-								oncancel={() => locationDeleteModals.set(entry.id, false)}
-								onaction={async () => {
-									await handleDelete(entry.id);
-									locationDeleteModals.set(entry.id, false);
-								}}
+	<Card class="overflow-hidden" size="xl">
+		<Table>
+			<TableHead>
+				<TableHeadCell>Name</TableHeadCell>
+				<TableHeadCell>Actions</TableHeadCell>
+			</TableHead>
+			<TableBody>
+				{#each locations as entry (entry.id)}
+					<TableBodyRow>
+						<TableBodyCell>{entry.name}</TableBodyCell>
+						<TableBodyCell>
+							<Button size="xs" color="alternative" href="/blocks?location={entry.id}"
+								>Blocks</Button
 							>
-								<p>Are you sure you want to delete "{entry.name}"?</p>
+							<Button
+								type="button"
+								class="cursor-pointer"
+								size="xs"
+								color="alternative"
+								onclick={() => locationDeleteModals.set(entry.id, true)}
+								>Delete</Button
+							>
 
-								{#snippet footer()}
-									<Button
-										type="submit"
-										value="success"
-										class="cursor-pointer"
-										size="xs"
-									>
-										Delete
-									</Button>
-									<Button
-										type="button"
-										color="alternative"
-										class="cursor-pointer"
-										size="xs"
-										onclick={() => locationDeleteModals.set(entry.id, false)}
-									>
-										Cancel
-									</Button>
-								{/snippet}
-							</Modal>
-						{/if}
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
+							{#if locationDeleteModals.get(entry.id)}
+								<Modal
+									form
+									open
+									title="Delete location"
+									class="overflow-visible"
+									classes={{ body: 'overflow-y-visible' }}
+									oncancel={() => locationDeleteModals.set(entry.id, false)}
+									onaction={async () => {
+										await handleDelete(entry.id);
+										locationDeleteModals.set(entry.id, false);
+									}}
+								>
+									<p>Are you sure you want to delete "{entry.name}"?</p>
+
+									{#snippet footer()}
+										<Button
+											type="submit"
+											value="success"
+											class="cursor-pointer"
+											size="xs"
+										>
+											Delete
+										</Button>
+										<Button
+											type="button"
+											color="alternative"
+											class="cursor-pointer"
+											size="xs"
+											onclick={() =>
+												locationDeleteModals.set(entry.id, false)}
+										>
+											Cancel
+										</Button>
+									{/snippet}
+								</Modal>
+							{/if}
+						</TableBodyCell>
+					</TableBodyRow>
+				{/each}
+			</TableBody>
+		</Table>
+	</Card>
 </Container>

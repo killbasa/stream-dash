@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Container from '$components/Container.svelte';
+	import Container from '$components/layout/Container.svelte';
 	import {
 		Card,
 		Label,
@@ -39,9 +39,9 @@
 
 		<div class="grid grid-cols-2 gap-4">
 			<div>
-				<Label for="block_start_time" class="mb-2">Start time:</Label>
+				<Label for="block_start" class="mb-2">Start time:</Label>
 				<Timepicker
-					id="block_start_time"
+					id="block_start"
 					divClass="w-full"
 					value={new Date(data.block.start).toTimeString().slice(0, 5)}
 					disabled
@@ -49,9 +49,9 @@
 			</div>
 
 			<div>
-				<Label for="block_end_time" class="mb-2">End time:</Label>
+				<Label for="block_end" class="mb-2">End time:</Label>
 				<Timepicker
-					id="block_end_time"
+					id="block_end"
 					divClass="w-full"
 					value={new Date(data.block.end).toTimeString().slice(0, 5)}
 					disabled

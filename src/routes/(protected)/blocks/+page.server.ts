@@ -1,10 +1,11 @@
 import { prisma } from '$lib/server/db/client';
 import { hasPermission } from '$lib/server/utils';
+import { AuthScopes } from '$lib/client/constants';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], 'blocks-read')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.BlocksRead)) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 

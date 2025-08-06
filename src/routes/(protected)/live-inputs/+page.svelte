@@ -1,9 +1,10 @@
 <script lang="ts">
-	import Container from '$components/Container.svelte';
+	import Container from '$components/layout/Container.svelte';
 	import { toast } from '$lib/client/stores/toasts';
 	import {
 		Badge,
 		Button,
+		Card,
 		Input,
 		Label,
 		Modal,
@@ -49,14 +50,7 @@
 	const handleCreate = async (event: { data: FormData }) => {
 		const response = await fetch('/api/live-inputs', {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				name: event.data.get('liveinput_name'),
-				type: event.data.get('liveinput_type'),
-				description: event.data.get('liveinput_description'),
-			}),
+			body: event.data,
 		});
 
 		if (!response.ok) {
@@ -134,90 +128,94 @@
 		</Button>
 	</div>
 
-	<Table>
-		<TableHead>
-			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Type</TableHeadCell>
-			<TableHeadCell>Status</TableHeadCell>
-			<TableHeadCell>Actions</TableHeadCell>
-		</TableHead>
-		<TableBody>
-			{#each liveInputs as entry (entry.id)}
-				<TableBodyRow>
-					<TableBodyCell>{entry.name}</TableBodyCell>
-					<TableBodyCell>
-						{#if entry.type === 'ingest'}
-							<Badge>Ingest</Badge>
-						{:else if entry.type === 'return'}
-							<Badge color="purple">Return</Badge>
-						{:else}
-							<Badge color="gray">Unknown</Badge>
-						{/if}
-					</TableBodyCell>
-					<TableBodyCell>
-						{#if entry.status === 'connected'}
-							<Badge color="green" class="ml-2">Online</Badge>
-						{:else if entry.status === 'disconnected'}
-							<Badge color="red" class="ml-2">Offline</Badge>
-						{:else if entry.status === 'errored'}
-							<Badge color="yellow" class="ml-2">Error</Badge>
-						{:else}
-							<Badge color="gray" class="ml-2">Unknown</Badge>
-						{/if}
-					</TableBodyCell>
-					<TableBodyCell class="flex gap-2">
-						<Button size="xs" color="alternative" href="/live-inputs/{entry.id}"
-							>View</Button
-						>
-						<Button
-							type="button"
-							class="cursor-pointer"
-							size="xs"
-							color="alternative"
-							onclick={() => liveInputDeleteModals.set(entry.id, true)}>Delete</Button
-						>
-
-						{#if liveInputDeleteModals.get(entry.id)}
-							<Modal
-								form
-								open
-								title="Delete Live Input"
-								class="overflow-visible"
-								classes={{ body: 'overflow-y-visible' }}
-								oncancel={() => liveInputDeleteModals.set(entry.id, false)}
-								onaction={async () => {
-									await handleDelete(entry.id);
-									liveInputImportModals.set(entry.id, false);
-								}}
+	<Card class="overflow-hidden" size="xl">
+		<Table>
+			<TableHead>
+				<TableHeadCell>Name</TableHeadCell>
+				<TableHeadCell>Type</TableHeadCell>
+				<TableHeadCell>Status</TableHeadCell>
+				<TableHeadCell>Actions</TableHeadCell>
+			</TableHead>
+			<TableBody>
+				{#each liveInputs as entry (entry.id)}
+					<TableBodyRow>
+						<TableBodyCell>{entry.name}</TableBodyCell>
+						<TableBodyCell>
+							{#if entry.type === 'ingest'}
+								<Badge>Ingest</Badge>
+							{:else if entry.type === 'return'}
+								<Badge color="purple">Return</Badge>
+							{:else}
+								<Badge color="gray">Unknown</Badge>
+							{/if}
+						</TableBodyCell>
+						<TableBodyCell>
+							{#if entry.status === 'connected'}
+								<Badge color="green" class="ml-2">Online</Badge>
+							{:else if entry.status === 'disconnected'}
+								<Badge color="red" class="ml-2">Offline</Badge>
+							{:else if entry.status === 'errored'}
+								<Badge color="yellow" class="ml-2">Error</Badge>
+							{:else}
+								<Badge color="gray" class="ml-2">Unknown</Badge>
+							{/if}
+						</TableBodyCell>
+						<TableBodyCell class="flex gap-2">
+							<Button size="xs" color="alternative" href="/live-inputs/{entry.id}"
+								>View</Button
 							>
-								<p>Are you sure you want to delete "{entry.name}"?</p>
+							<Button
+								type="button"
+								class="cursor-pointer"
+								size="xs"
+								color="alternative"
+								onclick={() => liveInputDeleteModals.set(entry.id, true)}
+								>Delete</Button
+							>
 
-								{#snippet footer()}
-									<Button
-										type="submit"
-										value="success"
-										class="cursor-pointer"
-										size="xs"
-									>
-										Delete
-									</Button>
-									<Button
-										type="button"
-										color="alternative"
-										class="cursor-pointer"
-										size="xs"
-										onclick={() => liveInputImportModals.set(entry.id, false)}
-									>
-										Cancel
-									</Button>
-								{/snippet}
-							</Modal>
-						{/if}
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
+							{#if liveInputDeleteModals.get(entry.id)}
+								<Modal
+									form
+									open
+									title="Delete Live Input"
+									class="overflow-visible"
+									classes={{ body: 'overflow-y-visible' }}
+									oncancel={() => liveInputDeleteModals.set(entry.id, false)}
+									onaction={async () => {
+										await handleDelete(entry.id);
+										liveInputImportModals.set(entry.id, false);
+									}}
+								>
+									<p>Are you sure you want to delete "{entry.name}"?</p>
+
+									{#snippet footer()}
+										<Button
+											type="submit"
+											value="success"
+											class="cursor-pointer"
+											size="xs"
+										>
+											Delete
+										</Button>
+										<Button
+											type="button"
+											color="alternative"
+											class="cursor-pointer"
+											size="xs"
+											onclick={() =>
+												liveInputImportModals.set(entry.id, false)}
+										>
+											Cancel
+										</Button>
+									{/snippet}
+								</Modal>
+							{/if}
+						</TableBodyCell>
+					</TableBodyRow>
+				{/each}
+			</TableBody>
+		</Table>
+	</Card>
 
 	<div class="flex gap-2">
 		<h2>Pending Live Inputs</h2>
@@ -235,97 +233,101 @@
 		<Button class="cursor-pointer" size="xs" onclick={handleSync}>Sync</Button>
 	</div>
 
-	<Table>
-		<TableHead>
-			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Type</TableHeadCell>
-			<TableHeadCell>Status</TableHeadCell>
-			<TableHeadCell>Actions</TableHeadCell>
-		</TableHead>
-		<TableBody>
-			{#each pendingLiveInputs as entry (entry.id)}
-				<TableBodyRow>
-					<TableBodyCell>{entry.name}</TableBodyCell>
-					<TableBodyCell>
-						{#if entry.type === 'ingest'}
-							<Badge>Ingest</Badge>
-						{:else if entry.type === 'return'}
-							<Badge color="purple">Return</Badge>
-						{:else}
-							<Badge color="gray">Unknown</Badge>
-						{/if}
-					</TableBodyCell>
-					<TableBodyCell>
-						{#if entry.status === 'connected'}
-							<Badge color="green" class="ml-2">Online</Badge>
-						{:else if entry.status === 'disconnected'}
-							<Badge color="red" class="ml-2">Offline</Badge>
-						{:else if entry.status === 'errored'}
-							<Badge color="yellow" class="ml-2">Error</Badge>
-						{:else}
-							<Badge color="gray" class="ml-2">Unknown</Badge>
-						{/if}
-					</TableBodyCell>
-					<TableBodyCell class="flex gap-2">
-						<Button
-							type="button"
-							class="cursor-pointer"
-							size="xs"
-							color="alternative"
-							onclick={() => liveInputImportModals.set(entry.id, true)}>Import</Button
-						>
-
-						{#if liveInputImportModals.get(entry.id)}
-							<Modal
-								form
-								open
-								title="Import: {entry.name}"
-								class="overflow-visible"
-								classes={{ body: 'overflow-y-visible' }}
-								oncancel={() => liveInputImportModals.set(entry.id, false)}
-								onaction={async (event) => {
-									await handleImport(entry.id, event);
-									liveInputImportModals.set(entry.id, false);
-								}}
+	<Card class="overflow-hidden" size="xl">
+		<Table>
+			<TableHead>
+				<TableHeadCell>Name</TableHeadCell>
+				<TableHeadCell>Type</TableHeadCell>
+				<TableHeadCell>Status</TableHeadCell>
+				<TableHeadCell>Actions</TableHeadCell>
+			</TableHead>
+			<TableBody>
+				{#each pendingLiveInputs as entry (entry.id)}
+					<TableBodyRow>
+						<TableBodyCell>{entry.name}</TableBodyCell>
+						<TableBodyCell>
+							{#if entry.type === 'ingest'}
+								<Badge>Ingest</Badge>
+							{:else if entry.type === 'return'}
+								<Badge color="purple">Return</Badge>
+							{:else}
+								<Badge color="gray">Unknown</Badge>
+							{/if}
+						</TableBodyCell>
+						<TableBodyCell>
+							{#if entry.status === 'connected'}
+								<Badge color="green" class="ml-2">Online</Badge>
+							{:else if entry.status === 'disconnected'}
+								<Badge color="red" class="ml-2">Offline</Badge>
+							{:else if entry.status === 'errored'}
+								<Badge color="yellow" class="ml-2">Error</Badge>
+							{:else}
+								<Badge color="gray" class="ml-2">Unknown</Badge>
+							{/if}
+						</TableBodyCell>
+						<TableBodyCell class="flex gap-2">
+							<Button
+								type="button"
+								class="cursor-pointer"
+								size="xs"
+								color="alternative"
+								onclick={() => liveInputImportModals.set(entry.id, true)}
+								>Import</Button
 							>
-								<div>
-									<Label for="liveinput_type" class="mb-2">Type</Label>
-									<Select
-										name="liveinput_type"
-										placeholder="Select a type"
-										clearable
-									>
-										<option value="ingest">Ingest</option>
-										<option value="return">Return</option>
-									</Select>
-								</div>
 
-								{#snippet footer()}
-									<Button
-										type="submit"
-										value="success"
-										class="cursor-pointer"
-										size="xs"
-									>
-										Import
-									</Button>
-									<Button
-										type="button"
-										color="alternative"
-										class="cursor-pointer"
-										size="xs"
-										onclick={() => liveInputImportModals.set(entry.id, false)}
-									>
-										Cancel
-									</Button>
-								{/snippet}
-							</Modal>
-						{/if}
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
+							{#if liveInputImportModals.get(entry.id)}
+								<Modal
+									form
+									open
+									title="Import: {entry.name}"
+									class="overflow-visible"
+									classes={{ body: 'overflow-y-visible' }}
+									oncancel={() => liveInputImportModals.set(entry.id, false)}
+									onaction={async (event) => {
+										await handleImport(entry.id, event);
+										liveInputImportModals.set(entry.id, false);
+									}}
+								>
+									<div>
+										<Label for="liveinput_type" class="mb-2">Type</Label>
+										<Select
+											name="liveinput_type"
+											placeholder="Select a type"
+											clearable
+										>
+											<option value="ingest">Ingest</option>
+											<option value="return">Return</option>
+										</Select>
+									</div>
+
+									{#snippet footer()}
+										<Button
+											type="submit"
+											value="success"
+											class="cursor-pointer"
+											size="xs"
+										>
+											Import
+										</Button>
+										<Button
+											type="button"
+											color="alternative"
+											class="cursor-pointer"
+											size="xs"
+											onclick={() =>
+												liveInputImportModals.set(entry.id, false)}
+										>
+											Cancel
+										</Button>
+									{/snippet}
+								</Modal>
+							{/if}
+						</TableBodyCell>
+					</TableBodyRow>
+				{/each}
+			</TableBody>
+		</Table>
+	</Card>
 </Container>
 
 <Modal

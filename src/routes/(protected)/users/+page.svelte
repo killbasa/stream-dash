@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Container from '$components/Container.svelte';
+	import Container from '$components/layout/Container.svelte';
 	import { toast } from '$lib/client/stores/toasts';
 	import { ReadableScopes } from '$lib/client/constants';
 	import {
@@ -15,6 +15,7 @@
 		MultiSelect,
 		Label,
 		Input,
+		Card,
 	} from 'flowbite-svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import type { PageProps } from './$types';
@@ -98,15 +99,9 @@
 	};
 
 	const handleWhitelistCreate = async (event: { data: FormData }) => {
-		const response = await fetch('/api/whitelists', {
+		const response = await fetch('?/whitelistCreate', {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				email: event.data.get('whitelist_email'),
-				defaultRole: event.data.get('whitelist_role') ?? undefined,
-			}),
+			body: event.data,
 		});
 
 		if (!response.ok) {
@@ -142,137 +137,149 @@
 <Container>
 	<h1>User Management</h1>
 
-	<Table>
-		<TableHead>
-			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Email</TableHeadCell>
-			<TableHeadCell>Role</TableHeadCell>
-			<TableHeadCell>Actions</TableHeadCell>
-		</TableHead>
-		<TableBody>
-			{#each users as entry (entry.id)}
-				<TableBodyRow>
-					<TableBodyCell>{entry.name}</TableBodyCell>
-					<TableBodyCell>{entry.email}</TableBodyCell>
-					<TableBodyCell>{entry.role}</TableBodyCell>
-					<TableBodyCell>
-						<Button
-							href="/users/{entry.id}"
-							size="xs"
-							type="button"
-							class="cursor-pointer"
-							color="alternative"
-						>
-							View
-						</Button>
-						<Button
-							size="xs"
-							type="button"
-							class="cursor-pointer"
-							color="alternative"
-							onclick={() => userEditModals.set(entry.id, true)}
-						>
-							Edit
-						</Button>
-						<Button
-							size="xs"
-							type="button"
-							class="cursor-pointer"
-							color="alternative"
-							onclick={() => userDeleteModdals.set(entry.id, true)}
-						>
-							Delete
-						</Button>
-					</TableBodyCell>
-				</TableBodyRow>
-
-				{#if userEditModals.get(entry.id)}
-					<Modal
-						form
-						open
-						title="Edit user"
-						class="overflow-visible"
-						classes={{ body: 'overflow-y-visible' }}
-						oncancel={() => userEditModals.set(entry.id, false)}
-						onaction={async (event) => {
-							await handleUserEdit(entry, event);
-							userEditModals.set(entry.id, false);
-						}}
-					>
-						<div>
-							<Label for="user_role" class="mb-2">Role</Label>
-							<Select
-								name="user_role"
-								placeholder="Select a role"
-								value={entry.role}
-								disabled={entry.role === 'admin'}
+	<Card class="overflow-hidden" size="xl">
+		<Table>
+			<TableHead>
+				<TableHeadCell>Name</TableHeadCell>
+				<TableHeadCell>Email</TableHeadCell>
+				<TableHeadCell>Role</TableHeadCell>
+				<TableHeadCell>Actions</TableHeadCell>
+			</TableHead>
+			<TableBody>
+				{#each users as entry (entry.id)}
+					<TableBodyRow>
+						<TableBodyCell>{entry.name}</TableBodyCell>
+						<TableBodyCell>{entry.email}</TableBodyCell>
+						<TableBodyCell>{entry.role}</TableBodyCell>
+						<TableBodyCell>
+							<Button
+								href="/users/{entry.id}"
+								size="xs"
+								type="button"
+								class="cursor-pointer"
+								color="alternative"
 							>
-								<option value="admin">Admin</option>
-								<option value="editor">User</option>
-							</Select>
-						</div>
-
-						<div>
-							<Label for="user_scopes" class="mb-2">Scopes</Label>
-							<MultiSelect
-								name="scopes"
-								items={ReadableScopes}
-								value={entry.scopes}
-							/>
-						</div>
-
-						{#snippet footer()}
-							<Button size="xs" type="submit" value="success" class="cursor-pointer">
-								Save
+								View
 							</Button>
 							<Button
 								size="xs"
 								type="button"
-								color="alternative"
 								class="cursor-pointer"
-								onclick={() => userEditModals.set(entry.id, false)}
+								color="alternative"
+								onclick={() => userEditModals.set(entry.id, true)}
 							>
-								Cancel
+								Edit
 							</Button>
-						{/snippet}
-					</Modal>
-				{/if}
-
-				{#if userDeleteModdals.get(entry.id)}
-					<Modal
-						form
-						open
-						title="Delete user"
-						class="overflow-visible"
-						classes={{ body: 'overflow-y-visible' }}
-						oncancel={() => userDeleteModdals.set(entry.id, false)}
-						onaction={async () => {
-							await handleUserDelete(entry);
-							userDeleteModdals.set(entry.id, false);
-						}}
-					>
-						<p>Are you sure you want to delete "{entry.email}"?</p>
-						<p>This will also remove the whitelist entry.</p>
-
-						{#snippet footer()}
-							<Button size="xs" type="submit" value="success" class="cursor-pointer">
+							<Button
+								size="xs"
+								type="button"
+								class="cursor-pointer"
+								color="alternative"
+								onclick={() => userDeleteModdals.set(entry.id, true)}
+							>
 								Delete
 							</Button>
-							<Button
-								size="xs"
-								type="button"
-								color="alternative"
-								class="cursor-pointer"
-								onclick={() => userDeleteModdals.set(entry.id, false)}
-							>
-								Cancel
-							</Button>
-						{/snippet}
-					</Modal>
-				{/if}
-			{/each}
-		</TableBody>
-	</Table>
+						</TableBodyCell>
+					</TableBodyRow>
+
+					{#if userEditModals.get(entry.id)}
+						<Modal
+							form
+							open
+							title="Edit user"
+							class="overflow-visible"
+							classes={{ body: 'overflow-y-visible' }}
+							oncancel={() => userEditModals.set(entry.id, false)}
+							onaction={async (event) => {
+								await handleUserEdit(entry, event);
+								userEditModals.set(entry.id, false);
+							}}
+						>
+							<div>
+								<Label for="user_role" class="mb-2">Role</Label>
+								<Select
+									name="user_role"
+									placeholder="Select a role"
+									value={entry.role}
+									disabled={entry.role === 'admin'}
+								>
+									<option value="admin">Admin</option>
+									<option value="editor">User</option>
+								</Select>
+							</div>
+
+							<div>
+								<Label for="user_scopes" class="mb-2">Scopes</Label>
+								<MultiSelect
+									name="scopes"
+									items={ReadableScopes}
+									value={entry.scopes}
+								/>
+							</div>
+
+							{#snippet footer()}
+								<Button
+									size="xs"
+									type="submit"
+									value="success"
+									class="cursor-pointer"
+								>
+									Save
+								</Button>
+								<Button
+									size="xs"
+									type="button"
+									color="alternative"
+									class="cursor-pointer"
+									onclick={() => userEditModals.set(entry.id, false)}
+								>
+									Cancel
+								</Button>
+							{/snippet}
+						</Modal>
+					{/if}
+
+					{#if userDeleteModdals.get(entry.id)}
+						<Modal
+							form
+							open
+							title="Delete user"
+							class="overflow-visible"
+							classes={{ body: 'overflow-y-visible' }}
+							oncancel={() => userDeleteModdals.set(entry.id, false)}
+							onaction={async () => {
+								await handleUserDelete(entry);
+								userDeleteModdals.set(entry.id, false);
+							}}
+						>
+							<p>Are you sure you want to delete "{entry.email}"?</p>
+							<p>This will also remove the whitelist entry.</p>
+
+							{#snippet footer()}
+								<Button
+									size="xs"
+									type="submit"
+									value="success"
+									class="cursor-pointer"
+								>
+									Delete
+								</Button>
+								<Button
+									size="xs"
+									type="button"
+									color="alternative"
+									class="cursor-pointer"
+									onclick={() => userDeleteModdals.set(entry.id, false)}
+								>
+									Cancel
+								</Button>
+							{/snippet}
+						</Modal>
+					{/if}
+				{/each}
+			</TableBody>
+		</Table>
+	</Card>
 
 	<h1>Whitelist</h1>
 	<div>
@@ -281,64 +288,73 @@
 		</Button>
 	</div>
 
-	<Table>
-		<TableHead>
-			<TableHeadCell>Email</TableHeadCell>
-			<TableHeadCell>Role</TableHeadCell>
-			<TableHeadCell>Actions</TableHeadCell>
-		</TableHead>
-		<TableBody>
-			{#each whitelists as entry (entry.id)}
-				<TableBodyRow>
-					<TableBodyCell>{entry.email}</TableBodyCell>
-					<TableBodyCell>{entry.defaultRole}</TableBodyCell>
-					<TableBodyCell>
-						<Button
-							size="xs"
-							type="button"
-							class="cursor-pointer"
-							color="alternative"
-							onclick={() => whitelistRevokeModals.set(entry.id, true)}
-						>
-							Revoke
-						</Button>
-					</TableBodyCell>
-				</TableBodyRow>
-
-				{#if whitelistRevokeModals.get(entry.id)}
-					<Modal
-						form
-						open
-						title="Delete whitelist"
-						class="overflow-visible"
-						classes={{ body: 'overflow-y-visible' }}
-						oncancel={() => whitelistRevokeModals.set(entry.id, false)}
-						onaction={async () => {
-							await handleWhitelistRevoke(entry);
-							whitelistRevokeModals.set(entry.id, false);
-						}}
-					>
-						<p>Are you sure you want to revoke the whitelist for "{entry.email}"?</p>
-
-						{#snippet footer()}
-							<Button size="xs" type="submit" value="success" class="cursor-pointer">
-								Revoke
-							</Button>
+	<Card class="overflow-hidden" size="xl">
+		<Table>
+			<TableHead>
+				<TableHeadCell>Email</TableHeadCell>
+				<TableHeadCell>Role</TableHeadCell>
+				<TableHeadCell>Actions</TableHeadCell>
+			</TableHead>
+			<TableBody>
+				{#each whitelists as entry (entry.id)}
+					<TableBodyRow>
+						<TableBodyCell>{entry.email}</TableBodyCell>
+						<TableBodyCell>{entry.defaultRole}</TableBodyCell>
+						<TableBodyCell>
 							<Button
 								size="xs"
 								type="button"
-								color="alternative"
 								class="cursor-pointer"
-								onclick={() => whitelistRevokeModals.set(entry.id, false)}
+								color="alternative"
+								onclick={() => whitelistRevokeModals.set(entry.id, true)}
 							>
-								Cancel
+								Revoke
 							</Button>
-						{/snippet}
-					</Modal>
-				{/if}
-			{/each}
-		</TableBody>
-	</Table>
+						</TableBodyCell>
+					</TableBodyRow>
+
+					{#if whitelistRevokeModals.get(entry.id)}
+						<Modal
+							form
+							open
+							title="Delete whitelist"
+							class="overflow-visible"
+							classes={{ body: 'overflow-y-visible' }}
+							oncancel={() => whitelistRevokeModals.set(entry.id, false)}
+							onaction={async () => {
+								await handleWhitelistRevoke(entry);
+								whitelistRevokeModals.set(entry.id, false);
+							}}
+						>
+							<p>
+								Are you sure you want to revoke the whitelist for "{entry.email}"?
+							</p>
+
+							{#snippet footer()}
+								<Button
+									size="xs"
+									type="submit"
+									value="success"
+									class="cursor-pointer"
+								>
+									Revoke
+								</Button>
+								<Button
+									size="xs"
+									type="button"
+									color="alternative"
+									class="cursor-pointer"
+									onclick={() => whitelistRevokeModals.set(entry.id, false)}
+								>
+									Cancel
+								</Button>
+							{/snippet}
+						</Modal>
+					{/if}
+				{/each}
+			</TableBody>
+		</Table>
+	</Card>
 
 	<Modal
 		form

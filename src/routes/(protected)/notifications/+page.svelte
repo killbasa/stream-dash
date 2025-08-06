@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Container from '$components/Container.svelte';
+	import Container from '$components/layout/Container.svelte';
 	import { toast } from '$lib/client/stores/toasts';
 	import { Button, Card, Input, Label } from 'flowbite-svelte';
 	import type { PageProps, SubmitFunction } from './$types';

@@ -2,12 +2,13 @@ import { ok } from '$lib/server/api';
 import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
 import { cloudflare } from '$lib/server/cloudflare/client';
+import { AuthScopes } from '$lib/client/constants';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/private';
 
 export const PUT: RequestHandler = async ({ locals, params, request }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], 'talents-edit')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.TalentsEdit)) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -51,7 +52,7 @@ export const PUT: RequestHandler = async ({ locals, params, request }) => {
 };
 
 export const DELETE: RequestHandler = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], 'talents-edit')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.TalentsEdit)) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

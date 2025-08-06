@@ -1,6 +1,7 @@
 <script lang="ts">
-	import Container from '$components/Container.svelte';
+	import Container from '$components/layout/Container.svelte';
 	import { toast } from '$lib/client/stores/toasts';
+	import { getUnixTime } from '$lib/client/utils';
 	import {
 		Button,
 		Card,
@@ -19,28 +20,22 @@
 
 	let start_time = $state<string>(new Date(data.block.start).toTimeString().slice(0, 5));
 	let end_time = $state<string>(new Date(data.block.end).toTimeString().slice(0, 5));
-	let start_date = $state<Date | undefined>(undefined);
-	let end_date = $state<Date | undefined>(undefined);
+	let start_date = $state<Date | undefined>(
+		data.block.start ? new Date(data.block.start) : undefined, //
+	);
+	let end_date = $state<Date | undefined>(
+		data.block.end ? new Date(data.block.end) : undefined, //
+	);
 
 	const handleEdit: SubmitFunction = (event) => {
 		if (start_date && start_time) {
-			const start_temp = new Date(start_date);
-			start_temp.setHours(
-				Number(start_time?.split(':')[0]),
-				Number(start_time?.split(':')[1]),
-				0,
-			);
-			event.formData.set('block_start', start_temp.getTime().toString());
+			const time = getUnixTime(start_date, start_time);
+			event.formData.set('block_start', time.toString());
 		}
 
 		if (end_date && end_time) {
-			const end_temp = new Date(end_date);
-			end_temp.setHours(
-				Number(end_time?.split(':')[0]), //
-				Number(end_time?.split(':')[1]),
-				0,
-			);
-			event.formData.set('block_end', end_temp.getTime().toString());
+			const time = getUnixTime(end_date, end_time);
+			event.formData.set('block_end', time.toString());
 		}
 
 		return async function ({ result }) {
@@ -86,8 +81,8 @@
 				<Label class="mb-2">Date range:</Label>
 				<Datepicker
 					range
-					rangeFrom={data.block.start ? new Date(data.block.start) : undefined}
-					rangeTo={data.block.end ? new Date(data.block.end) : undefined}
+					rangeFrom={start_date}
+					rangeTo={end_date}
 					onselect={(detail) => {
 						if (detail instanceof Date) {
 							start_date = detail;
@@ -102,7 +97,7 @@
 			<div class="grid grid-cols-2 gap-4">
 				<div>
 					<Label for="block_start" class="mb-2">Start time:</Label>
-					<Timepicker id="block_start" divClass="w-full" value={start_time} />
+					<Timepicker id="block_start" divClass="w-full" bind:value={start_time} />
 				</div>
 
 				<div>

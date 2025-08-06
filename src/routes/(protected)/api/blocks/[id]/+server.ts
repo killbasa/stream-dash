@@ -1,11 +1,12 @@
 import { ok } from '$lib/server/api';
 import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
+import { AuthScopes } from '$lib/client/constants';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const DELETE: RequestHandler = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], 'blocks-edit')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.BlocksEdit)) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

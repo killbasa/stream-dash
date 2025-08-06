@@ -3,6 +3,7 @@ import { ok } from '$lib/server/api';
 import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
 import { LiveInputType } from '$lib/server/db/generated/client';
+import { AuthScopes } from '$lib/client/constants';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
@@ -13,7 +14,7 @@ const LiveInputPutBody = z.object({
 });
 
 export const PUT: RequestHandler = async ({ locals, request, params }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], 'live-inputs-edit')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.LiveInputsEdit)) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -38,7 +39,7 @@ export const PUT: RequestHandler = async ({ locals, request, params }) => {
 };
 
 export const DELETE: RequestHandler = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], 'live-inputs-edit')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.LiveInputsEdit)) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

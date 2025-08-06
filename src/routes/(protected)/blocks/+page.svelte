@@ -1,9 +1,10 @@
 <script lang="ts">
-	import Container from '$components/Container.svelte';
+	import Container from '$components/layout/Container.svelte';
 	import { toast } from '$lib/client/stores/toasts';
 	import {
 		Button,
 		Card,
+		Input,
 		Modal,
 		Select,
 		Table,
@@ -28,13 +29,21 @@
 
 	let { data }: PageProps = $props();
 
-	let talent = $derived(page.url.searchParams.get('talent'));
+	let name_filter: string = $state(page.url.searchParams.get('name') ?? '');
+	let talent_filter: string = $state(page.url.searchParams.get('talent') ?? '');
+	let location_filter: string = $state(page.url.searchParams.get('location') ?? '');
+
 	let blocks = $derived(
 		data.blocks
 			.filter((block) => {
-				if (!talent) return true;
+				if (!name_filter) return true;
 
-				return block.talents.some((t) => t.id === talent);
+				return block.name.toLowerCase().includes(name_filter.toLowerCase());
+			})
+			.filter((block) => {
+				if (!talent_filter) return true;
+
+				return block.talents.some((t) => t.id === talent_filter);
 			})
 			.filter((block) => {
 				const location = page.url.searchParams.get('location');
@@ -82,10 +91,12 @@
 
 	<Card class="p-4" size="xl">
 		<div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+			<Input placeholder="Filter by name" type="text" bind:value={name_filter} />
 			<Select
-				placeholder="Filter by Talent"
+				placeholder="Filter by talent"
 				items={data.talents.map((talent) => ({ value: talent.id, name: talent.name }))}
 				clearable
+				value={talent_filter}
 				onchange={(event) => {
 					const params = new URLSearchParams(page.url.searchParams);
 
@@ -99,12 +110,13 @@
 				}}
 			/>
 			<Select
-				placeholder="Filter by Location"
+				placeholder="Filter by location"
 				items={data.locations.map((location) => ({
 					value: location.id,
 					name: location.name,
 				}))}
 				clearable
+				value={location_filter}
 				onchange={(event) => {
 					const params = new URLSearchParams(page.url.searchParams);
 
@@ -120,105 +132,117 @@
 		</div>
 	</Card>
 
-	<Table>
-		<TableHead>
-			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Talents</TableHeadCell>
-			<TableHeadCell>Location</TableHeadCell>
-			<TableHeadCell>Start</TableHeadCell>
-			<TableHeadCell>End</TableHeadCell>
-			<TableHeadCell>Links</TableHeadCell>
-			<TableHeadCell>Actions</TableHeadCell>
-		</TableHead>
-		<TableBody>
-			{#each blocks ?? [] as entry (entry.id)}
-				<TableBodyRow>
-					<TableBodyCell>{entry.name}</TableBodyCell>
-					<TableBodyCell>
-						<div class="flex flex-col gap-1">
-							{#each entry.talents as talent (talent.id)}
-								<a class="underline" href="/talents/{talent.id}">{talent.name}</a>
-							{/each}
-						</div>
-					</TableBodyCell>
-					<TableBodyCell>{entry.location?.name ?? 'Unknown'}</TableBodyCell>
-					<TableBodyCell
-						>{entry.start ? formatter.format(entry.start) : 'Unknown'}</TableBodyCell
-					>
-					<TableBodyCell
-						>{entry.end ? formatter.format(entry.end) : 'Unknown'}</TableBodyCell
-					>
-					<TableBodyCell>
-						<Button
-							size="xs"
-							color="alternative"
-							href={entry.ingestLiveInputId
-								? `/live-inputs/${entry.ingestLiveInputId}`
-								: undefined}
-							disabled={!entry.ingestLiveInputId}>Ingest</Button
+	<Card class="overflow-hidden" size="xl">
+		<Table>
+			<TableHead>
+				<TableHeadCell>Name</TableHeadCell>
+				<TableHeadCell>Talents</TableHeadCell>
+				<TableHeadCell>Location</TableHeadCell>
+				<TableHeadCell>Start</TableHeadCell>
+				<TableHeadCell>End</TableHeadCell>
+				<TableHeadCell>Links</TableHeadCell>
+				<TableHeadCell>Actions</TableHeadCell>
+			</TableHead>
+			<TableBody>
+				{#each blocks as entry (entry.id)}
+					<TableBodyRow>
+						<TableBodyCell>{entry.name}</TableBodyCell>
+						<TableBodyCell>
+							<div class="flex flex-col gap-1">
+								{#each entry.talents as talent (talent.id)}
+									<a class="underline" href="/talents/{talent.id}"
+										>{talent.name}</a
+									>
+								{/each}
+							</div>
+						</TableBodyCell>
+						<TableBodyCell>{entry.location?.name ?? 'Unknown'}</TableBodyCell>
+						<TableBodyCell
+							>{entry.start
+								? formatter.format(entry.start)
+								: 'Unknown'}</TableBodyCell
 						>
-						<Button
-							size="xs"
-							color="alternative"
-							href={entry.playbackLiveInputId
-								? `/live-inputs/${entry.playbackLiveInputId}`
-								: undefined}
-							disabled={!entry.playbackLiveInputId}>Return</Button
+						<TableBodyCell
+							>{entry.end ? formatter.format(entry.end) : 'Unknown'}</TableBodyCell
 						>
-					</TableBodyCell>
-					<TableBodyCell>
-						<Button
-							href="/blocks/{entry.id}/edit"
-							size="xs"
-							color="alternative"
-							class="cursor-pointer">Edit</Button
-						>
-						<Button
-							size="xs"
-							color="alternative"
-							class="cursor-pointer"
-							onclick={() => blockDeleteModals.set(entry.id, true)}>Delete</Button
-						>
-
-						{#if blockDeleteModals.get(entry.id)}
-							<Modal
-								form
-								open
-								title="Delete talent"
-								class="overflow-visible"
-								classes={{ body: 'overflow-y-visible' }}
-								oncancel={() => blockDeleteModals.set(entry.id, false)}
-								onaction={async () => {
-									await handleDelete(entry.id);
-									blockDeleteModals.set(entry.id, false);
-								}}
+						<TableBodyCell>
+							<Button
+								size="xs"
+								color="alternative"
+								href={entry.ingestLiveInputId
+									? `/live-inputs/${entry.ingestLiveInputId}`
+									: undefined}
+								disabled={!entry.ingestLiveInputId}>Ingest</Button
 							>
-								<p>Are you sure you want to delete "{entry.name}"?</p>
+							<Button
+								size="xs"
+								color="alternative"
+								href={entry.playbackLiveInputId
+									? `/live-inputs/${entry.playbackLiveInputId}`
+									: undefined}
+								disabled={!entry.playbackLiveInputId}>Return</Button
+							>
+						</TableBodyCell>
+						<TableBodyCell>
+							<Button
+								href="/blocks/{entry.id}"
+								size="xs"
+								color="alternative"
+								class="cursor-pointer">View</Button
+							>
+							<Button
+								href="/blocks/{entry.id}/edit"
+								size="xs"
+								color="alternative"
+								class="cursor-pointer">Edit</Button
+							>
+							<Button
+								size="xs"
+								color="alternative"
+								class="cursor-pointer"
+								onclick={() => blockDeleteModals.set(entry.id, true)}>Delete</Button
+							>
 
-								{#snippet footer()}
-									<Button
-										type="submit"
-										value="success"
-										class="cursor-pointer"
-										size="xs"
-									>
-										Delete
-									</Button>
-									<Button
-										type="button"
-										color="alternative"
-										class="cursor-pointer"
-										size="xs"
-										onclick={() => blockDeleteModals.set(entry.id, false)}
-									>
-										Cancel
-									</Button>
-								{/snippet}
-							</Modal>
-						{/if}
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
+							{#if blockDeleteModals.get(entry.id)}
+								<Modal
+									form
+									open
+									title="Delete talent"
+									class="overflow-visible"
+									classes={{ body: 'overflow-y-visible' }}
+									oncancel={() => blockDeleteModals.set(entry.id, false)}
+									onaction={async () => {
+										await handleDelete(entry.id);
+										blockDeleteModals.set(entry.id, false);
+									}}
+								>
+									<p>Are you sure you want to delete "{entry.name}"?</p>
+
+									{#snippet footer()}
+										<Button
+											type="submit"
+											value="success"
+											class="cursor-pointer"
+											size="xs"
+										>
+											Delete
+										</Button>
+										<Button
+											type="button"
+											color="alternative"
+											class="cursor-pointer"
+											size="xs"
+											onclick={() => blockDeleteModals.set(entry.id, false)}
+										>
+											Cancel
+										</Button>
+									{/snippet}
+								</Modal>
+							{/if}
+						</TableBodyCell>
+					</TableBodyRow>
+				{/each}
+			</TableBody>
+		</Table>
+	</Card>
 </Container>

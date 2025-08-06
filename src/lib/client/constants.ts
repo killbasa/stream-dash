@@ -1,12 +1,12 @@
 export const AuthScopes = {
-	LiveInputsEdit: 'live-inputs-edit',
-	LiveInputsRead: 'live-inputs-read',
-	TalentsEdit: 'talents-edit',
-	TalentsRead: 'talents-read',
-	LocationsEdit: 'locations-edit',
-	LocationsRead: 'locations-read',
-	BlocksEdit: 'blocks-edit',
-	BlocksRead: 'blocks-read',
+	LiveInputsEdit: 'live-inputs/edit',
+	LiveInputsRead: 'live-inputs/read',
+	TalentsEdit: 'talents/edit',
+	TalentsRead: 'talents/read',
+	LocationsEdit: 'locations/edit',
+	LocationsRead: 'locations/read',
+	BlocksEdit: 'blocks/edit',
+	BlocksRead: 'blocks/read',
 } as const;
 export type AuthScope = (typeof AuthScopes)[keyof typeof AuthScopes];
 

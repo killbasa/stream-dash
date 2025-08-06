@@ -2,6 +2,7 @@ import { cloudflare } from '$lib/server/cloudflare/client';
 import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
 import { ok } from '$lib/server/api';
+import { AuthScopes } from '$lib/client/constants';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
@@ -45,7 +46,7 @@ const LiveInputResponseObj = z.object({
 let lock = false;
 
 export const POST: RequestHandler = async ({ locals }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], 'live-inputs-edit')) {
+	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.LiveInputsEdit)) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
