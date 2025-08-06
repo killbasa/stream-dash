@@ -48,7 +48,7 @@
 	);
 
 	const handleCreate = async (event: { data: FormData }) => {
-		const response = await fetch('/api/live-inputs', {
+		const response = await fetch('?/create', {
 			method: 'POST',
 			body: event.data,
 		});
@@ -340,7 +340,7 @@
 >
 	<div>
 		<Label for="liveinput_name" class="mb-2">Name</Label>
-		<Input type="text" id="liveinput_name" name="liveinput_name" required />
+		<Input type="text" id="liveinput_name" name="liveinput_name" required autocomplete="off" />
 	</div>
 
 	<div>
@@ -353,7 +353,12 @@
 
 	<div>
 		<Label for="liveinput_description" class="mb-2">Description</Label>
-		<Textarea id="liveinput_description" name="liveinput_description" class="w-full" />
+		<Textarea
+			id="liveinput_description"
+			name="liveinput_description"
+			class="w-full"
+			autocomplete="off"
+		/>
 	</div>
 
 	{#snippet footer()}

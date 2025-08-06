@@ -78,4 +78,22 @@ export const actions: Actions = {
 
 		return { message: 'Whitelist entry created' };
 	},
+	whitelistRevoke: async ({ request, locals }) => {
+		if (!hasPermission(locals.user, ['admin'])) {
+			error(403, 'Forbidden: You do not have permission to edit whitelist entries.');
+		}
+
+		const formData = await request.formData();
+
+		const entryId = formData.get('whitelist_id');
+		if (typeof entryId !== 'string') {
+			return fail(400, { message: 'Invalid whitelist ID' });
+		}
+
+		await prisma.whitelist.delete({
+			where: { id: entryId },
+		});
+
+		return { message: 'Whitelist entry deleted' };
+	},
 };

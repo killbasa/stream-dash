@@ -28,10 +28,7 @@
 		<Sidebar />
 	</div>
 	<div class="block sm:hidden">
-		<NavHamburger
-			onclick={() => hidden.set(false)}
-			class="mx-4 my-2 bg-gray-700 cursor-pointer"
-		/>
+		<NavHamburger class="m-2 bg-gray-700 cursor-pointer" onclick={() => hidden.set(false)} />
 	</div>
 
 	<main class="flex flex-1 flex-col p-2 sm:p-4 overflow-x-auto">

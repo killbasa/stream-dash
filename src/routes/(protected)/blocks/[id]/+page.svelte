@@ -24,7 +24,14 @@
 	<Card class="p-4 gap-4" size="xl">
 		<div>
 			<Label for="block_name" class="mb-2">Name</Label>
-			<Input type="text" id="block_name" name="block_name" value={data.block.name} disabled />
+			<Input
+				type="text"
+				id="block_name"
+				name="block_name"
+				value={data.block.name}
+				disabled
+				autocomplete="off"
+			/>
 		</div>
 
 		<div>

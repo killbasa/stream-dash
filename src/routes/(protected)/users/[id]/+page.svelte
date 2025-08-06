@@ -17,12 +17,18 @@
 	<Card class="p-4 gap-4" size="xl">
 		<div>
 			<Label for="user_name" class="mb-2">Name</Label>
-			<Input type="text" id="user_name" value={data.user.name} disabled />
+			<Input type="text" id="user_name" value={data.user.name} disabled autocomplete="off" />
 		</div>
 
 		<div>
 			<Label for="user_email" class="mb-2">Email</Label>
-			<Input type="email" id="user_email" value={data.user.email} disabled />
+			<Input
+				type="email"
+				id="user_email"
+				value={data.user.email}
+				disabled
+				autocomplete="off"
+			/>
 		</div>
 
 		<div>

@@ -74,6 +74,7 @@
 					name="block_name"
 					value={data.block.name}
 					required
+					autocomplete="off"
 				/>
 			</div>
 

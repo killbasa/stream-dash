@@ -91,7 +91,12 @@
 
 	<Card class="p-4" size="xl">
 		<div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-			<Input placeholder="Filter by name" type="text" bind:value={name_filter} />
+			<Input
+				type="text"
+				placeholder="Filter by name"
+				bind:value={name_filter}
+				autocomplete="off"
+			/>
 			<Select
 				placeholder="Filter by talent"
 				items={data.talents.map((talent) => ({ value: talent.id, name: talent.name }))}

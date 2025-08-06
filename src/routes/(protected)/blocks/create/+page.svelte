@@ -64,7 +64,7 @@
 		<Card class="p-4 gap-4" size="xl">
 			<div>
 				<Label for="block_name" class="mb-2">Name</Label>
-				<Input type="text" id="block_name" name="block_name" required />
+				<Input type="text" id="block_name" name="block_name" required autocomplete="off" />
 			</div>
 
 			<div>

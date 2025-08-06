@@ -86,12 +86,23 @@
 		>
 			<div>
 				<Label for="location_name">Name</Label>
-				<Input type="text" id="location_name" name="location_name" required />
+				<Input
+					type="text"
+					id="location_name"
+					name="location_name"
+					required
+					autocomplete="off"
+				/>
 			</div>
 
 			<div>
 				<Label for="location_description" class="mb-2">Description</Label>
-				<Textarea id="location_description" name="location_description" class="w-full" />
+				<Textarea
+					id="location_description"
+					name="location_description"
+					class="w-full"
+					autocomplete="off"
+				/>
 			</div>
 
 			{#snippet footer()}

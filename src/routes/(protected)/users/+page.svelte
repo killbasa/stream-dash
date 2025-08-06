@@ -115,8 +115,12 @@
 	};
 
 	const handleWhitelistRevoke = async (entry: (typeof data.whitelists)[number]) => {
-		const response = await fetch(`/api/whitelists/${entry.id}`, {
-			method: 'DELETE',
+		const data = new FormData();
+		data.append('whitelist_id', entry.id);
+
+		const response = await fetch('?/whitelistRevoke', {
+			method: 'POST',
+			body: data,
 		});
 
 		if (!response.ok) {
@@ -281,7 +285,7 @@
 		</Table>
 	</Card>
 
-	<h2 class="text-xl">Whitelist</h2>
+	<h2>Whitelist</h2>
 	<div>
 		<Button size="xs" onclick={() => (openWhitelistModal = true)} class="cursor-pointer">
 			Create
@@ -366,7 +370,13 @@
 	>
 		<div>
 			<Label for="whitelist_email" class="mb-2">Email</Label>
-			<Input type="email" id="whitelist_email" name="whitelist_email" required />
+			<Input
+				type="email"
+				id="whitelist_email"
+				name="whitelist_email"
+				required
+				autocomplete="off"
+			/>
 		</div>
 
 		<div>

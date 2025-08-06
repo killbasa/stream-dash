@@ -175,7 +175,12 @@
 
 	<div>
 		<Label for="talent_description" class="mb-2">Description</Label>
-		<Textarea id="talent_description" name="talent_description" class="w-full" />
+		<Textarea
+			id="talent_description"
+			name="talent_description"
+			class="w-full"
+			autocomplete="off"
+		/>
 	</div>
 
 	<div>
