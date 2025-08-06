@@ -10,10 +10,6 @@ export const DELETE: RequestHandler = async ({ locals, params }) => {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
-	await prisma.location.delete({
-		where: { id: params.id },
-	});
-
 	await prisma.$transaction(async (tx) => {
 		const location = await tx.location.findUniqueOrThrow({
 			where: { id: params.id },
