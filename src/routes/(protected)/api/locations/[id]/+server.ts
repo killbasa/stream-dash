@@ -11,14 +11,11 @@ export const DELETE: RequestHandler = async ({ locals, params }) => {
 	}
 
 	await prisma.$transaction(async (tx) => {
-		const location = await tx.location.findUniqueOrThrow({
-			where: { id: params.id },
-			include: {
-				blocks: true,
-			},
+		const count = await tx.block.count({
+			where: { locationId: params.id },
 		});
 
-		if (location.blocks.length > 0) {
+		if (count > 0) {
 			throw new Error('Location has associated blocks and cannot be deleted.');
 		}
 

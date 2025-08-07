@@ -35,12 +35,6 @@
 <Container>
 	<h1 class="text-xl">Notifications</h1>
 
-	<Button
-		onclick={() => {
-			toast.success('Test notification sent');
-		}}>Test</Button
-	>
-
 	<form method="POST" action="?/update" use:enhance={handleUpdate}>
 		<Card class="p-4 gap-4" size="xl">
 			<div>
