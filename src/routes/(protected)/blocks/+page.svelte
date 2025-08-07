@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
+	import { updateParams } from '$src/lib/client/utils';
 	import {
 		Alert,
 		Button,
@@ -18,7 +19,7 @@
 	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
 	import type { PageProps } from './$types';
 	import { page } from '$app/state';
-	import { goto, invalidate } from '$app/navigation';
+	import { invalidate } from '$app/navigation';
 
 	const formatter = new Intl.DateTimeFormat('en-US', {
 		year: 'numeric',
@@ -30,9 +31,9 @@
 
 	let { data }: PageProps = $props();
 
-	let name_filter: string = $state(page.url.searchParams.get('name') ?? '');
-	let talent_filter: string = $state(page.url.searchParams.get('talent') ?? '');
-	let location_filter: string = $state(page.url.searchParams.get('location') ?? '');
+	let name_filter: string = $derived(page.url.searchParams.get('name') ?? '');
+	let talent_filter: string = $derived(page.url.searchParams.get('talent') ?? '');
+	let location_filter: string = $derived(page.url.searchParams.get('location') ?? '');
 
 	let blocks = $derived(
 		data.blocks
@@ -113,16 +114,8 @@
 				items={data.talents.map((talent) => ({ value: talent.id, name: talent.name }))}
 				clearable
 				value={talent_filter}
-				onchange={(event) => {
-					const params = new URLSearchParams(page.url.searchParams);
-
-					if (event.currentTarget.value) {
-						params.set('talent', event.currentTarget.value);
-					} else {
-						params.delete('talent');
-					}
-
-					goto(`/blocks?${params}`);
+				onchange={async (event) => {
+					await updateParams('talent', event.currentTarget.value);
 				}}
 			/>
 			<Select
@@ -133,16 +126,8 @@
 				}))}
 				clearable
 				value={location_filter}
-				onchange={(event) => {
-					const params = new URLSearchParams(page.url.searchParams);
-
-					if (event.currentTarget.value) {
-						params.set('location', event.currentTarget.value);
-					} else {
-						params.delete('location');
-					}
-
-					goto(`/blocks?${params}`);
+				onchange={async (event) => {
+					await updateParams('location', event.currentTarget.value);
 				}}
 			/>
 		</div>
