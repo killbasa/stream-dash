@@ -127,7 +127,7 @@
 	</div>
 
 	{#if errorNotif}
-		<Alert color="red" dismissable>
+		<Alert color="red" dismissable onclick={() => (errorNotif = undefined)}>
 			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
 			{errorNotif}
 		</Alert>

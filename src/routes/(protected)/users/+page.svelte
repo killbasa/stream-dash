@@ -150,7 +150,7 @@
 	<h1 class="text-xl">Users</h1>
 
 	{#if userErrorNotif}
-		<Alert color="red" dismissable>
+		<Alert color="red" dismissable onclick={() => (userErrorNotif = undefined)}>
 			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
 			{userErrorNotif}
 		</Alert>
@@ -309,7 +309,7 @@
 	</div>
 
 	{#if whitelistErrorNotif}
-		<Alert color="red" dismissable>
+		<Alert color="red" dismissable onclick={() => (whitelistErrorNotif = undefined)}>
 			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
 			{whitelistErrorNotif}
 		</Alert>

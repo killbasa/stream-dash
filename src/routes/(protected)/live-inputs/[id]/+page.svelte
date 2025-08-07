@@ -56,14 +56,14 @@
 	</div>
 
 	{#if errorNotif}
-		<Alert color="red" dismissable>
+		<Alert color="red" dismissable onclick={() => (errorNotif = undefined)}>
 			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
 			{errorNotif}
 		</Alert>
 	{/if}
 
 	{#if successNotif}
-		<Alert color="green" dismissable>
+		<Alert color="green" dismissable onclick={() => (successNotif = undefined)}>
 			{#snippet icon()}<CheckCircleSolid class="h-5 w-5" />{/snippet}
 			{successNotif}
 		</Alert>

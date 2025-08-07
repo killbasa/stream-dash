@@ -141,7 +141,7 @@
 	</div>
 
 	{#if liveinputErrorNotif}
-		<Alert color="red" dismissable>
+		<Alert color="red" dismissable onclick={() => (liveinputErrorNotif = undefined)}>
 			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
 			{liveinputErrorNotif}
 		</Alert>
@@ -253,14 +253,14 @@
 	</div>
 
 	{#if syncErrorNotif}
-		<Alert color="red" dismissable>
+		<Alert color="red" dismissable onclick={() => (syncErrorNotif = undefined)}>
 			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
 			{syncErrorNotif}
 		</Alert>
 	{/if}
 
 	{#if syncSuccessNotif}
-		<Alert color="green" dismissable>
+		<Alert color="green" dismissable onclick={() => (syncSuccessNotif = undefined)}>
 			{#snippet icon()}<CheckCircleSolid class="h-5 w-5" />{/snippet}
 			{syncSuccessNotif}
 		</Alert>
