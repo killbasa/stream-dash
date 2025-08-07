@@ -78,13 +78,6 @@
 <Container>
 	<h1 class="text-xl">Locations</h1>
 
-	{#if errorNotif}
-		<Alert color="red" dismissable>
-			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
-			{errorNotif}
-		</Alert>
-	{/if}
-
 	<div>
 		<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs"
 			>Create</Button
@@ -132,6 +125,13 @@
 			{/snippet}
 		</Modal>
 	</div>
+
+	{#if errorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{errorNotif}
+		</Alert>
+	{/if}
 
 	<Card class="overflow-hidden" size="xl">
 		<Table>

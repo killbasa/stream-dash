@@ -3,12 +3,14 @@
 	import CopyBlock from '$components/forms/CopyBlock.svelte';
 	import { Alert, Badge, Button, Card } from 'flowbite-svelte';
 	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
+	import CheckCircleSolid from 'flowbite-svelte-icons/CheckCircleSolid.svelte';
 	import type { PageProps } from './$types';
 	import { invalidate } from '$app/navigation';
 
 	let { data, params }: PageProps = $props();
 
 	let errorNotif = $state<string>();
+	let successNotif = $state<string>();
 
 	const playerUrl = (url: string, embed: boolean) => {
 		const baseUrl = 'https://play.offkai.tech/play?key=local&type=whep&url=';
@@ -24,6 +26,7 @@
 
 		if (response.ok) {
 			errorNotif = undefined;
+			successNotif = 'Live input synced.';
 		} else {
 			const error = await response.json();
 			errorNotif = error.message;
@@ -41,13 +44,6 @@
 <Container>
 	<h1 class="text-xl">Live Inputs</h1>
 
-	{#if errorNotif}
-		<Alert color="red" dismissable>
-			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
-			{errorNotif}
-		</Alert>
-	{/if}
-
 	<div>
 		<Button
 			href={playerUrl(data.liveInput.playbackWebrtcUrl, false)}
@@ -58,6 +54,20 @@
 		>
 		<Button class="cursor-pointer" size="xs" onclick={handleSync}>Sync</Button>
 	</div>
+
+	{#if errorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{errorNotif}
+		</Alert>
+	{/if}
+
+	{#if successNotif}
+		<Alert color="green" dismissable>
+			{#snippet icon()}<CheckCircleSolid class="h-5 w-5" />{/snippet}
+			{successNotif}
+		</Alert>
+	{/if}
 
 	<Card class="p-4 gap-4" size="xl">
 		<h2 class="text-xl">Title: {data.liveInput.name}</h2>
@@ -75,8 +85,6 @@
 			{/if}
 		</div>
 
-		<span>Cloudflare ID: {data.liveInput.cloudflareId}</span>
-
 		<CopyBlock label="Ingest URL:" content={data.liveInput.ingestWebrtcUrl} />
 
 		<CopyBlock label="Playback URL:" content={data.liveInput.playbackWebrtcUrl} />
@@ -87,5 +95,11 @@
 		/>
 
 		<CopyBlock label="Embed URL:" content={playerUrl(data.liveInput.playbackWebrtcUrl, true)} />
+
+		<div class="mt-2 space-x-1 text-xs opacity-75">
+			<span>ID: {data.liveInput.id}</span>
+			<span>•</span>
+			<span>Cloudflare ID: {data.liveInput.cloudflareId}</span>
+		</div>
 	</Card>
 </Container>

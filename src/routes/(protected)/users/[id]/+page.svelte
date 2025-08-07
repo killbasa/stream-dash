@@ -48,5 +48,9 @@
 				disabled
 			/>
 		</div>
+
+		<div class="mt-2 space-x-1 text-xs opacity-75">
+			<span>ID: {data.user.id}</span>
+		</div>
 	</Card>
 </Container>

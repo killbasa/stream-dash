@@ -2,7 +2,6 @@
 	import SidebarItem from './SidebarItem.svelte';
 	import { authClient } from '$lib/client/auth';
 	import TelevisionIcon from '$components/svg/TelevisionIcon.svelte';
-	import NotificationIcon from '$components/svg/NotificationIcon.svelte';
 	import { Button } from 'flowbite-svelte';
 	import UsersGroupSolid from 'flowbite-svelte-icons/UsersGroupSolid.svelte';
 	import RectangleListSolid from 'flowbite-svelte-icons/RectangleListSolid.svelte';
@@ -48,11 +47,6 @@
 					<SidebarItem label="Users" href="/users">
 						{#snippet icon()}
 							<UsersGroupSolid />
-						{/snippet}
-					</SidebarItem>
-					<SidebarItem label="Notifications" href="/notifications">
-						{#snippet icon()}
-							<NotificationIcon class="h-5 w-5" />
 						{/snippet}
 					</SidebarItem>
 				</ul>

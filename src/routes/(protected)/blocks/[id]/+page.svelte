@@ -116,5 +116,9 @@
 				{/each}
 			</Select>
 		</div>
+
+		<div class="mt-2 space-x-1 text-xs opacity-75">
+			<span>ID: {data.block.id}</span>
+		</div>
 	</Card>
 </Container>

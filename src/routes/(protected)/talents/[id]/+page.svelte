@@ -81,13 +81,16 @@
 		<div class="flex flex-col gap-4">
 			<div class="flex flex-col gap-1">
 				<span class="text-3xl">{data.talent.name}</span>
-				<span>{data.talent.id}</span>
 			</div>
 
 			<div>
 				<span class="text-xl">Description</span>
 				<p>{data.talent.description || 'None'}</p>
 			</div>
+		</div>
+
+		<div class="mt-2 space-x-1 text-xs opacity-75">
+			<span>ID: {data.talent.id}</span>
 		</div>
 	</Card>
 </Container>

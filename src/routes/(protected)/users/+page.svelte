@@ -302,18 +302,18 @@
 
 	<h2>Whitelist</h2>
 
+	<div>
+		<Button size="xs" onclick={() => (openWhitelistModal = true)} class="cursor-pointer">
+			Create
+		</Button>
+	</div>
+
 	{#if whitelistErrorNotif}
 		<Alert color="red" dismissable>
 			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
 			{whitelistErrorNotif}
 		</Alert>
 	{/if}
-
-	<div>
-		<Button size="xs" onclick={() => (openWhitelistModal = true)} class="cursor-pointer">
-			Create
-		</Button>
-	</div>
 
 	<Card class="overflow-hidden" size="xl">
 		<Table>

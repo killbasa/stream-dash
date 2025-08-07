@@ -21,6 +21,7 @@
 	import QuestionCircleSolid from 'flowbite-svelte-icons/QuestionCircleSolid.svelte';
 	import { SvelteMap } from 'svelte/reactivity';
 	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
+	import CheckCircleSolid from 'flowbite-svelte-icons/CheckCircleSolid.svelte';
 	import type { PageProps } from './$types';
 	import { invalidate } from '$app/navigation';
 
@@ -31,6 +32,7 @@
 
 	let liveinputErrorNotif = $state<string>();
 	let syncErrorNotif = $state<string>();
+	let syncSuccessNotif = $state<string>();
 
 	let openCreateModal = $state(false);
 
@@ -92,6 +94,7 @@
 
 		if (response.ok) {
 			syncErrorNotif = undefined;
+			syncSuccessNotif = 'Live inputs synchronized.';
 		} else {
 			const error = await response.json();
 			syncErrorNotif = error.message;
@@ -131,18 +134,18 @@
 <Container>
 	<h1 class="text-xl">Live Inputs</h1>
 
+	<div>
+		<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs">
+			Create
+		</Button>
+	</div>
+
 	{#if liveinputErrorNotif}
 		<Alert color="red" dismissable>
 			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
 			{liveinputErrorNotif}
 		</Alert>
 	{/if}
-
-	<div>
-		<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs">
-			Create
-		</Button>
-	</div>
 
 	<Card class="overflow-hidden" size="xl">
 		<Table>
@@ -245,6 +248,10 @@
 		</Tooltip>
 	</div>
 
+	<div>
+		<Button class="cursor-pointer" size="xs" onclick={handleSync}>Sync</Button>
+	</div>
+
 	{#if syncErrorNotif}
 		<Alert color="red" dismissable>
 			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
@@ -252,9 +259,12 @@
 		</Alert>
 	{/if}
 
-	<div>
-		<Button class="cursor-pointer" size="xs" onclick={handleSync}>Sync</Button>
-	</div>
+	{#if syncSuccessNotif}
+		<Alert color="green" dismissable>
+			{#snippet icon()}<CheckCircleSolid class="h-5 w-5" />{/snippet}
+			{syncSuccessNotif}
+		</Alert>
+	{/if}
 
 	<Card class="overflow-hidden" size="xl">
 		<Table>
