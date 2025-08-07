@@ -1,3 +1,4 @@
+import { alias } from './svelte.config.js'; // Import to ensure svelte config is loaded
 import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
@@ -15,6 +16,7 @@ export default defineConfig({
 	preview: serverOptions,
 	test: {
 		globals: true,
+		alias,
 		coverage: {
 			provider: 'v8',
 			reporter: ['text'],

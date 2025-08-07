@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Sidebar from '$components/layout/Sidebar.svelte';
-	import Toaster from '$components/Toaster.svelte';
 	import { Drawer, NavHamburger } from 'flowbite-svelte';
 	import { writable } from 'svelte/store';
 	import type { LayoutProps } from './$types';
@@ -16,8 +15,6 @@
 		}
 	});
 </script>
-
-<Toaster />
 
 <Drawer bind:hidden={$hidden} class="bg-gray-900 text-gray-300 w-48 p-0">
 	<Sidebar />

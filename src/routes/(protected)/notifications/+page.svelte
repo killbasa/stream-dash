@@ -1,29 +1,28 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { toast } from '$lib/client/stores/toasts';
-	import { Button, Card, Input, Label } from 'flowbite-svelte';
+	import { Alert, Button, Card, Input, Label } from 'flowbite-svelte';
+	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
 	import type { PageProps, SubmitFunction } from './$types';
 	import { enhance } from '$app/forms';
 
 	let { data }: PageProps = $props();
 
 	let webhook = $derived(data.webhook);
+	let errorNotif = $state<string>();
 
 	const handleUpdate: SubmitFunction = () => {
 		return function ({ result }) {
 			if (result.type === 'failure') {
 				// console.error('Failed to update webhook:', result.data?.errors);
-				toast.error('Failed to update webhook');
+				errorNotif = 'Failed to update webhook';
 				return;
 			}
 
 			if (result.type === 'error') {
 				// console.error('Error updating webhook:', result.error);
-				toast.error('Error updating webhook');
+				errorNotif = 'Error updating webhook';
 				return;
 			}
-
-			toast.success('Webhook updated');
 		};
 	};
 </script>
@@ -34,6 +33,13 @@
 
 <Container>
 	<h1 class="text-xl">Notifications</h1>
+
+	{#if errorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{errorNotif}
+		</Alert>
+	{/if}
 
 	<form method="POST" action="?/update" use:enhance={handleUpdate}>
 		<Card class="p-4 gap-4" size="xl">

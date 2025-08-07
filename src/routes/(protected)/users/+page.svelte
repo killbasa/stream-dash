@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { toast } from '$lib/client/stores/toasts';
 	import { ReadableScopes } from '$lib/client/constants';
 	import {
 		Button,
@@ -16,8 +15,10 @@
 		Label,
 		Input,
 		Card,
+		Alert,
 	} from 'flowbite-svelte';
 	import { SvelteMap } from 'svelte/reactivity';
+	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
 	import type { PageProps } from './$types';
 	import { invalidate } from '$app/navigation';
 
@@ -25,6 +26,9 @@
 
 	let users = $derived(data.users);
 	let whitelists = $derived(data.whitelists);
+
+	let userErrorNotif = $state<string>();
+	let whitelistErrorNotif = $state<string>();
 
 	let openWhitelistModal = $state(false);
 
@@ -73,13 +77,14 @@
 			}),
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			userErrorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			userErrorNotif = error.message;
 			return;
 		}
 
-		toast.success('User updated');
 		await invalidate('api:users');
 	};
 
@@ -88,13 +93,14 @@
 			method: 'DELETE',
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			userErrorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			userErrorNotif = error.message;
 			return;
 		}
 
-		toast.success('User deleted');
 		await invalidate('api:users');
 	};
 
@@ -104,13 +110,14 @@
 			body: event.data,
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			whitelistErrorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			whitelistErrorNotif = error.message;
 			return;
 		}
 
-		toast.success('Whitelist entry created');
 		await invalidate('api:users');
 	};
 
@@ -123,13 +130,14 @@
 			body: data,
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			whitelistErrorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			whitelistErrorNotif = error.message;
 			return;
 		}
 
-		toast.success('Whitelist entry revoked');
 		await invalidate('api:users');
 	};
 </script>
@@ -141,13 +149,20 @@
 <Container>
 	<h1 class="text-xl">Users</h1>
 
+	{#if userErrorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{userErrorNotif}
+		</Alert>
+	{/if}
+
 	<Card class="overflow-hidden" size="xl">
 		<Table>
 			<TableHead>
-				<TableHeadCell>Name</TableHeadCell>
-				<TableHeadCell>Email</TableHeadCell>
-				<TableHeadCell>Role</TableHeadCell>
-				<TableHeadCell>Actions</TableHeadCell>
+				<TableHeadCell class="w-1/4">Name</TableHeadCell>
+				<TableHeadCell class="w-1/4">Email</TableHeadCell>
+				<TableHeadCell class="w-1/4">Role</TableHeadCell>
+				<TableHeadCell class="w-1/4">Actions</TableHeadCell>
 			</TableHead>
 			<TableBody>
 				{#each users as entry (entry.id)}
@@ -286,6 +301,14 @@
 	</Card>
 
 	<h2>Whitelist</h2>
+
+	{#if whitelistErrorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{whitelistErrorNotif}
+		</Alert>
+	{/if}
+
 	<div>
 		<Button size="xs" onclick={() => (openWhitelistModal = true)} class="cursor-pointer">
 			Create
@@ -295,9 +318,9 @@
 	<Card class="overflow-hidden" size="xl">
 		<Table>
 			<TableHead>
-				<TableHeadCell>Email</TableHeadCell>
-				<TableHeadCell>Role</TableHeadCell>
-				<TableHeadCell>Actions</TableHeadCell>
+				<TableHeadCell class="w-1/4">Email</TableHeadCell>
+				<TableHeadCell class="w-2/4">Role</TableHeadCell>
+				<TableHeadCell class="w-1/4">Actions</TableHeadCell>
 			</TableHead>
 			<TableBody>
 				{#each whitelists as entry (entry.id)}

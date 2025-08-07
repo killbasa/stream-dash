@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { toast } from '$lib/client/stores/toasts';
 	import {
+		Alert,
 		Badge,
 		Button,
 		Card,
@@ -20,14 +20,19 @@
 	} from 'flowbite-svelte';
 	import QuestionCircleSolid from 'flowbite-svelte-icons/QuestionCircleSolid.svelte';
 	import { SvelteMap } from 'svelte/reactivity';
+	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
 	import type { PageProps } from './$types';
 	import { invalidate } from '$app/navigation';
 
 	let { data }: PageProps = $props();
 
-	let openCreateModal = $state(false);
 	let liveInputs = $derived(data.liveInputs);
 	let pendingLiveInputs = $derived(data.pendingLiveInputs);
+
+	let liveinputErrorNotif = $state<string>();
+	let syncErrorNotif = $state<string>();
+
+	let openCreateModal = $state(false);
 
 	const liveInputDeleteModals = $derived(
 		new SvelteMap<string, boolean>(
@@ -53,13 +58,14 @@
 			body: event.data,
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			liveinputErrorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			liveinputErrorNotif = error.message;
 			return;
 		}
 
-		toast.success('Live Input created');
 		await invalidate('api:live-inputs');
 	};
 
@@ -68,13 +74,14 @@
 			method: 'DELETE',
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			liveinputErrorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			liveinputErrorNotif = error.message;
 			return;
 		}
 
-		toast.success('Live Input deleted');
 		await invalidate('api:live-inputs');
 	};
 
@@ -83,13 +90,14 @@
 			method: 'POST',
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			syncErrorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			syncErrorNotif = error.message;
 			return;
 		}
 
-		toast.success('Live Inputs synchronized');
 		await invalidate('api:live-inputs');
 	};
 
@@ -104,13 +112,14 @@
 			}),
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			syncErrorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			syncErrorNotif = error.message;
 			return;
 		}
 
-		toast.success('Live Inputs imported');
 		await invalidate('api:live-inputs');
 	};
 </script>
@@ -122,6 +131,13 @@
 <Container>
 	<h1 class="text-xl">Live Inputs</h1>
 
+	{#if liveinputErrorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{liveinputErrorNotif}
+		</Alert>
+	{/if}
+
 	<div>
 		<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs">
 			Create
@@ -131,10 +147,10 @@
 	<Card class="overflow-hidden" size="xl">
 		<Table>
 			<TableHead>
-				<TableHeadCell>Name</TableHeadCell>
-				<TableHeadCell>Type</TableHeadCell>
-				<TableHeadCell>Status</TableHeadCell>
-				<TableHeadCell>Actions</TableHeadCell>
+				<TableHeadCell class="w-1/4">Name</TableHeadCell>
+				<TableHeadCell class="w-1/4">Type</TableHeadCell>
+				<TableHeadCell class="w-1/4">Status</TableHeadCell>
+				<TableHeadCell class="w-1/4">Actions</TableHeadCell>
 			</TableHead>
 			<TableBody>
 				{#each liveInputs as entry (entry.id)}
@@ -229,6 +245,13 @@
 		</Tooltip>
 	</div>
 
+	{#if syncErrorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{syncErrorNotif}
+		</Alert>
+	{/if}
+
 	<div>
 		<Button class="cursor-pointer" size="xs" onclick={handleSync}>Sync</Button>
 	</div>
@@ -236,10 +259,10 @@
 	<Card class="overflow-hidden" size="xl">
 		<Table>
 			<TableHead>
-				<TableHeadCell>Name</TableHeadCell>
-				<TableHeadCell>Type</TableHeadCell>
-				<TableHeadCell>Status</TableHeadCell>
-				<TableHeadCell>Actions</TableHeadCell>
+				<TableHeadCell class="w-1/4">Name</TableHeadCell>
+				<TableHeadCell class="w-1/4">Type</TableHeadCell>
+				<TableHeadCell class="w-1/4">Status</TableHeadCell>
+				<TableHeadCell class="w-1/4">Actions</TableHeadCell>
 			</TableHead>
 			<TableBody>
 				{#each pendingLiveInputs as entry (entry.id)}

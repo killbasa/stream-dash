@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { toast } from '$lib/client/stores/toasts';
 	import PlaceholderAvatar from '$components/PlaceholderAvatar.svelte';
 	import {
 		Button,
@@ -18,14 +17,19 @@
 		Helper,
 		Avatar,
 		Card,
+		Alert,
 	} from 'flowbite-svelte';
 	import { SvelteMap } from 'svelte/reactivity';
+	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
 	import type { PageProps } from './$types';
 	import { invalidate } from '$app/navigation';
 
 	let { data }: PageProps = $props();
 
 	let talents = $derived(data.talents);
+
+	let errorNotif = $state<string>();
+
 	let openCreateModal = $state(false);
 
 	const talentDeleteModals = $derived(
@@ -43,13 +47,14 @@
 			body: event.data,
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			errorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			errorNotif = error.message;
 			return;
 		}
 
-		toast.success('Talent created');
 		await invalidate('api:talents');
 	};
 
@@ -58,13 +63,14 @@
 			method: 'DELETE',
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			errorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			errorNotif = error.message;
 			return;
 		}
 
-		toast.success('Talent deleted');
 		await invalidate('api:talents');
 	};
 </script>
@@ -76,6 +82,13 @@
 <Container>
 	<h1 class="text-xl">Talents</h1>
 
+	{#if errorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{errorNotif}
+		</Alert>
+	{/if}
+
 	<div>
 		<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs"
 			>Create</Button
@@ -85,9 +98,9 @@
 	<Card class="overflow-hidden" size="xl">
 		<Table>
 			<TableHead>
-				<TableHeadCell class="w-1"></TableHeadCell>
-				<TableHeadCell>Name</TableHeadCell>
-				<TableHeadCell>Actions</TableHeadCell>
+				<TableHeadCell></TableHeadCell>
+				<TableHeadCell class="w-3/4">Name</TableHeadCell>
+				<TableHeadCell class="w-1/4">Actions</TableHeadCell>
 			</TableHead>
 			<TableBody>
 				{#each talents as entry (entry.id)}

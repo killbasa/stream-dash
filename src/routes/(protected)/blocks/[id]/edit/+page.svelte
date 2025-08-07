@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { toast } from '$lib/client/stores/toasts';
 	import { getUnixTime } from '$lib/client/utils';
 	import {
+		Alert,
 		Button,
 		Card,
 		Datepicker,
@@ -12,6 +12,7 @@
 		Select,
 		Timepicker,
 	} from 'flowbite-svelte';
+	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
 	import type { PageProps, SubmitFunction } from './$types';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
@@ -27,6 +28,8 @@
 		data.block.end ? new Date(data.block.end) : undefined, //
 	);
 
+	let errorNotif = $state<string>();
+
 	const handleEdit: SubmitFunction = (event) => {
 		if (start_date && start_time) {
 			const time = getUnixTime(start_date, start_time);
@@ -40,18 +43,17 @@
 
 		return async function ({ result }) {
 			if (result.type === 'failure') {
-				console.error('Error updating block:', result.data?.errors);
-				toast.error('Error updating block');
+				console.error('Failed to update block:', result.data?.errors);
+				errorNotif = 'Failed to update block';
 				return;
 			}
 
 			if (result.type === 'error') {
 				console.error('Error updating block:', result.error);
-				toast.error('Error updating block');
+				errorNotif = 'Error updating block';
 				return;
 			}
 
-			toast.success('Block updated');
 			await goto('/blocks');
 		};
 	};
@@ -63,6 +65,13 @@
 
 <Container>
 	<h1 class="text-xl">Editing: {data.block.name}</h1>
+
+	{#if errorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{errorNotif}
+		</Alert>
+	{/if}
 
 	<form method="POST" action="?/update" use:enhance={handleEdit}>
 		<Card class="p-4 gap-4" size="xl">

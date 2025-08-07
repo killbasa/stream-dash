@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { toast } from '$lib/client/stores/toasts';
 	import PlaceholderAvatar from '$components/PlaceholderAvatar.svelte';
 	import { Avatar, Card } from 'flowbite-svelte';
 	import UserEditSolid from 'flowbite-svelte-icons/UserEditSolid.svelte';
@@ -11,6 +10,8 @@
 	let { data }: PageProps = $props();
 
 	let avatarSrc = $derived(data.talent.imageUrl);
+
+	let errorNotif = $state<string>();
 
 	const updateProfilePicture: ChangeEventHandler<HTMLInputElement> = async (event) => {
 		const file = event.currentTarget.files?.item(0);
@@ -24,13 +25,13 @@
 			body: payload,
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			errorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			errorNotif = error.message;
 			return;
 		}
-
-		toast.success('Profile picture updated');
 
 		await invalidate('api:talents');
 	};
@@ -45,7 +46,7 @@
 
 	<Card class="p-4 gap-4" size="xl">
 		<div>
-			<div class="flex">
+			<div class="flex flex-col">
 				<label
 					for="profile-picture"
 					class="cursor-pointer relative hover:opacity-80 transition-opacity h-48 w-48"
@@ -55,6 +56,7 @@
 							class="absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shrink-0 h-12 w-12 text-black"
 						/>
 					</div>
+
 					{#if avatarSrc}
 						<Avatar src={avatarSrc} class="w-full h-full" />
 					{:else}
@@ -69,6 +71,10 @@
 						onchange={updateProfilePicture}
 					/>
 				</label>
+
+				{#if errorNotif}
+					<span class="text-red-500">{errorNotif}</span>
+				{/if}
 			</div>
 		</div>
 
@@ -87,7 +93,7 @@
 </Container>
 
 <style lang="postcss">
-	@references 'tailwindcss';
+	@references '$src/app.css';
 
 	.edit-icon {
 		@apply opacity-0 transition-opacity;

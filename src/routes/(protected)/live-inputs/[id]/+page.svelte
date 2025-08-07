@@ -1,12 +1,14 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
 	import CopyBlock from '$components/forms/CopyBlock.svelte';
-	import { toast } from '$lib/client/stores/toasts';
-	import { Badge, Button, Card } from 'flowbite-svelte';
+	import { Alert, Badge, Button, Card } from 'flowbite-svelte';
+	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
 	import type { PageProps } from './$types';
 	import { invalidate } from '$app/navigation';
 
 	let { data, params }: PageProps = $props();
+
+	let errorNotif = $state<string>();
 
 	const playerUrl = (url: string, embed: boolean) => {
 		const baseUrl = 'https://play.offkai.tech/play?key=local&type=whep&url=';
@@ -20,13 +22,14 @@
 			method: 'POST',
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			errorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			errorNotif = error.message;
 			return;
 		}
 
-		toast.success('Live Input synchronized');
 		await invalidate('api:live-inputs');
 	};
 </script>
@@ -37,6 +40,13 @@
 
 <Container>
 	<h1 class="text-xl">Live Inputs</h1>
+
+	{#if errorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{errorNotif}
+		</Alert>
+	{/if}
 
 	<div>
 		<Button

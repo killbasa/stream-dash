@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { toast } from '$lib/client/stores/toasts';
 	import {
+		Alert,
 		Button,
 		Card,
 		Input,
@@ -15,6 +15,7 @@
 		TableHeadCell,
 	} from 'flowbite-svelte';
 	import { SvelteMap } from 'svelte/reactivity';
+	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
 	import type { PageProps } from './$types';
 	import { page } from '$app/state';
 	import { goto, invalidate } from '$app/navigation';
@@ -53,6 +54,8 @@
 			}),
 	);
 
+	let errorNotif = $state<string>();
+
 	const blockDeleteModals = $derived(
 		new SvelteMap<string, boolean>(
 			blocks.reduce((acc, block) => {
@@ -67,13 +70,14 @@
 			method: 'DELETE',
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			errorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			errorNotif = error.message;
 			return;
 		}
 
-		toast.success('Block deleted');
 		await invalidate('api:blocks');
 	};
 </script>
@@ -84,6 +88,13 @@
 
 <Container>
 	<h1 class="text-xl">Blocks</h1>
+
+	{#if errorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{errorNotif}
+		</Alert>
+	{/if}
 
 	<div>
 		<Button href="/blocks/create" class="cursor-pointer" size="xs">Create</Button>

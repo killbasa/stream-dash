@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { toast } from '$lib/client/stores/toasts';
 	import {
+		Alert,
 		Button,
 		Card,
 		Input,
@@ -16,12 +16,16 @@
 		Textarea,
 	} from 'flowbite-svelte';
 	import { SvelteMap } from 'svelte/reactivity';
+	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
 	import type { PageProps } from './$types';
 	import { invalidate } from '$app/navigation';
 
 	let { data }: PageProps = $props();
 
 	let locations = $derived(data.locations);
+
+	let errorNotif = $state<string>();
+
 	let openCreateModal = $state(false);
 
 	const locationDeleteModals = $derived(
@@ -39,13 +43,14 @@
 			body: event.data,
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			errorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			errorNotif = error.message;
 			return;
 		}
 
-		toast.success('Location created');
 		await invalidate('api:locations');
 	};
 
@@ -54,13 +59,14 @@
 			method: 'DELETE',
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			errorNotif = undefined;
+		} else {
 			const error = await response.json();
-			toast.error(`Error: ${error.message}`);
+			errorNotif = error.message;
 			return;
 		}
 
-		toast.success('Location deleted');
 		await invalidate('api:locations');
 	};
 </script>
@@ -71,6 +77,13 @@
 
 <Container>
 	<h1 class="text-xl">Locations</h1>
+
+	{#if errorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{errorNotif}
+		</Alert>
+	{/if}
 
 	<div>
 		<Button onclick={() => (openCreateModal = true)} class="cursor-pointer" size="xs"
@@ -123,14 +136,14 @@
 	<Card class="overflow-hidden" size="xl">
 		<Table>
 			<TableHead>
-				<TableHeadCell>Name</TableHeadCell>
-				<TableHeadCell>Actions</TableHeadCell>
+				<TableHeadCell class="w-3/4">Name</TableHeadCell>
+				<TableHeadCell class="w-1/4">Actions</TableHeadCell>
 			</TableHead>
 			<TableBody>
 				{#each locations as entry (entry.id)}
 					<TableBodyRow>
 						<TableBodyCell>{entry.name}</TableBodyCell>
-						<TableBodyCell>
+						<TableBodyCell class="space-x-2">
 							<Button size="xs" color="alternative" href="/locations/{entry.id}"
 								>View</Button
 							>

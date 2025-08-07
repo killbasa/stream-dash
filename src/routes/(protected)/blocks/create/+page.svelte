@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { toast } from '$lib/client/stores/toasts';
 	import { getUnixTime } from '$lib/client/utils';
 	import {
+		Alert,
 		Button,
 		Card,
 		Datepicker,
@@ -12,6 +12,7 @@
 		Select,
 		Timepicker,
 	} from 'flowbite-svelte';
+	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
 	import type { PageProps, SubmitFunction } from './$types';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
@@ -22,6 +23,8 @@
 	let end_time = $state<string>('00:00');
 	let start_date = $state<Date | undefined>(undefined);
 	let end_date = $state<Date | undefined>(undefined);
+
+	let errorNotif = $state<string>();
 
 	const handleCreate: SubmitFunction = (event) => {
 		if (start_date && start_time) {
@@ -36,18 +39,17 @@
 
 		return async function ({ result }) {
 			if (result.type === 'failure') {
-				console.error('Error creating block:', result.data?.errors);
-				toast.error('Error creating block');
+				console.error('Failed to create block:', result.data?.errors);
+				errorNotif = 'Failed to create block';
 				return;
 			}
 
 			if (result.type === 'error') {
 				console.error('Error creating block:', result.error);
-				toast.error('Error creating block');
+				errorNotif = 'Error creating block';
 				return;
 			}
 
-			toast.success('Block created');
 			await goto('/blocks');
 		};
 	};
@@ -59,6 +61,13 @@
 
 <Container>
 	<h1 class="text-xl">Create a Block</h1>
+
+	{#if errorNotif}
+		<Alert color="red" dismissable>
+			{#snippet icon()}<InfoCircleSolid class="h-5 w-5" />{/snippet}
+			{errorNotif}
+		</Alert>
+	{/if}
 
 	<form method="POST" action="?/create" use:enhance={handleCreate}>
 		<Card class="p-4 gap-4" size="xl">
