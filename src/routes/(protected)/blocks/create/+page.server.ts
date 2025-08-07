@@ -38,8 +38,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 const CreateActionSchema = z.object({
 	name: z.string().min(3),
 	description: z.string().nullish(),
-	start: z.number(),
-	end: z.number(),
+	start: z.coerce.number(),
+	end: z.coerce.number(),
 	talents: z.array(z.string()),
 	ingestLiveInputId: z.string(),
 	playbackLiveInputId: z.string(),

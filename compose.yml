@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:17.5-alpine3.22
+    restart: unless-stopped
     environment:
       POSTGRES_DB: streamdash
       POSTGRES_USER: user
