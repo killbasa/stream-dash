@@ -85,16 +85,25 @@
 			{/if}
 		</div>
 
-		<CopyBlock label="Ingest URL:" content={data.liveInput.ingestWebrtcUrl} />
-
-		<CopyBlock label="Playback URL:" content={data.liveInput.playbackWebrtcUrl} />
+		<CopyBlock id="ingest-url" label="Ingest URL:" content={data.liveInput.ingestWebrtcUrl} />
 
 		<CopyBlock
+			id="playback-url"
+			label="Playback URL:"
+			content={data.liveInput.playbackWebrtcUrl}
+		/>
+
+		<CopyBlock
+			id="player-url"
 			label="Player URL:"
 			content={playerUrl(data.liveInput.playbackWebrtcUrl, false)}
 		/>
 
-		<CopyBlock label="Embed URL:" content={playerUrl(data.liveInput.playbackWebrtcUrl, true)} />
+		<CopyBlock
+			id="embed-url"
+			label="Embed URL:"
+			content={playerUrl(data.liveInput.playbackWebrtcUrl, true)}
+		/>
 
 		<div class="mt-2 space-x-1 text-xs opacity-75">
 			<span>ID: {data.liveInput.id}</span>

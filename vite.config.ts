@@ -14,6 +14,15 @@ export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 	server: serverOptions,
 	preview: serverOptions,
+	optimizeDeps: {
+		include: [
+			'tailwind-merge',
+			'tailwind-variants',
+			'date-fns',
+			'@floating-ui/utils',
+			'@floating-ui/dom',
+		],
+	},
 	test: {
 		globals: true,
 		alias,

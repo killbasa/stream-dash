@@ -1,6 +1,6 @@
 import { PrismaClient } from '../src/lib/server/db/generated/client';
 import { AuthRole, AuthRoles } from '../src/lib/client/constants';
-import { PrismaNeon } from '@prisma/adapter-neon';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { loadEnvFile } from 'node:process';
 
 const email = process.argv[2];
@@ -11,14 +11,14 @@ if (!email) {
 
 const role = process.argv[3];
 
-if (!AuthRoles.includes(role as AuthRole)) {
+if (!Object.values(AuthRoles).includes(role as AuthRole)) {
 	console.error('Invalid role. Use "superadmin", "admin", or "user".');
 	process.exit(1);
 }
 
 loadEnvFile();
 
-const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 
 export const prisma = new PrismaClient({ adapter });
 

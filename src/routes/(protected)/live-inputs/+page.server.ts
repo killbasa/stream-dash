@@ -16,7 +16,11 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 
 	depends('api:live-inputs');
 
-	const liveInputs = await prisma.liveInput.findMany();
+	const liveInputs = await prisma.liveInput.findMany({
+		orderBy: {
+			createdAt: 'desc',
+		},
+	});
 
 	const validLiveInputs: LiveInput[] = [];
 	const pendingLiveInputs: LiveInput[] = [];

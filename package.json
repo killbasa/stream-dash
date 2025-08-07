@@ -23,7 +23,7 @@
 		"docker": "docker build -t killbasa/stream-dash ."
 	},
 	"dependencies": {
-		"@prisma/adapter-neon": "6.13.0",
+		"@prisma/adapter-pg": "6.13.0",
 		"@prisma/client": "6.13.0",
 		"better-auth": "^1.3.4",
 		"cloudflare": "^4.5.0",
