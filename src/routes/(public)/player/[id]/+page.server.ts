@@ -9,6 +9,10 @@ function getCustomerId(url: string): string | null {
 }
 
 export const load: PageServerLoad = async ({ params }) => {
+	if (params.id.length !== 36) {
+		error(404, 'Live input not found');
+	}
+
 	const liveInput = await prisma.liveInput.findUnique({
 		where: {
 			id: params.id,
