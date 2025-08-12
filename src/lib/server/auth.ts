@@ -56,7 +56,7 @@ export const auth = betterAuth({
 							data: {
 								...user,
 								role: whitelist.defaultRole,
-								scopes: [],
+								scopes: whitelist.defaultScopes,
 							},
 						});
 					} catch (error) {

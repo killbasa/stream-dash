@@ -72,8 +72,8 @@
 			},
 			body: JSON.stringify({
 				id: entry.id,
-				role: event.data.get('role') ?? undefined,
-				scopes: event.data.getAll('scopes'),
+				role: event.data.get('user_role') ?? undefined,
+				scopes: event.data.getAll('user_scopes'),
 			}),
 		});
 
@@ -230,7 +230,8 @@
 							<div>
 								<Label for="user_scopes" class="mb-2">Scopes</Label>
 								<MultiSelect
-									name="scopes"
+									id="user_scopes"
+									name="user_scopes"
 									items={ReadableScopes}
 									value={entry.scopes}
 								/>
@@ -404,10 +405,20 @@
 
 		<div>
 			<Label for="whitelist_role" class="mb-2">Default Role</Label>
-			<Select name="whitelist_role" placeholder="Select a role" clearable>
+			<Select id="whitelist_role" name="whitelist_role" placeholder="Select a role" clearable>
 				<option value="admin">Admin</option>
 				<option value="user">User</option>
 			</Select>
+		</div>
+
+		<div>
+			<Label for="whitelist_scopes" class="mb-2">Scopes</Label>
+			<MultiSelect
+				id="whitelist_scopes"
+				name="whitelist_scopes"
+				items={ReadableScopes}
+				value={[]}
+			/>
 		</div>
 
 		{#snippet footer()}

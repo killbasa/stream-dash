@@ -52,7 +52,7 @@ const UpdateActionSchema = z.object({
 	description: z.string().nullish().optional(),
 	start: z.coerce.number().optional(),
 	end: z.coerce.number().optional(),
-	talents: z.array(z.string()).optional(),
+	talents: z.array(z.string()),
 	ingestLiveInputId: z.string().optional(),
 	playbackLiveInputId: z.string().optional(),
 	locationId: z.string().optional(),
@@ -96,7 +96,7 @@ export const actions: Actions = {
 				start: data.data.start ? new Date(data.data.start) : undefined,
 				end: data.data.end ? new Date(data.data.end) : undefined,
 				talents: {
-					connect: data.data.talents?.map((id) => ({ id })),
+					set: data.data.talents.map((talentId) => ({ id: talentId })),
 				},
 				ingestLiveInputId: data.data.ingestLiveInputId,
 				playbackLiveInputId: data.data.playbackLiveInputId,

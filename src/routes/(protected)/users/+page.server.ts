@@ -1,6 +1,6 @@
 import { prisma } from '$lib/server/db/client';
 import { hasPermission } from '$lib/server/utils';
-import { AuthRoles } from '$lib/client/constants';
+import { AuthRoles, AuthScopes } from '$lib/client/constants';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
 import type { Actions, PageServerLoad } from './$types';
@@ -26,6 +26,9 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 				role: true,
 				scopes: true,
 			},
+			orderBy: {
+				createdAt: 'desc',
+			},
 		}),
 		prisma.whitelist.findMany({
 			select: {
@@ -45,6 +48,7 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 const WhitelistPostBody = z.object({
 	email: z.email(),
 	defaultRole: z.enum(AuthRoles).optional(),
+	defaultScopes: z.array(z.enum(AuthScopes)).optional(),
 });
 
 export const actions: Actions = {
@@ -58,6 +62,7 @@ export const actions: Actions = {
 		const data = WhitelistPostBody.safeParse({
 			email: formData.get('whitelist_email'),
 			defaultRole: formData.get('whitelist_role'),
+			defaultScopes: formData.getAll('whitelist_scopes'),
 		});
 
 		if (!data.success) {
@@ -73,6 +78,7 @@ export const actions: Actions = {
 			data: {
 				email: data.data.email,
 				defaultRole: data.data.defaultRole,
+				defaultScopes: data.data.defaultScopes,
 			},
 		});
 

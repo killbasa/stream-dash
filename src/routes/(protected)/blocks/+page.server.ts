@@ -30,6 +30,9 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 					},
 				},
 			},
+			orderBy: {
+				start: 'asc',
+			},
 		}),
 	]);
 

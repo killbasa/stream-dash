@@ -15,7 +15,11 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 
 	depends('api:talents');
 
-	const talents = await prisma.talent.findMany();
+	const talents = await prisma.talent.findMany({
+		orderBy: {
+			createdAt: 'desc',
+		},
+	});
 
 	return {
 		talents,

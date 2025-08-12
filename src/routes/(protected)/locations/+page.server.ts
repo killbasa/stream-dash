@@ -12,7 +12,11 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 
 	depends('api:locations');
 
-	const locations = await prisma.location.findMany();
+	const locations = await prisma.location.findMany({
+		orderBy: {
+			createdAt: 'desc',
+		},
+	});
 
 	return {
 		locations,
