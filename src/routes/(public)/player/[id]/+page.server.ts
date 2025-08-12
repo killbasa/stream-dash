@@ -20,6 +20,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	}
 
 	return {
+		name: liveInput.name,
 		id: liveInput.cloudflareId,
 		customerId: getCustomerId(liveInput.playbackWebrtcUrl),
 	};

@@ -4,6 +4,10 @@
 	let { data }: PageProps = $props();
 </script>
 
+<svelte:head>
+	<title>{data.name}</title>
+</svelte:head>
+
 <iframe
 	title="Live Input Player"
 	src="https://{data.customerId}.cloudflarestream.com/{data.id}/iframe?autoplay=1"
