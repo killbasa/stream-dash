@@ -99,7 +99,7 @@
 		<CopyBlock
 			id="embed-url"
 			label="Embed URL:"
-			content={window.location.origin + `/player/${data.liveInput.id}`}
+			content={window.location.origin + `/player/${data.liveInput.id}?embed=true`}
 		/>
 
 		<CopyBlock
