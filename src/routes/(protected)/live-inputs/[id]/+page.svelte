@@ -53,6 +53,9 @@
 			target="_blank">Watch</Button
 		>
 		<Button class="cursor-pointer" size="xs" onclick={handleSync}>Sync</Button>
+		<Button href="/player/{data.liveInput.id}" class="cursor-pointer" size="xs" target="_blank"
+			>Player</Button
+		>
 	</div>
 
 	{#if errorNotif}
@@ -94,15 +97,21 @@
 		/>
 
 		<CopyBlock
-			id="player-url"
-			label="Player URL:"
-			content={playerUrl(data.liveInput.playbackWebrtcUrl, false)}
+			id="embed-url"
+			label="Embed URL:"
+			content={window.location.origin + `/player/${data.liveInput.id}`}
 		/>
 
 		<CopyBlock
-			id="embed-url"
-			label="Embed URL:"
+			id="embed-url-offkai"
+			label="Embed URL (OffKai):"
 			content={playerUrl(data.liveInput.playbackWebrtcUrl, true)}
+		/>
+
+		<CopyBlock
+			id="player-url-offkai"
+			label="Player URL (OffKai):"
+			content={playerUrl(data.liveInput.playbackWebrtcUrl, false)}
 		/>
 
 		<div class="mt-2 space-x-1 text-xs opacity-75">
