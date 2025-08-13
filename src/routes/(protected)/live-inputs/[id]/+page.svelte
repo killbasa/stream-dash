@@ -6,6 +6,7 @@
 	import CheckCircleSolid from 'flowbite-svelte-icons/CheckCircleSolid.svelte';
 	import type { PageProps } from './$types';
 	import { invalidate } from '$app/navigation';
+	import { page } from '$app/state';
 
 	let { data, params }: PageProps = $props();
 
@@ -99,7 +100,7 @@
 		<CopyBlock
 			id="embed-url"
 			label="Embed URL:"
-			content={window.location.origin + `/player/${data.liveInput.id}?embed=true`}
+			content={page.url.origin + `/player/${data.liveInput.id}?embed=true`}
 		/>
 
 		<CopyBlock
