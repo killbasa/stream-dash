@@ -5,6 +5,9 @@ import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { env } from '$env/dynamic/private';
 
 export const auth = betterAuth({
+	telemetry: {
+		enabled: false,
+	},
 	database: prismaAdapter(prisma, {
 		provider: 'postgresql',
 	}),

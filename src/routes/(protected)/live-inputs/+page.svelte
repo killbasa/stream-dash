@@ -179,7 +179,7 @@
 								<Badge color="gray" class="ml-2">Unknown</Badge>
 							{/if}
 						</TableBodyCell>
-						<TableBodyCell class="flex gap-2">
+						<TableBodyCell>
 							<Button size="xs" color="alternative" href="/live-inputs/{entry.id}"
 								>View</Button
 							>
@@ -298,15 +298,16 @@
 								<Badge color="gray" class="ml-2">Unknown</Badge>
 							{/if}
 						</TableBodyCell>
-						<TableBodyCell class="flex gap-2">
+						<TableBodyCell>
 							<Button
 								type="button"
 								class="cursor-pointer"
 								size="xs"
 								color="alternative"
 								onclick={() => liveInputImportModals.set(entry.id, true)}
-								>Import</Button
 							>
+								Import
+							</Button>
 
 							{#if liveInputImportModals.get(entry.id)}
 								<Modal

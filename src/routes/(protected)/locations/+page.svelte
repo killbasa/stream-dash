@@ -143,7 +143,7 @@
 				{#each locations as entry (entry.id)}
 					<TableBodyRow>
 						<TableBodyCell>{entry.name}</TableBodyCell>
-						<TableBodyCell class="space-x-2">
+						<TableBodyCell>
 							<Button size="xs" color="alternative" href="/locations/{entry.id}"
 								>View</Button
 							>
