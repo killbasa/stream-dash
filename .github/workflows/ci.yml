@@ -22,6 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install
+          yarn db:generate
 
       - name: Run checks
         run: |
