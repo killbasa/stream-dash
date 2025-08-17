@@ -21,21 +21,27 @@ loadEnvFile();
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
-const existing = await prisma.whitelist.findUnique({
+const existing = await prisma.user.findUnique({
 	where: { email },
 });
 
-if (existing) {
-	console.log(`${email} is already whitelisted`);
+if (!existing) {
+	console.log(`${email} is not a registered user`);
 	process.exit(0);
 }
 
-await prisma.whitelist.create({
+if (existing.role === role) {
+	console.log(`${email} is already a ${role}`);
+	process.exit(0);
+}
+
+await prisma.user.update({
+	where: { email },
 	data: {
 		email,
-		defaultRole: role,
+		role: role,
 	},
 });
 
-console.log(`Whitelisted ${email}`);
+console.log(`Updated ${email}'s role to ${role}`);
 process.exit(0);

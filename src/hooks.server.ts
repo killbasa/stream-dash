@@ -1,4 +1,4 @@
-import { auth } from '$lib/server/auth';
+import { auth } from '$src/lib/server/auth';
 import { redirect } from '@sveltejs/kit';
 import { svelteKitHandler } from 'better-auth/svelte-kit';
 import type { Handle } from '@sveltejs/kit';
@@ -15,11 +15,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		if (session) {
 			locals.session = session?.session;
 			locals.user = session?.user;
-
-			const url = new URL(request.url);
-			if (url.pathname === '/') {
-				redirect(307, '/blocks');
-			}
 
 			return svelteKitHandler({ event, resolve, auth, building });
 		} else {

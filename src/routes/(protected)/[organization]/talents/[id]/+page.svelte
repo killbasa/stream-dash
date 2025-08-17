@@ -1,0 +1,45 @@
+<script lang="ts">
+	import Container from '$components/layout/Container.svelte';
+	import PlaceholderAvatar from '$components/PlaceholderAvatar.svelte';
+	import { Avatar, Card } from 'flowbite-svelte';
+	import type { PageProps } from './$types';
+
+	let { data }: PageProps = $props();
+</script>
+
+<svelte:head>
+	<title>{data.talent.name} | Talents</title>
+</svelte:head>
+
+<Container>
+	<h1 class="text-xl">Talents</h1>
+
+	<Card class="p-4 gap-4" size="xl">
+		<div>
+			<div class="flex flex-col">
+				<label for="profile-picture" class="relative transition-opacity h-48 w-48">
+					{#if data.talent.imageUrl}
+						<Avatar src={data.talent.imageUrl} class="w-full h-full" />
+					{:else}
+						<PlaceholderAvatar />
+					{/if}
+				</label>
+			</div>
+		</div>
+
+		<div class="flex flex-col gap-4">
+			<div class="flex flex-col gap-1">
+				<span class="text-3xl">{data.talent.name}</span>
+			</div>
+
+			<div>
+				<span class="text-xl">Description</span>
+				<p>{data.talent.description || 'None'}</p>
+			</div>
+		</div>
+
+		<div class="mt-2 space-x-1 text-xs opacity-75">
+			<span>ID: {data.talent.id}</span>
+		</div>
+	</Card>
+</Container>

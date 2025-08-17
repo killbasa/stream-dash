@@ -3392,9 +3392,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flowbite-svelte@npm:1.12.4":
-  version: 1.12.4
-  resolution: "flowbite-svelte@npm:1.12.4"
+"flowbite-svelte@npm:1.12.5":
+  version: 1.12.5
+  resolution: "flowbite-svelte@npm:1.12.5"
   dependencies:
     "@floating-ui/dom": "npm:^1.7.3"
     "@floating-ui/utils": "npm:^0.2.10"
@@ -3407,7 +3407,7 @@ __metadata:
   peerDependencies:
     svelte: ^5.29.0
     tailwindcss: ^4.1.4
-  checksum: 10c0/4b0a17a51a135e0d2af4b0301a21a5bd3365b4ac58e132a9bb4d39a7c9b0b9918ccc1064c8f275faffb2c6daa05e1d79baafd16da8a8a0247a34346323344c94
+  checksum: 10c0/76b7d0da43c4de2d687c4033b367e93e0636a4d5c0e34f781654f0b1b48ec490635aeb02f097a81919f70789984cac03319c1882caa16bc242685dd304ac28fe
   languageName: node
   linkType: hard
 
@@ -5960,7 +5960,7 @@ __metadata:
     eslint: "npm:9.33.0"
     eslint-config-prettier: "npm:^10.1.8"
     flowbite: "npm:^3.1.2"
-    flowbite-svelte: "npm:1.12.4"
+    flowbite-svelte: "npm:1.12.5"
     flowbite-svelte-icons: "npm:^2.2.1"
     husky: "npm:^9.1.7"
     lint-staged: "npm:^16.1.5"

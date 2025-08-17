@@ -2,7 +2,7 @@ generator client {
     provider = "prisma-client"
     output   = "../../src/lib/server/db/generated"
 
-    previewFeatures = ["queryCompiler", "driverAdapters"]
+    previewFeatures = ["queryCompiler", "driverAdapters", "relationJoins"]
 
     runtime      = "nodejs"
     moduleFormat = "esm"

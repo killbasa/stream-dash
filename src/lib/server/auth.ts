@@ -1,7 +1,17 @@
 import { prisma } from './db/client';
-import { AuthRoles } from '$lib/client/constants';
+import {
+	InstanceAccessControl,
+	InstanceSuperadminRole,
+	InstanceUserRole,
+	OrgAccessControl,
+	OrgAdminRole,
+	OrgEditorRole,
+	OrgMemberRole,
+	OrgOwnerRole,
+} from '../client/auth/permissions';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { admin, organization } from 'better-auth/plugins';
 import { env } from '$env/dynamic/private';
 
 export const auth = betterAuth({
@@ -20,22 +30,32 @@ export const auth = betterAuth({
 			clientSecret: env.GOOGLE_CLIENT_SECRET,
 		},
 	},
-	user: {
-		additionalFields: {
-			role: {
-				type: [...Object.values(AuthRoles)],
-				required: false,
-				defaultValue: 'reader',
-				input: false,
+	plugins: [
+		admin({
+			ac: InstanceAccessControl,
+			adminRoles: ['superadmin'],
+			defaultRole: 'user',
+			roles: {
+				superadmin: InstanceSuperadminRole,
+				user: InstanceUserRole,
 			},
-			scopes: {
-				type: 'string[]',
-				required: false,
-				defaultValue: [],
-				input: false,
+		}),
+		organization({
+			ac: OrgAccessControl,
+			adminRoles: ['owner', 'admin'],
+			creatorRole: 'owner',
+			defaultRole: 'member',
+			roles: {
+				owner: OrgOwnerRole,
+				admin: OrgAdminRole,
+				editor: OrgEditorRole,
+				member: OrgMemberRole,
 			},
-		},
-	},
+			allowUserToCreateOrganization: (user) => {
+				return user.role === 'superadmin';
+			},
+		}),
+	],
 	databaseHooks: {
 		user: {
 			create: {
@@ -50,16 +70,14 @@ export const auth = betterAuth({
 							return false;
 						}
 
-						if (whitelist.defaultRole === 'superadmin') {
-							console.error('Attempt to create superadmin user from whitelist.');
-							return false;
-						}
+						await prisma.whitelist.delete({
+							where: { email: user.email },
+						});
 
 						return Promise.resolve({
 							data: {
 								...user,
 								role: whitelist.defaultRole,
-								scopes: whitelist.defaultScopes,
 							},
 						});
 					} catch (error) {
