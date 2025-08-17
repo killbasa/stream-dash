@@ -27,7 +27,7 @@ export const POST: RequestHandler = async (event) => {
 	}
 
 	try {
-		if (!timingSafeEqual(Buffer.from(header), Buffer.from(env.CLOUDFLARE_WEBHOOK_SECRET))) {
+		if (!timingSafeEqual(Buffer.from(header), Buffer.from(env.CLOUDFLARE_WEBHOOK_SECRET!))) {
 			console.log('Webhook auth header is invalid');
 			return failWebhook();
 		}

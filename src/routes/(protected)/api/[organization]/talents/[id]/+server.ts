@@ -37,12 +37,12 @@ export const PUT: RequestHandler = async ({ params, request }) => {
 
 		if (talent.imageId) {
 			await cloudflare.images.v1.delete(talent.imageId, {
-				account_id: env.CLOUDFLARE_ACCOUNT_ID,
+				account_id: env.CLOUDFLARE_ACCOUNT_ID!,
 			});
 		}
 
 		const response = await cloudflare.images.v1.create({
-			account_id: env.CLOUDFLARE_ACCOUNT_ID,
+			account_id: env.CLOUDFLARE_ACCOUNT_ID!,
 			file: image,
 		});
 
@@ -85,7 +85,7 @@ export const DELETE: RequestHandler = async ({ params, request }) => {
 
 		if (talent.imageId) {
 			await cloudflare.images.v1.delete(talent.imageId, {
-				account_id: env.CLOUDFLARE_ACCOUNT_ID,
+				account_id: env.CLOUDFLARE_ACCOUNT_ID!,
 			});
 		}
 

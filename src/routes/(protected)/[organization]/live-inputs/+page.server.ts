@@ -92,7 +92,7 @@ export const actions: Actions = {
 
 		await prisma.$transaction(async (tx) => {
 			const liveInput = await cloudflare.stream.liveInputs.create({
-				account_id: env.CLOUDFLARE_ACCOUNT_ID,
+				account_id: env.CLOUDFLARE_ACCOUNT_ID!,
 				meta: {
 					name: data.data.name,
 				},

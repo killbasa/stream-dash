@@ -53,7 +53,7 @@ export const POST: RequestHandler = async ({ params, request }) => {
 			});
 
 			const liveInput = await cloudflare.stream.liveInputs.get(dbLiveInput.cloudflareId, {
-				account_id: env.CLOUDFLARE_ACCOUNT_ID,
+				account_id: env.CLOUDFLARE_ACCOUNT_ID!,
 			});
 
 			const data = LiveInputStatusResponseObj.parse(liveInput);

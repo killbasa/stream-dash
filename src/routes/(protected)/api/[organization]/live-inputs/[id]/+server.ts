@@ -73,7 +73,7 @@ export const DELETE: RequestHandler = async ({ params, request }) => {
 		}
 
 		await cloudflare.stream.liveInputs.delete(liveInput.cloudflareId, {
-			account_id: env.CLOUDFLARE_ACCOUNT_ID,
+			account_id: env.CLOUDFLARE_ACCOUNT_ID!,
 		});
 
 		await tx.liveInput.delete({

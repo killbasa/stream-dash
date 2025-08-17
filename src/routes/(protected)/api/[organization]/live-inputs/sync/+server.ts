@@ -67,7 +67,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		await prisma.$transaction(async (tx) => {
 			// The return type from this is wrong (2025-08-03)
 			const liveInputsRaw = await cloudflare.stream.liveInputs.list({
-				account_id: env.CLOUDFLARE_ACCOUNT_ID,
+				account_id: env.CLOUDFLARE_ACCOUNT_ID!,
 			});
 
 			const liveInputs = LiveInputResponseList.parse(liveInputsRaw);
@@ -95,7 +95,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 			for (const input of liveInputsToCreate) {
 				const res = await cloudflare.stream.liveInputs.get(input.uid, {
-					account_id: env.CLOUDFLARE_ACCOUNT_ID,
+					account_id: env.CLOUDFLARE_ACCOUNT_ID!,
 				});
 
 				const inputData = LiveInputResponseObj.parse(res);

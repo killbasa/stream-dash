@@ -32,7 +32,7 @@ export const zWebhookPayload = z.object({
 export const getWebhook = async (): Promise<WebhookApiResponse | null> => {
 	const response = await cloudflare.stream.webhooks
 		.get({
-			account_id: env.CLOUDFLARE_ACCOUNT_ID,
+			account_id: env.CLOUDFLARE_ACCOUNT_ID!,
 		})
 		.then((response) => response as WebhookApiResponse)
 		.catch((err) => {
@@ -50,7 +50,7 @@ export const getWebhook = async (): Promise<WebhookApiResponse | null> => {
 export const createWebhook = async (url: string): Promise<WebhookApiResponse | null> => {
 	const response = await cloudflare.stream.webhooks
 		.update({
-			account_id: env.CLOUDFLARE_ACCOUNT_ID,
+			account_id: env.CLOUDFLARE_ACCOUNT_ID!,
 			notificationUrl: url,
 		})
 		.then((response) => response as WebhookApiResponse)

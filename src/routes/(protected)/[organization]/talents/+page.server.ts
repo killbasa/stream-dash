@@ -84,7 +84,7 @@ export const actions: Actions = {
 			let response: Image | undefined;
 			if (image instanceof File) {
 				response = await cloudflare.images.v1.create({
-					account_id: env.CLOUDFLARE_ACCOUNT_ID,
+					account_id: env.CLOUDFLARE_ACCOUNT_ID!,
 					file: image,
 				});
 			}

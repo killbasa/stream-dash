@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ request, depends }) => {
 
 	const webhook = await prisma.webhook.findUnique({
 		where: {
-			accountId: env.CLOUDFLARE_ACCOUNT_ID,
+			accountId: env.CLOUDFLARE_ACCOUNT_ID!,
 		},
 	});
 
