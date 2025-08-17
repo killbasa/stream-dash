@@ -20,6 +20,7 @@ export const load: PageServerLoad = async ({ locals, params, depends }) => {
 	depends('api:talents');
 
 	return {
+		user: locals.user,
 		talent,
 	};
 };

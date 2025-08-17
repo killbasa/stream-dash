@@ -53,10 +53,10 @@
 			color="alternative"
 			target="_blank">Watch</Button
 		>
-		<Button class="cursor-pointer" size="xs" onclick={handleSync}>Sync</Button>
 		<Button href="/player/{data.liveInput.id}" class="cursor-pointer" size="xs" target="_blank"
-			>Player</Button
+			>Embed</Button
 		>
+		<Button class="cursor-pointer" size="xs" onclick={handleSync}>Sync</Button>
 	</div>
 
 	{#if errorNotif}

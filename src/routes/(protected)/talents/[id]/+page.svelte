@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
 	import PlaceholderAvatar from '$components/PlaceholderAvatar.svelte';
+	import { AuthScopes } from '$src/lib/client/constants';
 	import { Avatar, Card } from 'flowbite-svelte';
 	import UserEditSolid from 'flowbite-svelte-icons/UserEditSolid.svelte';
 	import type { PageProps } from './$types';
@@ -9,11 +10,18 @@
 
 	let { data }: PageProps = $props();
 
+	const canEdit =
+		data.user?.role === 'admin' || data.user?.scopes?.includes(AuthScopes.TalentsEdit);
+
 	let avatarSrc = $derived(data.talent.imageUrl);
 
 	let errorNotif = $state<string>();
 
 	const updateProfilePicture: ChangeEventHandler<HTMLInputElement> = async (event) => {
+		if (!canEdit) {
+			return;
+		}
+
 		const file = event.currentTarget.files?.item(0);
 		if (!file) return;
 
@@ -49,13 +57,17 @@
 			<div class="flex flex-col">
 				<label
 					for="profile-picture"
-					class="cursor-pointer relative hover:opacity-80 transition-opacity h-48 w-48"
+					class="relative transition-opacity h-48 w-48"
+					class:cursor-pointer={canEdit}
+					class:hover:opacity-80={canEdit}
 				>
-					<div class="edit-icon">
-						<UserEditSolid
-							class="absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shrink-0 h-12 w-12 text-black"
-						/>
-					</div>
+					{#if canEdit}
+						<div class="edit-icon">
+							<UserEditSolid
+								class="absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 shrink-0 h-12 w-12 text-black"
+							/>
+						</div>
+					{/if}
 
 					{#if avatarSrc}
 						<Avatar src={avatarSrc} class="w-full h-full" />
@@ -63,13 +75,15 @@
 						<PlaceholderAvatar />
 					{/if}
 
-					<input
-						type="file"
-						id="profile-picture"
-						accept="image/*"
-						class="hidden"
-						onchange={updateProfilePicture}
-					/>
+					{#if canEdit}
+						<input
+							type="file"
+							id="profile-picture"
+							accept="image/*"
+							class="hidden"
+							onchange={updateProfilePicture}
+						/>
+					{/if}
 				</label>
 
 				{#if errorNotif}

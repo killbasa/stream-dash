@@ -91,8 +91,8 @@ model Block {
 
     name        String
     description String?
-    start       DateTime
-    end         DateTime
+    start       DateTime // Specify TZ
+    end         DateTime // Specify TZ
 
     talents Talent[]
 
