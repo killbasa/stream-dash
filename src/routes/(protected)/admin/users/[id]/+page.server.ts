@@ -15,8 +15,6 @@ export const load: PageServerLoad = async ({ request, depends, params }) => {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
-	depends('api:users');
-
 	const users = await auth.api.listUsers({
 		query: {
 			limit: 1,
@@ -31,7 +29,17 @@ export const load: PageServerLoad = async ({ request, depends, params }) => {
 		error(404, 'User not found');
 	}
 
+	const sessions = await auth.api.listUserSessions({
+		body: {
+			userId: params.id,
+		},
+		headers: request.headers,
+	});
+
+	depends('api:users');
+
 	return {
 		user: users.users[0],
+		sessions,
 	};
 };

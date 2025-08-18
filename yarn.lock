@@ -2090,9 +2090,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"better-auth@npm:^1.3.6":
-  version: 1.3.6
-  resolution: "better-auth@npm:1.3.6"
+"better-auth@npm:^1.3.7":
+  version: 1.3.7
+  resolution: "better-auth@npm:1.3.7"
   dependencies:
     "@better-auth/utils": "npm:0.2.6"
     "@better-fetch/fetch": "npm:^1.1.18"
@@ -2114,7 +2114,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/10b9082797ea7218df6b55a2dff7e189aaa8e9afe485d616c3a97dc5ec472b2a5e1b94b41926ebefe04d4f90b0a37bfc030df91378343ab05ee60c3e9905c2b0
+  checksum: 10c0/f28036f79c01aad66c8051d6df98ed829160325a9af26b2361face63ee0ce11c85143685bd508c6792821de4a0c7987e4ca1cd294c05948607b72099eae82818
   languageName: node
   linkType: hard
 
@@ -3380,21 +3380,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"flowbite-svelte-icons@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "flowbite-svelte-icons@npm:2.2.1"
+"flowbite-svelte-icons@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "flowbite-svelte-icons@npm:2.3.0"
   dependencies:
     clsx: "npm:^2.1.1"
     tailwind-merge: "npm:^3.3.1"
   peerDependencies:
     svelte: ^5.0.0
-  checksum: 10c0/c60f1e4c224c5dccaf6eb51a164d01fc84a0beedd552cf6ef5978e3297e71531c820ce9d4223706d5468f2306c01344baf058ce5d220a19fedcbe9fbf298b15f
+  checksum: 10c0/78f21f023e4aafd93792fb807ff7412e718da35829b0cfcf870adfed1ddb67615f62bec5f4cf2e981809485f757a53539c6c852afd309ce85ed705816f16ba0c
   languageName: node
   linkType: hard
 
-"flowbite-svelte@npm:1.12.5":
-  version: 1.12.5
-  resolution: "flowbite-svelte@npm:1.12.5"
+"flowbite-svelte@npm:1.11.8":
+  version: 1.11.8
+  resolution: "flowbite-svelte@npm:1.11.8"
   dependencies:
     "@floating-ui/dom": "npm:^1.7.3"
     "@floating-ui/utils": "npm:^0.2.10"
@@ -3407,7 +3407,7 @@ __metadata:
   peerDependencies:
     svelte: ^5.29.0
     tailwindcss: ^4.1.4
-  checksum: 10c0/76b7d0da43c4de2d687c4033b367e93e0636a4d5c0e34f781654f0b1b48ec490635aeb02f097a81919f70789984cac03319c1882caa16bc242685dd304ac28fe
+  checksum: 10c0/7e9dd2ab8f07582bb666013237f48925aa5d6a43e763a389d22416b6e3f5496c2520679be421ddc3956da89d8e02488e3973c9610026f7004f664027d7cb1a4a
   languageName: node
   linkType: hard
 
@@ -5955,13 +5955,13 @@ __metadata:
     "@tailwindcss/vite": "npm:^4.1.12"
     "@types/node": "npm:^24.3.0"
     "@vitest/coverage-v8": "npm:^3.2.4"
-    better-auth: "npm:^1.3.6"
+    better-auth: "npm:^1.3.7"
     cloudflare: "npm:^4.5.0"
     eslint: "npm:9.33.0"
     eslint-config-prettier: "npm:^10.1.8"
     flowbite: "npm:^3.1.2"
-    flowbite-svelte: "npm:1.12.5"
-    flowbite-svelte-icons: "npm:^2.2.1"
+    flowbite-svelte: "npm:1.11.8"
+    flowbite-svelte-icons: "npm:^2.3.0"
     husky: "npm:^9.1.7"
     lint-staged: "npm:^16.1.5"
     prettier: "npm:^3.6.2"

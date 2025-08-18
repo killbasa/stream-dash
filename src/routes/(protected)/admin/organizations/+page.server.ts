@@ -15,11 +15,11 @@ export const load: PageServerLoad = async ({ request, depends }) => {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
-	depends('api:organizations');
-
 	const organizations = await auth.api.listOrganizations({
 		headers: request.headers,
 	});
+
+	depends('api:organizations');
 
 	return {
 		organizations,

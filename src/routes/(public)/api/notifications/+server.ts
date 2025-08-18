@@ -5,7 +5,6 @@ import { LiveInputStatus } from '$lib/server/db/generated/client';
 import { json } from '@sveltejs/kit';
 import { timingSafeEqual } from 'node:crypto';
 import type { RequestHandler } from './$types';
-import { env } from '$env/dynamic/private';
 
 const failWebhook = () => json({ message: 'Invalid request' }, { status: 400 });
 
@@ -27,15 +26,38 @@ export const POST: RequestHandler = async (event) => {
 	}
 
 	try {
-		if (!timingSafeEqual(Buffer.from(header), Buffer.from(env.CLOUDFLARE_WEBHOOK_SECRET!))) {
-			console.log('Webhook auth header is invalid');
-			return failWebhook();
-		}
-
 		const raw = await event.request.json();
 		const data = zWebhookPayload.safeParse(raw);
 		if (!data.success) {
 			console.log('Invalid payload:', data.error);
+			return failWebhook();
+		}
+
+		const cfSettings = await prisma.liveInput.findUniqueOrThrow({
+			where: {
+				id: data.data.data.input_id,
+			},
+			select: {
+				organization: {
+					select: {
+						cloudflareCredentials: {
+							select: {
+								webhookSecret: true,
+							},
+						},
+					},
+				},
+			},
+		});
+
+		const secret = cfSettings.organization.cloudflareCredentials?.webhookSecret;
+		if (!secret) {
+			console.log('No webhook secret found');
+			return failWebhook();
+		}
+
+		if (!timingSafeEqual(Buffer.from(header), Buffer.from(secret))) {
+			console.log('Webhook auth header is invalid');
 			return failWebhook();
 		}
 

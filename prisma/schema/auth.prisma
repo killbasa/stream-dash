@@ -67,15 +67,21 @@ model Verification {
 }
 
 model Organization {
-    id                    String                 @id
-    name                  String
-    slug                  String?
-    logo                  String?
-    createdAt             DateTime
-    metadata              String?
-    members               Member[]
-    invitations           Invitation[]
+    id          String       @id
+    name        String
+    slug        String?
+    logo        String?
+    createdAt   DateTime
+    metadata    String?
+    members     Member[]
+    invitations Invitation[]
+
     cloudflareCredentials CloudflareCredentials?
+    liveInputs            LiveInput[]
+    talents               Talent[]
+    locations             Location[]
+    blocks                Block[]
+    webhooks              Webhook[]
 
     @@unique([slug])
     @@map("organization")

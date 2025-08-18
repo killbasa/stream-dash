@@ -18,11 +18,11 @@ export const load: PageServerLoad = async ({ request, depends }) => {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
-	depends('api:users');
-
 	const [users, whitelists] = await Promise.all([
 		auth.api.listUsers({
-			query: {},
+			query: {
+				limit: 100,
+			},
 			headers: request.headers,
 		}),
 		prisma.whitelist.findMany({
@@ -33,6 +33,8 @@ export const load: PageServerLoad = async ({ request, depends }) => {
 			},
 		}),
 	]);
+
+	depends('api:users');
 
 	return {
 		users,

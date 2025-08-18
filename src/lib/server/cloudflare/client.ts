@@ -1,6 +1,23 @@
+import { prisma } from '../db/client';
 import Cloudflare from 'cloudflare';
-import { env } from '$env/dynamic/private';
 
-export const cloudflare = new Cloudflare({
-	apiToken: env.CLOUDFLARE_API_TOKEN,
-});
+export const getCloudflareClient = async (
+	orgId: string,
+): Promise<{ cloudflare: Cloudflare; accountId: string }> => {
+	const settings = await prisma.cloudflareCredentials.findUnique({
+		where: {
+			organizationId: orgId,
+		},
+	});
+
+	if (!settings) {
+		throw new Error('Cloudflare credentials not set for organization');
+	}
+
+	return {
+		cloudflare: new Cloudflare({
+			apiToken: settings.apiToken,
+		}),
+		accountId: settings.accountId,
+	};
+};

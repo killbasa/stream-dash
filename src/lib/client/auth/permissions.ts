@@ -8,6 +8,7 @@ export const OrgStatements = {
 	locations: ['create', 'read', 'update', 'delete'],
 	talents: ['create', 'read', 'update', 'delete'],
 	notifications: ['read'],
+	cloudflare: ['read', 'update'],
 
 	organization: ['read', 'update'],
 	members: ['create', 'read', 'update', 'delete', 'demote', 'promote'],
@@ -25,6 +26,8 @@ export const OrgEditorRole = OrgAccessControl.newRole({
 export const OrgOwnerRole = OrgAccessControl.newRole({
 	...OrgEditorRole.statements,
 
+	cloudflare: ['update'],
+
 	organization: ['read', 'update'],
 	members: ['create', 'read', 'update', 'delete', 'demote', 'promote'],
 });
@@ -32,7 +35,9 @@ export const OrgOwnerRole = OrgAccessControl.newRole({
 export const OrgAdminRole = OrgAccessControl.newRole({
 	...OrgEditorRole.statements,
 
-	organization: ['read', 'update'],
+	cloudflare: ['read', 'update'],
+
+	organization: ['update'],
 	members: ['create', 'read', 'update', 'delete'],
 });
 

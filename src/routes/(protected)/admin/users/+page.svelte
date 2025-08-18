@@ -215,7 +215,7 @@
 							}}
 						>
 							<div>
-								<Label for="user_role" class="mb-2">Role</Label>
+								<Label for="user_role" class="mb-1">Role</Label>
 								<Select
 									name="user_role"
 									placeholder="Select a role"
@@ -384,7 +384,7 @@
 		onaction={handleWhitelistCreate}
 	>
 		<div>
-			<Label for="whitelist_email" class="mb-2">Email</Label>
+			<Label for="whitelist_email" class="mb-1">Email</Label>
 			<Input
 				type="email"
 				id="whitelist_email"
@@ -395,7 +395,7 @@
 		</div>
 
 		<div>
-			<Label for="whitelist_role" class="mb-2">Default Role</Label>
+			<Label for="whitelist_role" class="mb-1">Default Role</Label>
 			<Select id="whitelist_role" name="whitelist_role" placeholder="Select a role" clearable>
 				<option value="admin">Admin</option>
 				<option value="user">User</option>
@@ -403,7 +403,7 @@
 		</div>
 
 		<div>
-			<Label for="whitelist_scopes" class="mb-2">Scopes</Label>
+			<Label for="whitelist_scopes" class="mb-1">Scopes</Label>
 			<MultiSelect
 				id="whitelist_scopes"
 				name="whitelist_scopes"

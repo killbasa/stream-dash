@@ -25,18 +25,26 @@
 	<h1 class="text-xl">Organizations</h1>
 
 	<div>
-		<Button size="xs" onclick={() => console.log('noop')} class="cursor-pointer">Create</Button>
+		<Button href="/admin/organizations/new" size="xs" class="cursor-pointer">Create</Button>
 	</div>
 
 	<Card class="overflow-hidden" size="xl">
 		<Table>
 			<TableHead>
-				<TableHeadCell class="w-1/4">Name</TableHeadCell>
+				<TableHeadCell class="w-3/4">Name</TableHeadCell>
+				<TableHeadCell class="w-1/4">Actions</TableHeadCell>
 			</TableHead>
 			<TableBody>
 				{#each organizations as entry (entry.id)}
 					<TableBodyRow>
 						<TableBodyCell>{entry.name}</TableBodyCell>
+						<TableBodyCell>
+							<Button
+								size="xs"
+								color="alternative"
+								href="/admin/organizations/{entry.id}">View</Button
+							>
+						</TableBodyCell>
 					</TableBodyRow>
 				{/each}
 			</TableBody>

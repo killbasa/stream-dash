@@ -40,6 +40,9 @@ model LiveInput {
     ingestFor   Block[] @relation("LiveInputIngestForBlocks")
     playbackFor Block[] @relation("LiveInputPlaybackForBlocks")
 
+    organizationId String
+    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+
     @@unique([type, name])
     @@map("live_input")
 }
@@ -60,7 +63,7 @@ model Talent {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    name        String  @unique
+    name        String
     description String?
 
     imageId  String?
@@ -68,6 +71,10 @@ model Talent {
 
     blocks Block[]
 
+    organizationId String
+    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+
+    @@unique([name, organizationId])
     @@map("talent")
 }
 
@@ -76,11 +83,15 @@ model Location {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    name        String  @unique
+    name        String
     description String?
 
     blocks Block[]
 
+    organizationId String
+    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+
+    @@unique([name, organizationId])
     @@map("location")
 }
 
@@ -105,17 +116,23 @@ model Block {
     locationId String?
     location   Location? @relation(fields: [locationId], references: [id], onDelete: Restrict)
 
+    organizationId String
+    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+
     @@map("block")
 }
 
+// Remove?
 model Webhook {
     id        String   @id @default(uuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    accountId       String @unique
     notificationUrl String
     secret          String
+
+    organizationId String
+    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
 
     @@map("webhook")
 }
