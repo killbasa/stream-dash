@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import '../app.sched.css';
 
 	import type { LayoutProps } from './$types';
 

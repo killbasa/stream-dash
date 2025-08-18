@@ -50,7 +50,7 @@
 				return;
 			}
 
-			await goto('/blocks');
+			await goto(`/${params.orgSlug}/blocks`);
 		};
 	};
 </script>

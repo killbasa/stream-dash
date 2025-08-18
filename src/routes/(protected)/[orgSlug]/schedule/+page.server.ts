@@ -1,5 +1,6 @@
 import { auth } from '$src/lib/server/auth';
 import { getOrgIdFromSlug } from '$src/lib/server/utils';
+import { prisma } from '$src/lib/server/db/client';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -23,4 +24,30 @@ export const load: PageServerLoad = async ({ request, params }) => {
 	if (!result.success) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
+
+	const [blocks] = await prisma.$transaction([
+		prisma.block.findMany({
+			where: {
+				organizationId: orgId,
+			},
+			include: {
+				talents: {
+					select: {
+						id: true,
+						name: true,
+					},
+				},
+				location: {
+					select: {
+						id: true,
+						name: true,
+					},
+				},
+			},
+		}),
+	]);
+
+	return {
+		blocks,
+	};
 };

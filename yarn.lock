@@ -704,6 +704,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@preact/signals-core@npm:^1.11.0":
+  version: 1.11.0
+  resolution: "@preact/signals-core@npm:1.11.0"
+  checksum: 10c0/c3668d909dbcfdc341c10996adf02421beedc88673b4c1f4e9c2bdbe275199f67fa42343388b79b222c794e884614b68ba6c50bdf7765fca60904e304e6b3d56
+  languageName: node
+  linkType: hard
+
+"@preact/signals@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@preact/signals@npm:2.2.1"
+  dependencies:
+    "@preact/signals-core": "npm:^1.11.0"
+  peerDependencies:
+    preact: ">= 10.25.0"
+  checksum: 10c0/fa2be09b97733325ae2ea2cd0b1db3eff548a45a196570d75d577fd503bb37315e0a1a1b2e7846dde71d44ae4dc7b38761029e57b24077e29b288fcb396158ea
+  languageName: node
+  linkType: hard
+
 "@prisma/adapter-pg@npm:6.14.0":
   version: 6.14.0
   resolution: "@prisma/adapter-pg@npm:6.14.0"
@@ -1030,6 +1048,43 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@schedule-x/calendar@npm:^2.36.0":
+  version: 2.36.0
+  resolution: "@schedule-x/calendar@npm:2.36.0"
+  peerDependencies:
+    "@preact/signals": ^2.0.2
+    preact: ^10.19.2
+  checksum: 10c0/134b388e6c956a62b07f1c332e8684f38520908fd0bd3ddac8762978cc032d98daf9ce3f30fe85a874dbfba432bee45516f9d68c307622a3ed3c5c4c6af8021d
+  languageName: node
+  linkType: hard
+
+"@schedule-x/shared@npm:^2.36.0":
+  version: 2.36.0
+  resolution: "@schedule-x/shared@npm:2.36.0"
+  peerDependencies:
+    "@preact/signals": ^2.0.2
+  checksum: 10c0/b3b0cba67475a032e10ad9748bb78cece64ec6805059ead48a0948be5241509aadafdb6c615b8937f5611efbccf30dc937cd41469bbceabf634bd9d263d782c4
+  languageName: node
+  linkType: hard
+
+"@schedule-x/svelte@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@schedule-x/svelte@npm:2.3.0"
+  peerDependencies:
+    "@schedule-x/calendar": ^2.23.0
+    "@schedule-x/shared": ^2.23.0
+    svelte: ^4 || ^5
+  checksum: 10c0/459b00f115c6f8da6b3c50173ec80f999159dbf7c316a94727274f52b73880c1839ae9c2f6b53dd1936c8446f99444715f79a1826cffb42f155347f5c3339b63
+  languageName: node
+  linkType: hard
+
+"@schedule-x/theme-default@npm:^2.36.0":
+  version: 2.36.0
+  resolution: "@schedule-x/theme-default@npm:2.36.0"
+  checksum: 10c0/4ec7f0bcff03fe56e0b335e2caafcdcc64ca916fe9be6bfdcd0e69b3940d9f5b55e9a2f0d52fba0f5df87c0ccec332db1f38e3963623425f2ac56cf6002f17ba
+  languageName: node
+  linkType: hard
+
 "@simplewebauthn/browser@npm:^13.1.2":
   version: 13.1.2
   resolution: "@simplewebauthn/browser@npm:13.1.2"
@@ -1082,9 +1137,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/kit@npm:^2.31.1":
-  version: 2.31.1
-  resolution: "@sveltejs/kit@npm:2.31.1"
+"@sveltejs/kit@npm:^2.33.0":
+  version: 2.33.0
+  resolution: "@sveltejs/kit@npm:2.33.0"
   dependencies:
     "@standard-schema/spec": "npm:^1.0.0"
     "@sveltejs/acorn-typescript": "npm:^1.0.5"
@@ -1109,7 +1164,7 @@ __metadata:
       optional: true
   bin:
     svelte-kit: svelte-kit.js
-  checksum: 10c0/8a3d3af40d7d936ea8c501761c646794884fa584c919c5a36d5c1e5a3ace08c738e5dc1d3a810c29c44723fb5d38ad620c71ebcbe518c050a2b98e73aea40f23
+  checksum: 10c0/6be8c4b6a6bd4fc782f41b76a51866e414b0a253c4025c20e717f32852485b2d9f46abdb27cb7edbe1ee451a709a17009e7482cea4a286bb2dcced948045f6ae
   languageName: node
   linkType: hard
 
@@ -5317,6 +5372,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact@npm:^10.27.1":
+  version: 10.27.1
+  resolution: "preact@npm:10.27.1"
+  checksum: 10c0/28c2862c94e1d69e81a476068e016aeca25a815874bb52cfbb31c3e78e0ab6799911a51cbdfcc9f8a3c183d81996a015dd7ac9850eaf90f2719d2f2e20d5b56f
+  languageName: node
+  linkType: hard
+
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -5947,10 +6009,15 @@ __metadata:
   resolution: "stream-dash@workspace:."
   dependencies:
     "@killbasa/eslint-config": "npm:^3.1.5"
+    "@preact/signals": "npm:^2.2.1"
     "@prisma/adapter-pg": "npm:6.14.0"
     "@prisma/client": "npm:6.14.0"
+    "@schedule-x/calendar": "npm:^2.36.0"
+    "@schedule-x/shared": "npm:^2.36.0"
+    "@schedule-x/svelte": "npm:^2.3.0"
+    "@schedule-x/theme-default": "npm:^2.36.0"
     "@sveltejs/adapter-node": "npm:^5.3.1"
-    "@sveltejs/kit": "npm:^2.31.1"
+    "@sveltejs/kit": "npm:^2.33.0"
     "@sveltejs/vite-plugin-svelte": "npm:^6.1.2"
     "@tailwindcss/vite": "npm:^4.1.12"
     "@types/node": "npm:^24.3.0"
@@ -5964,10 +6031,11 @@ __metadata:
     flowbite-svelte-icons: "npm:^2.3.0"
     husky: "npm:^9.1.7"
     lint-staged: "npm:^16.1.5"
+    preact: "npm:^10.27.1"
     prettier: "npm:^3.6.2"
     prettier-plugin-svelte: "npm:^3.4.0"
     prisma: "npm:^6.14.0"
-    svelte: "npm:^5.38.1"
+    svelte: "npm:^5.38.2"
     svelte-check: "npm:^4.3.1"
     tailwindcss: "npm:^4.1.12"
     tsx: "npm:^4.20.4"
@@ -6150,9 +6218,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:^5.38.1":
-  version: 5.38.1
-  resolution: "svelte@npm:5.38.1"
+"svelte@npm:^5.38.2":
+  version: 5.38.2
+  resolution: "svelte@npm:5.38.2"
   dependencies:
     "@jridgewell/remapping": "npm:^2.3.4"
     "@jridgewell/sourcemap-codec": "npm:^1.5.0"
@@ -6168,7 +6236,7 @@ __metadata:
     locate-character: "npm:^3.0.0"
     magic-string: "npm:^0.30.11"
     zimmerframe: "npm:^1.1.2"
-  checksum: 10c0/ed2a42c2c633b3371425e5584bdc20d5af0b44d6a142bd359d701e9a2beb07ffce872b28be0a3e50f38bf16e17a2ff7b9bdd69ede0c256d6a011e3dfdbde5ebc
+  checksum: 10c0/be7d245d99f00294984a99d2c75eb4f2badaf06235b53b335b15a544aadd6fa304177c0e216754305abd737127473068fae5398cc0c5bac3974aa3a82610075c
   languageName: node
   linkType: hard
 

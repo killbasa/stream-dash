@@ -17,7 +17,7 @@
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 
-	let { data }: PageProps = $props();
+	let { data, params }: PageProps = $props();
 
 	let start_time = $state<string>(new Date(data.block.start).toTimeString().slice(0, 5));
 	let end_time = $state<string>(new Date(data.block.end).toTimeString().slice(0, 5));
@@ -54,7 +54,7 @@
 				return;
 			}
 
-			await goto('/blocks');
+			await goto(`/${params.orgSlug}/blocks`);
 		};
 	};
 </script>
