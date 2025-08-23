@@ -1,4 +1,4 @@
-export const AuthScopes = {
+export const AuthMemberScopes = {
 	LiveInputsEdit: 'live-inputs/edit',
 	LiveInputsRead: 'live-inputs/read',
 	TalentsEdit: 'talents/edit',
@@ -8,22 +8,22 @@ export const AuthScopes = {
 	BlocksEdit: 'blocks/edit',
 	BlocksRead: 'blocks/read',
 } as const;
-export type AuthScope = (typeof AuthScopes)[keyof typeof AuthScopes];
+export type AuthMemberScope = (typeof AuthMemberScopes)[keyof typeof AuthMemberScopes];
 
-export const ReadableScopes: { value: string; name: string }[] = [
-	{ value: AuthScopes.LiveInputsEdit, name: 'Live Inputs - Edit' },
-	{ value: AuthScopes.LiveInputsRead, name: 'Live Inputs - Read' },
-	{ value: AuthScopes.TalentsEdit, name: 'Talents - Edit' },
-	{ value: AuthScopes.TalentsRead, name: 'Talents - Read' },
-	{ value: AuthScopes.LocationsEdit, name: 'Locations - Edit' },
-	{ value: AuthScopes.LocationsRead, name: 'Locations - Read' },
-	{ value: AuthScopes.BlocksEdit, name: 'Blocks - Edit' },
-	{ value: AuthScopes.BlocksRead, name: 'Blocks - Read' },
+export const ReadableMemberScopes: { value: string; name: string }[] = [
+	{ value: AuthMemberScopes.LiveInputsEdit, name: 'Live Inputs - Edit' },
+	{ value: AuthMemberScopes.LiveInputsRead, name: 'Live Inputs - Read' },
+	{ value: AuthMemberScopes.TalentsEdit, name: 'Talents - Edit' },
+	{ value: AuthMemberScopes.TalentsRead, name: 'Talents - Read' },
+	{ value: AuthMemberScopes.LocationsEdit, name: 'Locations - Edit' },
+	{ value: AuthMemberScopes.LocationsRead, name: 'Locations - Read' },
+	{ value: AuthMemberScopes.BlocksEdit, name: 'Blocks - Edit' },
+	{ value: AuthMemberScopes.BlocksRead, name: 'Blocks - Read' },
 ];
 
-export const AuthRoles = {
+export const AuthInstanceRoles = {
 	superadmin: 'superadmin',
 	admin: 'admin',
 	user: 'user',
 } as const;
-export type AuthRole = (typeof AuthRoles)[keyof typeof AuthRoles];
+export type AuthInstanceRole = (typeof AuthInstanceRoles)[keyof typeof AuthInstanceRoles];

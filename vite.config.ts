@@ -16,11 +16,7 @@ export default defineConfig({
 	preview: serverOptions,
 	optimizeDeps: {
 		include: [
-			'tailwind-merge',
-			'tailwind-variants',
-			'date-fns',
-			'@floating-ui/utils',
-			'@floating-ui/dom',
+			'flowbite-svelte', //
 		],
 	},
 	test: {

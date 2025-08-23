@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { authClient } from '$lib/client/auth';
+	import { authClient } from '$src/lib/client/auth';
 	import { Button } from 'flowbite-svelte';
 </script>
 
