@@ -1,5 +1,5 @@
 import Cloudflare from 'cloudflare';
-import { env } from 'process';
+import { env } from '$env/dynamic/private';
 
 export const getCloudflareServiceAccount = (): {
 	cloudflare: Cloudflare;

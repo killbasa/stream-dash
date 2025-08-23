@@ -45,16 +45,6 @@
 						<h2 class="mb-2">Events</h2>
 						<ul class="space-y-2">
 							<li>
-								<SidebarItem
-									label="Schedule"
-									href="/{$activeOrg.data.slug}/schedule"
-								>
-									{#snippet icon()}
-										<CalendarEventIcon class="h-5 w-5" />
-									{/snippet}
-								</SidebarItem>
-							</li>
-							<li>
 								<SidebarItem label="Blocks" href="/{$activeOrg.data.slug}/blocks">
 									{#snippet icon()}
 										<CalendarEventIcon class="h-5 w-5" />

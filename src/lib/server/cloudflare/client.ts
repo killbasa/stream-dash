@@ -8,6 +8,10 @@ export const getCloudflareClient = async (
 		where: {
 			organizationId: orgId,
 		},
+		select: {
+			apiToken: true,
+			accountId: true,
+		},
 	});
 
 	if (!settings) {

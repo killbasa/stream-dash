@@ -1,13 +1,17 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { Alert, Button, Card, Input, Label } from 'flowbite-svelte';
+	import { Alert, Button, ButtonGroup, Card, Input, InputAddon, Label } from 'flowbite-svelte';
 	import InfoCircleSolid from 'flowbite-svelte-icons/InfoCircleSolid.svelte';
+	import EyeOutline from 'flowbite-svelte-icons/EyeOutline.svelte';
+	import EyeSlashOutline from 'flowbite-svelte-icons/EyeSlashOutline.svelte';
 	import type { PageProps, SubmitFunction } from './$types';
 	import { enhance } from '$app/forms';
 
 	let { data, params }: PageProps = $props();
 
 	let errorNotif = $state<string>();
+	let showApiToken = $state<boolean>(false);
+	let showWebhookSecret = $state<boolean>(false);
 
 	const handleCreate: SubmitFunction = () => {
 		return function ({ result }) {
@@ -56,26 +60,56 @@
 
 			<div>
 				<Label for="cf_apitoken" class="mb-1">API Token</Label>
-				<Input
-					type="password"
-					id="cf_apitoken"
-					name="cf_apitoken"
-					required
-					autocomplete="off"
-					value={data.cfCredentials?.apiToken}
-				/>
+				<ButtonGroup class="w-full">
+					<InputAddon>
+						<button
+							type="button"
+							class="cursor-pointer"
+							onclick={() => (showApiToken = !showApiToken)}
+						>
+							{#if showApiToken}
+								<EyeOutline class="h-6 w-6" />
+							{:else}
+								<EyeSlashOutline class="h-6 w-6" />
+							{/if}
+						</button>
+					</InputAddon>
+					<Input
+						type={showApiToken ? 'text' : 'password'}
+						id="cf_apitoken"
+						name="cf_apitoken"
+						required
+						autocomplete="off"
+						value={data.cfCredentials?.apiToken}
+					/>
+				</ButtonGroup>
 			</div>
 
 			<div>
 				<Label for="cf_webhooksecret" class="mb-1">Webhook Secret</Label>
-				<Input
-					type="password"
-					id="cf_webhooksecret"
-					name="cf_webhooksecret"
-					required
-					autocomplete="off"
-					value={data.cfCredentials?.webhookSecret}
-				/>
+				<ButtonGroup class="w-full">
+					<InputAddon>
+						<button
+							type="button"
+							class="cursor-pointer"
+							onclick={() => (showWebhookSecret = !showWebhookSecret)}
+						>
+							{#if showWebhookSecret}
+								<EyeOutline class="h-6 w-6" />
+							{:else}
+								<EyeSlashOutline class="h-6 w-6" />
+							{/if}
+						</button>
+					</InputAddon>
+					<Input
+						type={showWebhookSecret ? 'text' : 'password'}
+						id="cf_webhooksecret"
+						name="cf_webhooksecret"
+						required
+						autocomplete="off"
+						value={data.cfCredentials?.webhookSecret}
+					/>
+				</ButtonGroup>
 			</div>
 
 			<div>

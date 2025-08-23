@@ -1,7 +1,16 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
 	import PlaceholderAvatar from '$components/PlaceholderAvatar.svelte';
-	import { Avatar, Card } from 'flowbite-svelte';
+	import {
+		Avatar,
+		Card,
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+	} from 'flowbite-svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -38,12 +47,25 @@
 		</div>
 	</Card>
 
-	<ul>
-		{#each data.organization.members as member}
-			<li>
-				<span>{member.user.name}</span>
-				<span>{member.role}</span>
-			</li>
-		{/each}
-	</ul>
+	<h2 class="text-md">Members</h2>
+
+	<Card class="overflow-hidden" size="xl">
+		<Table>
+			<TableHead>
+				<TableHeadCell class="w-1/4">Name</TableHeadCell>
+				<TableHeadCell class="w-1/4">Email</TableHeadCell>
+				<TableHeadCell class="w-1/4">Role</TableHeadCell>
+				<TableHeadCell class="w-1/4">Actions</TableHeadCell>
+			</TableHead>
+			<TableBody>
+				{#each data.organization.members as entry (entry.id)}
+					<TableBodyRow>
+						<TableBodyCell>{entry.user.name}</TableBodyCell>
+						<TableBodyCell>{entry.user.email}</TableBodyCell>
+						<TableBodyCell>{entry.role}</TableBodyCell>
+					</TableBodyRow>
+				{/each}
+			</TableBody>
+		</Table>
+	</Card>
 </Container>

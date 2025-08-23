@@ -345,10 +345,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.33.0, @eslint/js@npm:^9.28.0":
-  version: 9.33.0
-  resolution: "@eslint/js@npm:9.33.0"
-  checksum: 10c0/4c42c9abde76a183b8e47205fd6c3116b058f82f07b6ad4de40de56cdb30a36e9ecd40efbea1b63a84d08c206aadbb0aa39a890197e1ad6455a8e542df98f186
+"@eslint/js@npm:9.34.0, @eslint/js@npm:^9.28.0":
+  version: 9.34.0
+  resolution: "@eslint/js@npm:9.34.0"
+  checksum: 10c0/53f1bfd2a374683d9382a6850354555f6e89a88416c34a5d34e9fbbaf717e97c2b06300e8f93e5eddba8bda8951ccab7f93a680e56ded1a3d21d526019e69bab
   languageName: node
   linkType: hard
 
@@ -704,24 +704,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@preact/signals-core@npm:^1.11.0":
-  version: 1.11.0
-  resolution: "@preact/signals-core@npm:1.11.0"
-  checksum: 10c0/c3668d909dbcfdc341c10996adf02421beedc88673b4c1f4e9c2bdbe275199f67fa42343388b79b222c794e884614b68ba6c50bdf7765fca60904e304e6b3d56
-  languageName: node
-  linkType: hard
-
-"@preact/signals@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "@preact/signals@npm:2.2.1"
-  dependencies:
-    "@preact/signals-core": "npm:^1.11.0"
-  peerDependencies:
-    preact: ">= 10.25.0"
-  checksum: 10c0/fa2be09b97733325ae2ea2cd0b1db3eff548a45a196570d75d577fd503bb37315e0a1a1b2e7846dde71d44ae4dc7b38761029e57b24077e29b288fcb396158ea
-  languageName: node
-  linkType: hard
-
 "@prisma/adapter-pg@npm:6.14.0":
   version: 6.14.0
   resolution: "@prisma/adapter-pg@npm:6.14.0"
@@ -1048,43 +1030,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@schedule-x/calendar@npm:^2.36.0":
-  version: 2.36.0
-  resolution: "@schedule-x/calendar@npm:2.36.0"
-  peerDependencies:
-    "@preact/signals": ^2.0.2
-    preact: ^10.19.2
-  checksum: 10c0/134b388e6c956a62b07f1c332e8684f38520908fd0bd3ddac8762978cc032d98daf9ce3f30fe85a874dbfba432bee45516f9d68c307622a3ed3c5c4c6af8021d
-  languageName: node
-  linkType: hard
-
-"@schedule-x/shared@npm:^2.36.0":
-  version: 2.36.0
-  resolution: "@schedule-x/shared@npm:2.36.0"
-  peerDependencies:
-    "@preact/signals": ^2.0.2
-  checksum: 10c0/b3b0cba67475a032e10ad9748bb78cece64ec6805059ead48a0948be5241509aadafdb6c615b8937f5611efbccf30dc937cd41469bbceabf634bd9d263d782c4
-  languageName: node
-  linkType: hard
-
-"@schedule-x/svelte@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "@schedule-x/svelte@npm:2.3.0"
-  peerDependencies:
-    "@schedule-x/calendar": ^2.23.0
-    "@schedule-x/shared": ^2.23.0
-    svelte: ^4 || ^5
-  checksum: 10c0/459b00f115c6f8da6b3c50173ec80f999159dbf7c316a94727274f52b73880c1839ae9c2f6b53dd1936c8446f99444715f79a1826cffb42f155347f5c3339b63
-  languageName: node
-  linkType: hard
-
-"@schedule-x/theme-default@npm:^2.36.0":
-  version: 2.36.0
-  resolution: "@schedule-x/theme-default@npm:2.36.0"
-  checksum: 10c0/4ec7f0bcff03fe56e0b335e2caafcdcc64ca916fe9be6bfdcd0e69b3940d9f5b55e9a2f0d52fba0f5df87c0ccec332db1f38e3963623425f2ac56cf6002f17ba
-  languageName: node
-  linkType: hard
-
 "@simplewebauthn/browser@npm:^13.1.2":
   version: 13.1.2
   resolution: "@simplewebauthn/browser@npm:13.1.2"
@@ -1137,9 +1082,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/kit@npm:^2.33.0":
-  version: 2.33.0
-  resolution: "@sveltejs/kit@npm:2.33.0"
+"@sveltejs/kit@npm:^2.36.1":
+  version: 2.36.1
+  resolution: "@sveltejs/kit@npm:2.36.1"
   dependencies:
     "@standard-schema/spec": "npm:^1.0.0"
     "@sveltejs/acorn-typescript": "npm:^1.0.5"
@@ -1164,7 +1109,7 @@ __metadata:
       optional: true
   bin:
     svelte-kit: svelte-kit.js
-  checksum: 10c0/6be8c4b6a6bd4fc782f41b76a51866e414b0a253c4025c20e717f32852485b2d9f46abdb27cb7edbe1ee451a709a17009e7482cea4a286bb2dcced948045f6ae
+  checksum: 10c0/e2ebd42f4b0a07e9454f5c5bfcc9750fdfe43976a5ff524c2209a31810e713099cd50f087ac304ce596f9150082d53b69f9bd7fa21c04399225a05968533a2bc
   languageName: node
   linkType: hard
 
@@ -1181,9 +1126,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/vite-plugin-svelte@npm:^6.1.2":
-  version: 6.1.2
-  resolution: "@sveltejs/vite-plugin-svelte@npm:6.1.2"
+"@sveltejs/vite-plugin-svelte@npm:^6.1.3":
+  version: 6.1.3
+  resolution: "@sveltejs/vite-plugin-svelte@npm:6.1.3"
   dependencies:
     "@sveltejs/vite-plugin-svelte-inspector": "npm:^5.0.0"
     debug: "npm:^4.4.1"
@@ -1194,7 +1139,7 @@ __metadata:
   peerDependencies:
     svelte: ^5.0.0
     vite: ^6.3.0 || ^7.0.0
-  checksum: 10c0/ab49dce742068d695d3f8441c9ce3db04fb6f8a7ae382f6aaf838743cea2e2ff76da4d9bd005fb322c0c3ee8720cea6481a966b3e015f27355b9c6ae0209d58b
+  checksum: 10c0/beeb36ddc01323e2ed3de9fe1281488090cee33f2f8b77e3552c919a92c331daf84bfbdb8a60ee6bf38686162da7a86e0b816b853d8701735abb33beb2e3548c
   languageName: node
   linkType: hard
 
@@ -3149,9 +3094,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:9.33.0, eslint@npm:^9.28.0":
-  version: 9.33.0
-  resolution: "eslint@npm:9.33.0"
+"eslint@npm:9.34.0, eslint@npm:^9.28.0":
+  version: 9.34.0
+  resolution: "eslint@npm:9.34.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.2.0"
     "@eslint-community/regexpp": "npm:^4.12.1"
@@ -3159,7 +3104,7 @@ __metadata:
     "@eslint/config-helpers": "npm:^0.3.1"
     "@eslint/core": "npm:^0.15.2"
     "@eslint/eslintrc": "npm:^3.3.1"
-    "@eslint/js": "npm:9.33.0"
+    "@eslint/js": "npm:9.34.0"
     "@eslint/plugin-kit": "npm:^0.3.5"
     "@humanfs/node": "npm:^0.16.6"
     "@humanwhocodes/module-importer": "npm:^1.0.1"
@@ -3195,7 +3140,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10c0/1e1f60d2b62d9d65553e9af916a8dccf00eeedd982103f35bf58c205803907cb1fda73ef595178d47384ea80d8624a182b63682a6b15d8387e9a5d86904a2a2d
+  checksum: 10c0/ba3e54fa0c8ed23d062f91519afaae77fed922a6c4d76130b6cd32154bcb406aaea4b3c5ed88e0be40828c1d5b6921592f3947dbdc5e2043de6bd7aa341fe5ea
   languageName: node
   linkType: hard
 
@@ -3368,15 +3313,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fdir@npm:^6.2.0, fdir@npm:^6.4.4, fdir@npm:^6.4.6":
-  version: 6.4.6
-  resolution: "fdir@npm:6.4.6"
+"fdir@npm:^6.2.0, fdir@npm:^6.4.4, fdir@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "fdir@npm:6.5.0"
   peerDependencies:
     picomatch: ^3 || ^4
   peerDependenciesMeta:
     picomatch:
       optional: true
-  checksum: 10c0/45b559cff889934ebb8bc498351e5acba40750ada7e7d6bde197768d2fa67c149be8ae7f8ff34d03f4e1eb20f2764116e56440aaa2f6689e9a4aa7ef06acafe9
+  checksum: 10c0/e345083c4306b3aed6cb8ec551e26c36bab5c511e99ea4576a16750ddc8d3240e63826cc624f5ae17ad4dc82e68a253213b60d556c11bfad064b7607847ed07f
   languageName: node
   linkType: hard
 
@@ -5372,13 +5317,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preact@npm:^10.27.1":
-  version: 10.27.1
-  resolution: "preact@npm:10.27.1"
-  checksum: 10c0/28c2862c94e1d69e81a476068e016aeca25a815874bb52cfbb31c3e78e0ab6799911a51cbdfcc9f8a3c183d81996a015dd7ac9850eaf90f2719d2f2e20d5b56f
-  languageName: node
-  linkType: hard
-
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -6009,29 +5947,23 @@ __metadata:
   resolution: "stream-dash@workspace:."
   dependencies:
     "@killbasa/eslint-config": "npm:^3.1.5"
-    "@preact/signals": "npm:^2.2.1"
     "@prisma/adapter-pg": "npm:6.14.0"
     "@prisma/client": "npm:6.14.0"
-    "@schedule-x/calendar": "npm:^2.36.0"
-    "@schedule-x/shared": "npm:^2.36.0"
-    "@schedule-x/svelte": "npm:^2.3.0"
-    "@schedule-x/theme-default": "npm:^2.36.0"
     "@sveltejs/adapter-node": "npm:^5.3.1"
-    "@sveltejs/kit": "npm:^2.33.0"
-    "@sveltejs/vite-plugin-svelte": "npm:^6.1.2"
+    "@sveltejs/kit": "npm:^2.36.1"
+    "@sveltejs/vite-plugin-svelte": "npm:^6.1.3"
     "@tailwindcss/vite": "npm:^4.1.12"
     "@types/node": "npm:^24.3.0"
     "@vitest/coverage-v8": "npm:^3.2.4"
     better-auth: "npm:^1.3.7"
     cloudflare: "npm:^4.5.0"
-    eslint: "npm:9.33.0"
+    eslint: "npm:9.34.0"
     eslint-config-prettier: "npm:^10.1.8"
     flowbite: "npm:^3.1.2"
-    flowbite-svelte: "npm:1.11.8"
+    flowbite-svelte: "npm:1.12.6"
     flowbite-svelte-icons: "npm:^2.3.0"
     husky: "npm:^9.1.7"
     lint-staged: "npm:^16.1.5"
-    preact: "npm:^10.27.1"
     prettier: "npm:^3.6.2"
     prettier-plugin-svelte: "npm:^3.4.0"
     prisma: "npm:^6.14.0"
@@ -6040,7 +5972,7 @@ __metadata:
     tailwindcss: "npm:^4.1.12"
     tsx: "npm:^4.20.4"
     typescript: "npm:5.9.2"
-    vite: "npm:7.1.2"
+    vite: "npm:7.1.3"
     vitest: "npm:^3.2.4"
     zod: "npm:^4.0.17"
   languageName: unknown
@@ -6666,12 +6598,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:7.1.2, vite@npm:^5.0.0 || ^6.0.0 || ^7.0.0-0":
-  version: 7.1.2
-  resolution: "vite@npm:7.1.2"
+"vite@npm:7.1.3, vite@npm:^5.0.0 || ^6.0.0 || ^7.0.0-0":
+  version: 7.1.3
+  resolution: "vite@npm:7.1.3"
   dependencies:
     esbuild: "npm:^0.25.0"
-    fdir: "npm:^6.4.6"
+    fdir: "npm:^6.5.0"
     fsevents: "npm:~2.3.3"
     picomatch: "npm:^4.0.3"
     postcss: "npm:^8.5.6"
@@ -6717,7 +6649,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/4ed825b20bc0f49db99cd382de9506b2721ccd47dcebd4a68e0ef65e3cdd2347fded52b306c34178308e0fd7fe78fd5ff517623002cb00710182ad3012c92ced
+  checksum: 10c0/a0aa418beab80673dc9a3e9d1fa49472955d6ef9d41a4c9c6bd402953f411346f612864dae267adfb2bb8ceeb894482369316ffae5816c84fd45990e352b727d
   languageName: node
   linkType: hard
 

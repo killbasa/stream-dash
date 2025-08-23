@@ -35,7 +35,7 @@
 		</div>
 
 		<div>
-			<Label for="block_date_range" class="mb-1">Date range:</Label>
+			<Label for="block_date_range" class="mb-1">Date range</Label>
 			<Datepicker
 				id="block_date_range"
 				range
@@ -47,7 +47,7 @@
 
 		<div class="grid grid-cols-2 gap-4">
 			<div>
-				<Label for="block_start" class="mb-1">Start time:</Label>
+				<Label for="block_start" class="mb-1">Start time</Label>
 				<Timepicker
 					id="block_start"
 					divClass="w-full"
@@ -57,7 +57,7 @@
 			</div>
 
 			<div>
-				<Label for="block_end" class="mb-1">End time:</Label>
+				<Label for="block_end" class="mb-1">End time</Label>
 				<Timepicker
 					id="block_end"
 					divClass="w-full"

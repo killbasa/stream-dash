@@ -91,7 +91,7 @@
 			onaction={handleCreate}
 		>
 			<div>
-				<Label for="location_name">Name</Label>
+				<Label for="location_name" class="mb-1">Name</Label>
 				<Input
 					type="text"
 					id="location_name"

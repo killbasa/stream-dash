@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { authClient } from '$src/lib/client/auth';
 	import { Select } from 'flowbite-svelte';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 
 	const orgs = authClient.useListOrganizations();
 	const activeOrg = authClient.useActiveOrganization();
@@ -23,6 +25,11 @@
 			return;
 		}
 
+		if ($activeOrg.data?.id === org.id) {
+			return;
+		}
+
+		const oldSlug = $activeOrg.data?.slug;
 		const { data, error } = await authClient.organization.setActive({
 			organizationId: org.id,
 			organizationSlug: org.slug,
@@ -36,6 +43,11 @@
 
 		console.log('Active organization set to:', data.name);
 		selectedOrgId = data.id;
+
+		if (oldSlug) {
+			// TODO - needs more validation
+			await goto(page.url.pathname.replace(oldSlug, org.slug));
+		}
 	}}
 >
 	{#each $orgs.data ?? [] as org}

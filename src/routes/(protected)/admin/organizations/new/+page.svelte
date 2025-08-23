@@ -52,6 +52,7 @@
 				return;
 			}
 
+			// TODO - update org selector
 			await goto('/admin/organizations');
 		};
 	};
