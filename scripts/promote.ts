@@ -12,7 +12,7 @@ if (!email) {
 const role = process.argv[3];
 
 if (!Object.values(AuthInstanceRoles).includes(role as AuthInstanceRole)) {
-	console.error('Invalid role. Use "superadmin", "admin", or "user".');
+	console.error('Invalid role. Use "admin" or "user".');
 	process.exit(1);
 }
 

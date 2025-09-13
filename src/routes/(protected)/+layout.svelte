@@ -7,16 +7,16 @@
 
 	let { children }: LayoutProps = $props();
 
-	let hidden = writable(true);
+	let open = writable(false);
 
 	onNavigate(() => {
-		if (!$hidden) {
-			hidden.set(true);
+		if (!$open) {
+			open.set(false);
 		}
 	});
 </script>
 
-<Drawer bind:hidden={$hidden} class="bg-gray-900 text-gray-300 w-64 p-0">
+<Drawer bind:open={$open} class="bg-gray-900 text-gray-300 w-64 p-0" dismissable={false}>
 	<Sidebar />
 </Drawer>
 
@@ -25,7 +25,7 @@
 		<Sidebar />
 	</div>
 	<div class="block sm:hidden">
-		<NavHamburger class="m-2 bg-gray-700 cursor-pointer" onclick={() => hidden.set(false)} />
+		<NavHamburger class="m-2 bg-gray-700 cursor-pointer" onclick={() => open.set(true)} />
 	</div>
 
 	<main class="flex flex-1 flex-col p-2 sm:p-4 overflow-x-auto">

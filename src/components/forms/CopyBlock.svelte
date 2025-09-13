@@ -28,14 +28,6 @@
 	}
 </script>
 
-<svelte:window
-	onclick={() => {
-		if (document.activeElement?.id !== id) {
-			copied = false;
-		}
-	}}
-/>
-
 <div class="flex flex-col gap-1">
 	<span>{label}</span>
 	<div class="flex items-center border rounded px-1 bg-gray-700">

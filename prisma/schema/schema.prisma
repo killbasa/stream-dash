@@ -2,7 +2,7 @@ generator client {
     provider = "prisma-client"
     output   = "../../src/lib/server/db/generated"
 
-    previewFeatures = ["queryCompiler", "driverAdapters", "relationJoins"]
+    previewFeatures = ["relationJoins"]
 
     runtime      = "nodejs"
     moduleFormat = "esm"
@@ -40,9 +40,6 @@ model LiveInput {
     ingestFor   Block[] @relation("LiveInputIngestForBlocks")
     playbackFor Block[] @relation("LiveInputPlaybackForBlocks")
 
-    organizationId String
-    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
-
     @@unique([type, name])
     @@map("live_input")
 }
@@ -71,10 +68,7 @@ model Talent {
 
     blocks Block[]
 
-    organizationId String
-    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
-
-    @@unique([name, organizationId])
+    @@unique([name])
     @@map("talent")
 }
 
@@ -88,10 +82,7 @@ model Location {
 
     blocks Block[]
 
-    organizationId String
-    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
-
-    @@unique([name, organizationId])
+    @@unique([name])
     @@map("location")
 }
 
@@ -116,9 +107,6 @@ model Block {
     locationId String?
     location   Location? @relation(fields: [locationId], references: [id], onDelete: Restrict)
 
-    organizationId String
-    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
-
     @@map("block")
 }
 
@@ -130,9 +118,6 @@ model Webhook {
 
     notificationUrl String
     secret          String
-
-    organizationId String
-    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
 
     @@map("webhook")
 }

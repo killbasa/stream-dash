@@ -75,7 +75,7 @@ export const actions: Actions = {
 			return fail(400, { message: 'Invalid request body' });
 		}
 
-		if (data.data.defaultRole === 'superadmin') {
+		if (data.data.defaultRole === 'admin') {
 			return fail(400, { message: 'Cannot set default role to admin' });
 		}
 

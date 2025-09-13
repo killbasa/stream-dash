@@ -46,10 +46,7 @@ export const PUT: RequestHandler = async (event) => {
 	}
 
 	if (data.data.role !== undefined) {
-		if (
-			(user.role === 'superadmin' && data.data.role !== 'superadmin') ||
-			(user.role === 'admin' && data.data.role !== 'admin')
-		) {
+		if (user.role === 'admin' && data.data.role !== 'admin') {
 			return json({ message: 'Cannot demote admins through the dashboard' }, { status: 400 });
 		}
 

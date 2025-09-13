@@ -22,7 +22,6 @@ export const ReadableMemberScopes: { value: string; name: string }[] = [
 ];
 
 export const AuthInstanceRoles = {
-	superadmin: 'superadmin',
 	admin: 'admin',
 	user: 'user',
 } as const;

@@ -1,10 +1,21 @@
-import { prisma } from './db/client';
+import type { Session } from '$lib/client/auth';
+import type { AuthMemberScope } from '../client/constants';
 
-export const getOrgIdFromSlug = async (slug: string): Promise<string | null> => {
-	const org = await prisma.organization.findUnique({
-		where: { slug },
-		select: { id: true },
-	});
+export const hasPermission = (user: Session['user'] | undefined, scopes: AuthMemberScope[]) => {
+	if (!user) return false;
+	if (!user.role) return false;
 
-	return org?.id ?? null;
+	if (user.role === 'admin') return true;
+
+	if (scopes.some((scope) => hasScope(user, scope))) {
+		return true;
+	}
+
+	return false;
+};
+
+const hasScope = (user: Session['user'], scope: AuthMemberScope) => {
+	if (!user.scopes) return false;
+
+	return user.scopes.includes(scope);
 };

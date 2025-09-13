@@ -1,17 +1,13 @@
 import { prisma } from './db/client';
 import {
 	InstanceAccessControl,
-	InstanceSuperadminRole,
+	InstanceAdminRole,
 	InstanceUserRole,
-	OrgAccessControl,
-	OrgAdminRole,
-	OrgEditorRole,
-	OrgMemberRole,
-	OrgOwnerRole,
 } from '../client/auth/permissions';
+import { AuthInstanceRoles } from '../client/constants';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { admin, organization } from 'better-auth/plugins';
+import { admin } from 'better-auth/plugins';
 import { env } from '$env/dynamic/private';
 
 export const auth = betterAuth({
@@ -33,29 +29,30 @@ export const auth = betterAuth({
 	plugins: [
 		admin({
 			ac: InstanceAccessControl,
-			adminRoles: ['superadmin'],
+			adminRoles: ['admin'],
 			defaultRole: 'user',
 			roles: {
-				superadmin: InstanceSuperadminRole,
+				admin: InstanceAdminRole,
 				user: InstanceUserRole,
 			},
 		}),
-		organization({
-			ac: OrgAccessControl,
-			adminRoles: ['owner', 'admin'],
-			creatorRole: 'owner',
-			defaultRole: 'member',
-			roles: {
-				owner: OrgOwnerRole,
-				admin: OrgAdminRole,
-				editor: OrgEditorRole,
-				member: OrgMemberRole,
-			},
-			allowUserToCreateOrganization: (user) => {
-				return user.role === 'superadmin';
-			},
-		}),
 	],
+	user: {
+		additionalFields: {
+			role: {
+				type: [...Object.values(AuthInstanceRoles)],
+				required: false,
+				defaultValue: AuthInstanceRoles.user,
+				input: false,
+			},
+			scopes: {
+				type: 'string[]',
+				required: false,
+				defaultValue: [],
+				input: false,
+			},
+		},
+	},
 	databaseHooks: {
 		user: {
 			create: {
