@@ -1,10 +1,18 @@
 import { prisma } from '$lib/server/db/client';
-import { hasPermission } from '$src/lib/server/utils';
+import { auth } from '$src/lib/server/auth';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['live-inputs/edit'])) {
+export const load: PageServerLoad = async ({ request, depends }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				blocks: ['read'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 

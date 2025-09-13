@@ -16,9 +16,8 @@ datasource database {
 model Whitelist {
     id String @id @default(uuid())
 
-    email         String   @unique
-    defaultRole   String?
-    defaultScopes String[]
+    email       String  @unique
+    defaultRole String?
 
     @@map("whitelist")
 }

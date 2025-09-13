@@ -1,11 +1,19 @@
 import { prisma } from '$lib/server/db/client';
-import { hasPermission } from '$src/lib/server/utils';
+import { auth } from '$src/lib/server/auth';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['locations/read'])) {
+export const load: PageServerLoad = async ({ request, depends }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				locations: ['read'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
@@ -28,8 +36,16 @@ const LocationPostBody = z.object({
 });
 
 export const actions: Actions = {
-	create: async ({ locals, request }) => {
-		if (!hasPermission(locals.user, ['locations/edit'])) {
+	create: async ({ request }) => {
+		const hasPermission = await auth.api.userHasPermission({
+			headers: request.headers,
+			body: {
+				permissions: {
+					locations: ['create'],
+				},
+			},
+		});
+		if (!hasPermission.success) {
 			error(403, 'Forbidden: You do not have permission to access this resource.');
 		}
 

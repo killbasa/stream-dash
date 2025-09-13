@@ -44,8 +44,8 @@
 		<div>
 			<Label for="user_role" class="mb-1">Role</Label>
 			<Select name="user_role" placeholder="Select a role" value={data.user.role} disabled>
-				<option value="superadmin">Superadmin</option>
 				<option value="admin">Admin</option>
+				<option value="editor">Editor</option>
 				<option value="user">User</option>
 			</Select>
 		</div>

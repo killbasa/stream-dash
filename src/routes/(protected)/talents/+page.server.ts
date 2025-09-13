@@ -1,13 +1,21 @@
 import { prisma } from '$lib/server/db/client';
-import { hasPermission } from '$src/lib/server/utils';
 import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import type { Image } from 'cloudflare/resources/images.mjs';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['talents/edit'])) {
+export const load: PageServerLoad = async ({ request, depends }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				talents: ['read'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
@@ -30,9 +38,17 @@ const TalentPostBody = z.object({
 });
 
 export const actions: Actions = {
-	create: async ({ request, locals }) => {
-		if (!hasPermission(locals.user, ['talents/edit'])) {
-			error(403, 'Forbidden: You do not have permission to create talents.');
+	create: async ({ request }) => {
+		const hasPermission = await auth.api.userHasPermission({
+			headers: request.headers,
+			body: {
+				permissions: {
+					talents: ['create'],
+				},
+			},
+		});
+		if (!hasPermission.success) {
+			error(403, 'Forbidden: You do not have permission to access this resource.');
 		}
 
 		const formData = await request.formData();

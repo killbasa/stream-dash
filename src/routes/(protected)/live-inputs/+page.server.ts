@@ -1,14 +1,22 @@
 import { prisma } from '$lib/server/db/client';
 import { LiveInputType } from '$lib/server/db/generated/client';
-import { hasPermission } from '$src/lib/server/utils';
 import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
 import type { LiveInput } from '$lib/server/db/generated/client';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['live-inputs/read'])) {
+export const load: PageServerLoad = async ({ request, depends }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				liveinputs: ['read'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
@@ -56,8 +64,16 @@ const LiveInputResponseObj = z.object({
 });
 
 export const actions: Actions = {
-	create: async ({ request, locals }) => {
-		if (!hasPermission(locals.user, ['live-inputs/edit'])) {
+	create: async ({ request }) => {
+		const hasPermission = await auth.api.userHasPermission({
+			headers: request.headers,
+			body: {
+				permissions: {
+					liveinputs: ['create'],
+				},
+			},
+		});
+		if (!hasPermission.success) {
 			error(403, 'Forbidden: You do not have permission to access this resource.');
 		}
 

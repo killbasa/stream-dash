@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { ReadableMemberScopes } from '$lib/client/constants';
 	import {
 		Button,
 		Table,
@@ -11,7 +10,6 @@
 		TableHeadCell,
 		Modal,
 		Select,
-		MultiSelect,
 		Label,
 		Input,
 		Card,
@@ -220,10 +218,10 @@
 									name="user_role"
 									placeholder="Select a role"
 									value={entry.role}
-									disabled={entry.role === 'admin' || entry.role === 'superadmin'}
+									disabled={entry.role === 'admin'}
 								>
-									<option value="superadmin">Superadmin</option>
 									<option value="admin">Admin</option>
+									<option value="editor">Editor</option>
 									<option value="user">User</option>
 								</Select>
 							</div>
@@ -400,16 +398,6 @@
 				<option value="admin">Admin</option>
 				<option value="user">User</option>
 			</Select>
-		</div>
-
-		<div>
-			<Label for="whitelist_scopes" class="mb-1">Scopes</Label>
-			<MultiSelect
-				id="whitelist_scopes"
-				name="whitelist_scopes"
-				items={ReadableMemberScopes}
-				value={[]}
-			/>
 		</div>
 
 		{#snippet footer()}

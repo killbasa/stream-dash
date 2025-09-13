@@ -1,5 +1,5 @@
 import { prisma } from '$lib/server/db/client';
-import { AuthInstanceRoles, AuthMemberScopes } from '$lib/client/constants';
+import { AuthInstanceRoles } from '$lib/client/constants';
 import { auth } from '$src/lib/server/auth';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
@@ -45,7 +45,6 @@ export const load: PageServerLoad = async ({ request, depends }) => {
 const WhitelistPostBody = z.object({
 	email: z.email(),
 	defaultRole: z.enum(AuthInstanceRoles).optional(),
-	defaultScopes: z.array(z.enum(AuthMemberScopes)).optional(),
 });
 
 export const actions: Actions = {
@@ -83,7 +82,6 @@ export const actions: Actions = {
 			data: {
 				email: data.data.email,
 				defaultRole: data.data.defaultRole,
-				defaultScopes: data.data.defaultScopes,
 			},
 		});
 

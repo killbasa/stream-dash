@@ -1,7 +1,7 @@
 import { prisma } from '$lib/server/db/client';
 import { ok } from '$lib/server/api';
-import { hasPermission } from '$src/lib/server/utils';
 import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
@@ -10,8 +10,8 @@ import type { LiveInputCreateManyInput } from '$lib/server/db/generated/models';
 const LiveInputResponseList = z.array(
 	z.object({
 		uid: z.string(),
-		created: z.string().datetime(),
-		modified: z.string().datetime(),
+		created: z.iso.datetime(),
+		modified: z.iso.datetime(),
 		meta: z.object({
 			name: z.string(),
 		}),
@@ -43,8 +43,16 @@ const LiveInputResponseObj = z.object({
 
 let lock = false;
 
-export const POST: RequestHandler = async ({ locals }) => {
-	if (!hasPermission(locals.user, ['live-inputs/edit'])) {
+export const POST: RequestHandler = async ({ request }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				liveinputs: ['create'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

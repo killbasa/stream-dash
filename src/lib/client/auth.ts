@@ -1,15 +1,19 @@
-import { InstanceAccessControl, InstanceAdminRole, InstanceUserRole } from './auth/permissions';
-import { adminClient, inferAdditionalFields } from 'better-auth/client/plugins';
+import {
+	InstanceAccessControl,
+	InstanceAdminRole,
+	InstanceEditorRole,
+	InstanceUserRole,
+} from './auth/permissions';
+import { adminClient } from 'better-auth/client/plugins';
 import { createAuthClient } from 'better-auth/svelte';
-import type { auth } from '../server/auth';
 
 export const authClient = createAuthClient({
 	plugins: [
-		inferAdditionalFields<typeof auth>(),
 		adminClient({
 			ac: InstanceAccessControl,
 			roles: {
 				admin: InstanceAdminRole,
+				editor: InstanceEditorRole,
 				user: InstanceUserRole,
 			},
 		}),

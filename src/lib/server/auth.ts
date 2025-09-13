@@ -2,9 +2,9 @@ import { prisma } from './db/client';
 import {
 	InstanceAccessControl,
 	InstanceAdminRole,
+	InstanceEditorRole,
 	InstanceUserRole,
 } from '../client/auth/permissions';
-import { AuthInstanceRoles } from '../client/constants';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { admin } from 'better-auth/plugins';
@@ -33,26 +33,11 @@ export const auth = betterAuth({
 			defaultRole: 'user',
 			roles: {
 				admin: InstanceAdminRole,
+				editor: InstanceEditorRole,
 				user: InstanceUserRole,
 			},
 		}),
 	],
-	user: {
-		additionalFields: {
-			role: {
-				type: [...Object.values(AuthInstanceRoles)],
-				required: false,
-				defaultValue: AuthInstanceRoles.user,
-				input: false,
-			},
-			scopes: {
-				type: 'string[]',
-				required: false,
-				defaultValue: [],
-				input: false,
-			},
-		},
-	},
 	databaseHooks: {
 		user: {
 			create: {

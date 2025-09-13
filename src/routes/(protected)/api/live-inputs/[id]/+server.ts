@@ -1,8 +1,8 @@
 import { ok } from '$lib/server/api';
 import { prisma } from '$lib/server/db/client';
 import { LiveInputType } from '$lib/server/db/generated/client';
-import { hasPermission } from '$src/lib/server/utils';
 import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
@@ -11,8 +11,16 @@ const LiveInputPutBody = z.object({
 	type: z.enum([LiveInputType.ingest, LiveInputType.return]),
 });
 
-export const PUT: RequestHandler = async ({ locals, params, request }) => {
-	if (!hasPermission(locals.user, ['live-inputs/edit'])) {
+export const PUT: RequestHandler = async ({ params, request }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				liveinputs: ['update'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -36,8 +44,16 @@ export const PUT: RequestHandler = async ({ locals, params, request }) => {
 	return json(liveInput);
 };
 
-export const DELETE: RequestHandler = async ({ params, locals }) => {
-	if (!hasPermission(locals.user, ['live-inputs/edit'])) {
+export const DELETE: RequestHandler = async ({ request, params }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				liveinputs: ['delete'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

@@ -27,11 +27,17 @@ export const InstanceUserRole = InstanceAccessControl.newRole({
 	whitelists: [],
 });
 
-export const InstanceAdminRole = InstanceAccessControl.newRole({
+export const InstanceEditorRole = InstanceAccessControl.newRole({
+	...InstanceUserRole.statements,
+
 	blocks: ['create', 'read', 'update', 'delete'],
 	liveinputs: ['create', 'read', 'update', 'delete'],
 	locations: ['create', 'read', 'update', 'delete'],
 	talents: ['create', 'read', 'update', 'delete'],
+});
+
+export const InstanceAdminRole = InstanceAccessControl.newRole({
+	...InstanceEditorRole.statements,
 
 	user: ['create', 'list', 'set-role', 'ban', 'impersonate', 'delete', 'set-password', 'update'],
 	session: ['list', 'revoke', 'delete'],

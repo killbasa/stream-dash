@@ -1,7 +1,7 @@
 import { prisma } from '$lib/server/db/client';
 import { LiveInputStatus } from '$lib/server/db/generated/client';
-import { hasPermission } from '$src/lib/server/utils';
 import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
@@ -23,8 +23,16 @@ const LiveInputStatusResponseObj = z
 // Prevent concurrent sync requests
 const lock = new Set<string>();
 
-export const POST: RequestHandler = async ({ params, locals }) => {
-	if (!hasPermission(locals.user, ['live-inputs/edit'])) {
+export const POST: RequestHandler = async ({ request, params }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				liveinputs: ['update'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

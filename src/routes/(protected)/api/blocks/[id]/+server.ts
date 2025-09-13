@@ -1,11 +1,19 @@
 import { ok } from '$lib/server/api';
 import { prisma } from '$lib/server/db/client';
-import { hasPermission } from '$src/lib/server/utils';
+import { auth } from '$src/lib/server/auth';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
-export const DELETE: RequestHandler = async ({ params, locals }) => {
-	if (!hasPermission(locals.user, ['blocks/edit'])) {
+export const DELETE: RequestHandler = async ({ request, params }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				blocks: ['delete'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

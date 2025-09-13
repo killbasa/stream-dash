@@ -1,5 +1,5 @@
 import { prisma } from '$lib/server/db/client';
-import { AuthInstanceRoles, AuthMemberScopes } from '$lib/client/constants';
+import { AuthInstanceRoles } from '$lib/client/constants';
 import { auth } from '$src/lib/server/auth';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
@@ -8,7 +8,6 @@ import type { RequestHandler } from './$types';
 const UserPutBody = z.object({
 	id: z.string(),
 	role: z.enum(AuthInstanceRoles).optional(),
-	scopes: z.array(z.enum(AuthMemberScopes)).optional(),
 });
 
 export const PUT: RequestHandler = async (event) => {

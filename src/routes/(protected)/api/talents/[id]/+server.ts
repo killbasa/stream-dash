@@ -1,12 +1,20 @@
 import { ok } from '$lib/server/api';
 import { prisma } from '$lib/server/db/client';
-import { hasPermission } from '$src/lib/server/utils';
 import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
-export const PUT: RequestHandler = async ({ locals, params, request }) => {
-	if (!hasPermission(locals.user, ['talents/edit'])) {
+export const PUT: RequestHandler = async ({ params, request }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				talents: ['update'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -51,8 +59,16 @@ export const PUT: RequestHandler = async ({ locals, params, request }) => {
 	return json(result);
 };
 
-export const DELETE: RequestHandler = async ({ params, locals }) => {
-	if (!hasPermission(locals.user, ['talents/edit'])) {
+export const DELETE: RequestHandler = async ({ request, params }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				talents: ['delete'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
