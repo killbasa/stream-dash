@@ -1,12 +1,10 @@
-import { cloudflare } from '$lib/server/cloudflare/client';
-import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
 import { LiveInputStatus } from '$lib/server/db/generated/client';
-import { AuthScopes } from '$lib/client/constants';
+import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
-import { env } from '$env/dynamic/private';
 
 const LiveInputStatusResponseObj = z
 	.object({
@@ -25,8 +23,16 @@ const LiveInputStatusResponseObj = z
 // Prevent concurrent sync requests
 const lock = new Set<string>();
 
-export const POST: RequestHandler = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.LiveInputsEdit)) {
+export const POST: RequestHandler = async ({ request, params }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				liveinputs: ['update'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -37,6 +43,8 @@ export const POST: RequestHandler = async ({ locals, params }) => {
 	lock.add(params.id);
 
 	try {
+		const { cloudflare, accountId } = getCloudflareServiceAccount();
+
 		const result = await prisma.$transaction(async (tx) => {
 			const dbLiveInput = await tx.liveInput.findUniqueOrThrow({
 				where: { id: params.id },
@@ -46,7 +54,7 @@ export const POST: RequestHandler = async ({ locals, params }) => {
 			});
 
 			const liveInput = await cloudflare.stream.liveInputs.get(dbLiveInput.cloudflareId, {
-				account_id: env.CLOUDFLARE_ACCOUNT_ID,
+				account_id: accountId,
 			});
 
 			const data = LiveInputStatusResponseObj.parse(liveInput);

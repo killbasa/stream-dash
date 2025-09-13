@@ -17,7 +17,7 @@ const config = {
 			directives: {
 				'default-src': ['none'],
 				'font-src': ['self'],
-				'img-src': ['self', 'https://imagedelivery.net'],
+				'img-src': ['self', 'https://imagedelivery.net', 'data:'],
 				'connect-src': ['self'],
 				'script-src': ['self'],
 				'style-src': ['self', 'unsafe-inline'],

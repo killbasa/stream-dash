@@ -1,22 +1,29 @@
-import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
-import { AuthScopes } from '$lib/client/constants';
+import { auth } from '$src/lib/server/auth';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.LocationsRead)) {
+export const load: PageServerLoad = async ({ request, depends }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				locations: ['read'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
-
-	depends('api:locations');
 
 	const locations = await prisma.location.findMany({
 		orderBy: {
 			createdAt: 'desc',
 		},
 	});
+
+	depends('api:locations');
 
 	return {
 		locations,
@@ -29,9 +36,17 @@ const LocationPostBody = z.object({
 });
 
 export const actions: Actions = {
-	create: async ({ locals, request }) => {
-		if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.LocationsEdit)) {
-			error(403, 'Forbidden: You do not have permission to create locations.');
+	create: async ({ request }) => {
+		const hasPermission = await auth.api.userHasPermission({
+			headers: request.headers,
+			body: {
+				permissions: {
+					locations: ['create'],
+				},
+			},
+		});
+		if (!hasPermission.success) {
+			error(403, 'Forbidden: You do not have permission to access this resource.');
 		}
 
 		const formData = await request.formData();

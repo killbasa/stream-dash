@@ -67,7 +67,7 @@
 	);
 
 	const handleDelete = async (id: string) => {
-		const response = await fetch(`/api/blocks/${id}`, {
+		const response = await fetch(`/api/$blocks/${id}`, {
 			method: 'DELETE',
 		});
 
@@ -91,7 +91,7 @@
 	<h1 class="text-xl">Blocks</h1>
 
 	<div>
-		<Button href="/blocks/create" class="cursor-pointer" size="xs">Create</Button>
+		<Button href="/blocks/new" class="cursor-pointer" size="xs">Create</Button>
 	</div>
 
 	{#if errorNotif}

@@ -1,14 +1,20 @@
 import { ok } from '$lib/server/api';
-import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
-import { cloudflare } from '$lib/server/cloudflare/client';
-import { AuthScopes } from '$lib/client/constants';
+import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { env } from '$env/dynamic/private';
 
-export const PUT: RequestHandler = async ({ locals, params, request }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.TalentsEdit)) {
+export const PUT: RequestHandler = async ({ params, request }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				talents: ['update'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -23,6 +29,8 @@ export const PUT: RequestHandler = async ({ locals, params, request }) => {
 		return json({ message: 'File size exceeds 1MB limit.' }, { status: 400 });
 	}
 
+	const { cloudflare, accountId } = getCloudflareServiceAccount();
+
 	const result = await prisma.$transaction(async (tx) => {
 		const talent = await tx.talent.findUniqueOrThrow({
 			where: { id: params.id },
@@ -30,12 +38,12 @@ export const PUT: RequestHandler = async ({ locals, params, request }) => {
 
 		if (talent.imageId) {
 			await cloudflare.images.v1.delete(talent.imageId, {
-				account_id: env.CLOUDFLARE_ACCOUNT_ID,
+				account_id: accountId,
 			});
 		}
 
 		const response = await cloudflare.images.v1.create({
-			account_id: env.CLOUDFLARE_ACCOUNT_ID,
+			account_id: accountId,
 			file: image,
 		});
 
@@ -51,10 +59,20 @@ export const PUT: RequestHandler = async ({ locals, params, request }) => {
 	return json(result);
 };
 
-export const DELETE: RequestHandler = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.TalentsEdit)) {
+export const DELETE: RequestHandler = async ({ request, params }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				talents: ['delete'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
+
+	const { cloudflare, accountId } = getCloudflareServiceAccount();
 
 	await prisma.$transaction(async (tx) => {
 		const talent = await tx.talent.findUniqueOrThrow({
@@ -70,7 +88,7 @@ export const DELETE: RequestHandler = async ({ locals, params }) => {
 
 		if (talent.imageId) {
 			await cloudflare.images.v1.delete(talent.imageId, {
-				account_id: env.CLOUDFLARE_ACCOUNT_ID,
+				account_id: accountId,
 			});
 		}
 

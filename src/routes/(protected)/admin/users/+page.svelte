@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Container from '$components/layout/Container.svelte';
-	import { ReadableScopes } from '$lib/client/constants';
 	import {
 		Button,
 		Table,
@@ -11,7 +10,6 @@
 		TableHeadCell,
 		Modal,
 		Select,
-		MultiSelect,
 		Label,
 		Input,
 		Card,
@@ -24,7 +22,7 @@
 
 	let { data }: PageProps = $props();
 
-	let users = $derived(data.users);
+	let users = $derived(data.users.users);
 	let whitelists = $derived(data.whitelists);
 
 	let userErrorNotif = $state<string>();
@@ -60,12 +58,12 @@
 	);
 
 	const handleUserEdit = async (
-		entry: (typeof data.users)[number],
+		entry: (typeof data.users.users)[number],
 		event: {
 			data: FormData;
 		},
 	) => {
-		const response = await fetch(`/api/users/${entry.id}`, {
+		const response = await fetch(`/api/admin/users/${entry.id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
@@ -88,8 +86,8 @@
 		await invalidate('api:users');
 	};
 
-	const handleUserDelete = async (entry: (typeof data.users)[number]) => {
-		const response = await fetch(`/api/users/${entry.id}`, {
+	const handleUserDelete = async (entry: (typeof data.users.users)[number]) => {
+		const response = await fetch(`/api/admin/users/${entry.id}`, {
 			method: 'DELETE',
 		});
 
@@ -143,7 +141,7 @@
 </script>
 
 <svelte:head>
-	<title>Users</title>
+	<title>Users | Admin</title>
 </svelte:head>
 
 <Container>
@@ -172,7 +170,7 @@
 						<TableBodyCell>{entry.role}</TableBodyCell>
 						<TableBodyCell>
 							<Button
-								href="/users/{entry.id}"
+								href="/admin/users/{entry.id}"
 								size="xs"
 								type="button"
 								class="cursor-pointer"
@@ -215,7 +213,7 @@
 							}}
 						>
 							<div>
-								<Label for="user_role" class="mb-2">Role</Label>
+								<Label for="user_role" class="mb-1">Role</Label>
 								<Select
 									name="user_role"
 									placeholder="Select a role"
@@ -223,18 +221,9 @@
 									disabled={entry.role === 'admin'}
 								>
 									<option value="admin">Admin</option>
-									<option value="editor">User</option>
+									<option value="editor">Editor</option>
+									<option value="user">User</option>
 								</Select>
-							</div>
-
-							<div>
-								<Label for="user_scopes" class="mb-2">Scopes</Label>
-								<MultiSelect
-									id="user_scopes"
-									name="user_scopes"
-									items={ReadableScopes}
-									value={entry.scopes}
-								/>
 							</div>
 
 							{#snippet footer()}
@@ -393,7 +382,7 @@
 		onaction={handleWhitelistCreate}
 	>
 		<div>
-			<Label for="whitelist_email" class="mb-2">Email</Label>
+			<Label for="whitelist_email" class="mb-1">Email</Label>
 			<Input
 				type="email"
 				id="whitelist_email"
@@ -404,21 +393,11 @@
 		</div>
 
 		<div>
-			<Label for="whitelist_role" class="mb-2">Default Role</Label>
+			<Label for="whitelist_role" class="mb-1">Default Role</Label>
 			<Select id="whitelist_role" name="whitelist_role" placeholder="Select a role" clearable>
 				<option value="admin">Admin</option>
 				<option value="user">User</option>
 			</Select>
-		</div>
-
-		<div>
-			<Label for="whitelist_scopes" class="mb-2">Scopes</Label>
-			<MultiSelect
-				id="whitelist_scopes"
-				name="whitelist_scopes"
-				items={ReadableScopes}
-				value={[]}
-			/>
 		</div>
 
 		{#snippet footer()}

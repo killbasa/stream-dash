@@ -51,3 +51,13 @@
 
 	font-family: var(--font-family);
 }
+
+.sx-svelte-calendar-wrapper {
+	height: calc(100vh - 2rem);
+}
+
+@media (width < 640px) {
+	.sx-svelte-calendar-wrapper {
+		height: calc(100vh - 4.3rem);
+	}
+}

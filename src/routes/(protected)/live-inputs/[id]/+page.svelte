@@ -13,6 +13,11 @@
 	let errorNotif = $state<string>();
 	let successNotif = $state<string>();
 
+	const iframeUrl = new URL(
+		`/${data.liveInput.cloudflareId}/iframe`,
+		`https://customer-oxrn8aqj6wj6brjx.cloudflarestream.com`,
+	);
+
 	const playerUrl = (url: string, embed: boolean) => {
 		const baseUrl = 'https://play.offkai.tech/play?key=local&type=whep&url=';
 
@@ -52,9 +57,6 @@
 			size="xs"
 			color="alternative"
 			target="_blank">Watch</Button
-		>
-		<Button href="/player/{data.liveInput.id}" class="cursor-pointer" size="xs" target="_blank"
-			>Embed</Button
 		>
 		<Button class="cursor-pointer" size="xs" onclick={handleSync}>Sync</Button>
 	</div>
@@ -120,5 +122,16 @@
 			<span>•</span>
 			<span>Cloudflare ID: {data.liveInput.cloudflareId}</span>
 		</div>
+	</Card>
+
+	<Card class="p-4 gap-4" size="xl">
+		<h2 class="text-xl">Preview</h2>
+
+		<iframe
+			title="Live Input Player"
+			src={iframeUrl.href}
+			class="border-none h-full w-full aspect-video"
+			allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+		></iframe>
 	</Card>
 </Container>

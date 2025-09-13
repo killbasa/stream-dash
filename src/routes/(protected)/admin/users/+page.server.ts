@@ -1,34 +1,29 @@
 import { prisma } from '$lib/server/db/client';
-import { hasPermission } from '$lib/server/utils';
-import { AuthRoles, AuthScopes } from '$lib/client/constants';
+import { AuthInstanceRoles } from '$lib/client/constants';
+import { auth } from '$src/lib/server/auth';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['admin'])) {
+export const load: PageServerLoad = async ({ request, depends }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				user: ['list'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
-	depends('api:users');
-
-	const [users, whitelists] = await prisma.$transaction([
-		prisma.user.findMany({
-			where: {
-				role: {
-					not: 'superadmin',
-				},
+	const [users, whitelists] = await Promise.all([
+		auth.api.listUsers({
+			query: {
+				limit: 100,
 			},
-			select: {
-				id: true,
-				name: true,
-				email: true,
-				role: true,
-				scopes: true,
-			},
-			orderBy: {
-				createdAt: 'desc',
-			},
+			headers: request.headers,
 		}),
 		prisma.whitelist.findMany({
 			select: {
@@ -39,6 +34,8 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 		}),
 	]);
 
+	depends('api:users');
+
 	return {
 		users,
 		whitelists,
@@ -47,14 +44,21 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 
 const WhitelistPostBody = z.object({
 	email: z.email(),
-	defaultRole: z.enum(AuthRoles).optional(),
-	defaultScopes: z.array(z.enum(AuthScopes)).optional(),
+	defaultRole: z.enum(AuthInstanceRoles).optional(),
 });
 
 export const actions: Actions = {
-	whitelistCreate: async ({ request, locals }) => {
-		if (!hasPermission(locals.user, ['admin'])) {
-			error(403, 'Forbidden: You do not have permission to create whitelist entries.');
+	whitelistCreate: async ({ request }) => {
+		const hasPermission = await auth.api.userHasPermission({
+			headers: request.headers,
+			body: {
+				permissions: {
+					whitelists: ['create'],
+				},
+			},
+		});
+		if (!hasPermission.success) {
+			error(403, 'Forbidden: You do not have permission to access this resource.');
 		}
 
 		const formData = await request.formData();
@@ -70,7 +74,7 @@ export const actions: Actions = {
 			return fail(400, { message: 'Invalid request body' });
 		}
 
-		if (data.data.defaultRole === 'superadmin') {
+		if (data.data.defaultRole === 'admin') {
 			return fail(400, { message: 'Cannot set default role to admin' });
 		}
 
@@ -78,15 +82,22 @@ export const actions: Actions = {
 			data: {
 				email: data.data.email,
 				defaultRole: data.data.defaultRole,
-				defaultScopes: data.data.defaultScopes,
 			},
 		});
 
 		return { message: 'Whitelist entry created' };
 	},
-	whitelistRevoke: async ({ request, locals }) => {
-		if (!hasPermission(locals.user, ['admin'])) {
-			error(403, 'Forbidden: You do not have permission to edit whitelist entries.');
+	whitelistRevoke: async ({ request }) => {
+		const hasPermission = await auth.api.userHasPermission({
+			headers: request.headers,
+			body: {
+				permissions: {
+					whitelists: ['delete'],
+				},
+			},
+		});
+		if (!hasPermission.success) {
+			error(403, 'Forbidden: You do not have permission to access this resource.');
 		}
 
 		const formData = await request.formData();

@@ -59,7 +59,7 @@
 	};
 
 	const handleDelete = async (id: string) => {
-		const response = await fetch(`/api/talents/${id}`, {
+		const response = await fetch(`/api/$talents/${id}`, {
 			method: 'DELETE',
 		});
 
@@ -182,12 +182,12 @@
 	onaction={handleCreate}
 >
 	<div>
-		<Label for="talent_name" class="mb-2">Name</Label>
+		<Label for="talent_name" class="mb-1">Name</Label>
 		<Input type="text" id="talent_name" name="talent_name" required autocomplete="off" />
 	</div>
 
 	<div>
-		<Label for="talent_description" class="mb-2">Description</Label>
+		<Label for="talent_description" class="mb-1">Description</Label>
 		<Textarea
 			id="talent_description"
 			name="talent_description"
@@ -197,8 +197,8 @@
 	</div>
 
 	<div>
-		<Label for="talent_image" class="mb-2">Image</Label>
-		<Fileupload id="talent_image" name="talent_image" accept="image/*" class="mb-2" />
+		<Label for="talent_image" class="mb-1">Image</Label>
+		<Fileupload id="talent_image" name="talent_image" accept="image/*" class="mb-1" />
 		<Helper>SVG, PNG, JPG or GIF.</Helper>
 	</div>
 

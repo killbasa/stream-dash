@@ -1,5 +1,5 @@
 import { PrismaClient } from '../src/lib/server/db/generated/client';
-import { AuthRole, AuthRoles } from '../src/lib/client/constants';
+import { AuthInstanceRole, AuthInstanceRoles } from '../src/lib/client/constants';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { loadEnvFile } from 'node:process';
 
@@ -11,16 +11,15 @@ if (!email) {
 
 const role = process.argv[3];
 
-if (!Object.values(AuthRoles).includes(role as AuthRole)) {
-	console.error('Invalid role. Use "superadmin", "admin", or "user".');
+if (!Object.values(AuthInstanceRoles).includes(role as AuthInstanceRole)) {
+	console.error('Invalid role. Use "admin" or "user".');
 	process.exit(1);
 }
 
 loadEnvFile();
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
-
-export const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient({ adapter });
 
 const existing = await prisma.whitelist.findUnique({
 	where: { email },
@@ -39,3 +38,4 @@ await prisma.whitelist.create({
 });
 
 console.log(`Whitelisted ${email}`);
+process.exit(0);

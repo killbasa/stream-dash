@@ -1,19 +1,17 @@
-import { cloudflare } from '$lib/server/cloudflare/client';
-import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
 import { ok } from '$lib/server/api';
-import { AuthScopes } from '$lib/client/constants';
+import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
 import type { LiveInputCreateManyInput } from '$lib/server/db/generated/models';
-import { env } from '$env/dynamic/private';
 
 const LiveInputResponseList = z.array(
 	z.object({
 		uid: z.string(),
-		created: z.string().datetime(),
-		modified: z.string().datetime(),
+		created: z.iso.datetime(),
+		modified: z.iso.datetime(),
 		meta: z.object({
 			name: z.string(),
 		}),
@@ -45,8 +43,16 @@ const LiveInputResponseObj = z.object({
 
 let lock = false;
 
-export const POST: RequestHandler = async ({ locals }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.LiveInputsEdit)) {
+export const POST: RequestHandler = async ({ request }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				liveinputs: ['create'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -57,10 +63,12 @@ export const POST: RequestHandler = async ({ locals }) => {
 	lock = true;
 
 	try {
+		const { cloudflare, accountId } = getCloudflareServiceAccount();
+
 		await prisma.$transaction(async (tx) => {
 			// The return type from this is wrong (2025-08-03)
 			const liveInputsRaw = await cloudflare.stream.liveInputs.list({
-				account_id: env.CLOUDFLARE_ACCOUNT_ID,
+				account_id: accountId,
 			});
 
 			const liveInputs = LiveInputResponseList.parse(liveInputsRaw);
@@ -88,7 +96,7 @@ export const POST: RequestHandler = async ({ locals }) => {
 
 			for (const input of liveInputsToCreate) {
 				const res = await cloudflare.stream.liveInputs.get(input.uid, {
-					account_id: env.CLOUDFLARE_ACCOUNT_ID,
+					account_id: accountId,
 				});
 
 				const inputData = LiveInputResponseObj.parse(res);

@@ -1,18 +1,25 @@
 import { prisma } from '$lib/server/db/client';
-import { hasPermission } from '$lib/server/utils';
-import { AuthRoles, AuthScopes } from '$lib/client/constants';
+import { AuthInstanceRoles } from '$lib/client/constants';
+import { auth } from '$src/lib/server/auth';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
 
 const UserPutBody = z.object({
 	id: z.string(),
-	role: z.enum(AuthRoles).optional(),
-	scopes: z.array(z.enum(AuthScopes)).optional(),
+	role: z.enum(AuthInstanceRoles).optional(),
 });
 
 export const PUT: RequestHandler = async (event) => {
-	if (!hasPermission(event.locals.user, ['admin'])) {
+	const result = await auth.api.userHasPermission({
+		headers: event.request.headers,
+		body: {
+			permissions: {
+				user: ['update'],
+			},
+		},
+	});
+	if (!result.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -38,10 +45,7 @@ export const PUT: RequestHandler = async (event) => {
 	}
 
 	if (data.data.role !== undefined) {
-		if (
-			(user.role === 'superadmin' && data.data.role !== 'superadmin') ||
-			(user.role === 'admin' && data.data.role !== 'admin')
-		) {
+		if (user.role === 'admin' && data.data.role !== 'admin') {
 			return json({ message: 'Cannot demote admins through the dashboard' }, { status: 400 });
 		}
 
@@ -56,14 +60,12 @@ export const PUT: RequestHandler = async (event) => {
 		},
 		data: {
 			role: data.data.role,
-			scopes: data.data.scopes,
 		},
 		select: {
 			id: true,
 			name: true,
 			email: true,
 			role: true,
-			scopes: true,
 		},
 	});
 
@@ -71,7 +73,15 @@ export const PUT: RequestHandler = async (event) => {
 };
 
 export const DELETE: RequestHandler = async (event) => {
-	if (!hasPermission(event.locals.user, ['admin'])) {
+	const result = await auth.api.userHasPermission({
+		headers: event.request.headers,
+		body: {
+			permissions: {
+				user: ['delete'],
+			},
+		},
+	});
+	if (!result.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 

@@ -10,13 +10,13 @@
 	let open = writable(false);
 
 	onNavigate(() => {
-		if ($open) {
+		if (!$open) {
 			open.set(false);
 		}
 	});
 </script>
 
-<Drawer bind:open={$open} class="bg-gray-900 text-gray-300 w-48 p-0">
+<Drawer bind:open={$open} class="bg-gray-900 text-gray-300 w-64 p-0" dismissable={false}>
 	<Sidebar />
 </Drawer>
 

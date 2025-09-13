@@ -1,20 +1,26 @@
-import { cloudflare } from '$lib/server/cloudflare/client';
 import { ok } from '$lib/server/api';
-import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
 import { LiveInputType } from '$lib/server/db/generated/client';
-import { AuthScopes } from '$lib/client/constants';
+import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { json } from '@sveltejs/kit';
 import z from 'zod';
 import type { RequestHandler } from './$types';
-import { env } from '$env/dynamic/private';
 
 const LiveInputPutBody = z.object({
 	type: z.enum([LiveInputType.ingest, LiveInputType.return]),
 });
 
-export const PUT: RequestHandler = async ({ locals, request, params }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.LiveInputsEdit)) {
+export const PUT: RequestHandler = async ({ params, request }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				liveinputs: ['update'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
 
@@ -38,10 +44,20 @@ export const PUT: RequestHandler = async ({ locals, request, params }) => {
 	return json(liveInput);
 };
 
-export const DELETE: RequestHandler = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.LiveInputsEdit)) {
+export const DELETE: RequestHandler = async ({ request, params }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				liveinputs: ['delete'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		return json({ message: 'Unauthorized' }, { status: 403 });
 	}
+
+	const { cloudflare, accountId } = getCloudflareServiceAccount();
 
 	await prisma.$transaction(async (tx) => {
 		const liveInput = await tx.liveInput.findUniqueOrThrow({
@@ -58,7 +74,7 @@ export const DELETE: RequestHandler = async ({ locals, params }) => {
 		}
 
 		await cloudflare.stream.liveInputs.delete(liveInput.cloudflareId, {
-			account_id: env.CLOUDFLARE_ACCOUNT_ID,
+			account_id: accountId,
 		});
 
 		await tx.liveInput.delete({

@@ -1,20 +1,24 @@
-import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
-import { AuthScopes } from '$lib/client/constants';
 import { LiveInputType } from '$lib/server/db/generated/client';
-import { cloudflare } from '$lib/server/cloudflare/client';
+import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
 import type { LiveInput } from '$lib/server/db/generated/client';
 import type { Actions, PageServerLoad } from './$types';
-import { env } from '$env/dynamic/private';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.LiveInputsRead)) {
-		throw error(403, 'Forbidden: You do not have permission to access this resource.');
+export const load: PageServerLoad = async ({ request, depends }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				liveinputs: ['read'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
+		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
-
-	depends('api:live-inputs');
 
 	const liveInputs = await prisma.liveInput.findMany({
 		orderBy: {
@@ -31,6 +35,8 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 			pendingLiveInputs.push(liveInput);
 		}
 	}
+
+	depends('api:live-inputs');
 
 	return {
 		liveInputs: validLiveInputs,
@@ -58,9 +64,17 @@ const LiveInputResponseObj = z.object({
 });
 
 export const actions: Actions = {
-	create: async ({ locals, request }) => {
-		if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.LiveInputsEdit)) {
-			error(403, 'Forbidden: You do not have permission to create live inputs.');
+	create: async ({ request }) => {
+		const hasPermission = await auth.api.userHasPermission({
+			headers: request.headers,
+			body: {
+				permissions: {
+					liveinputs: ['create'],
+				},
+			},
+		});
+		if (!hasPermission.success) {
+			error(403, 'Forbidden: You do not have permission to access this resource.');
 		}
 
 		const formData = await request.formData();
@@ -75,9 +89,11 @@ export const actions: Actions = {
 			return fail(400, { message: 'Invalid request body', errors: data.error.issues });
 		}
 
+		const { cloudflare, accountId } = getCloudflareServiceAccount();
+
 		await prisma.$transaction(async (tx) => {
 			const liveInput = await cloudflare.stream.liveInputs.create({
-				account_id: env.CLOUDFLARE_ACCOUNT_ID,
+				account_id: accountId,
 				meta: {
 					name: data.data.name,
 				},

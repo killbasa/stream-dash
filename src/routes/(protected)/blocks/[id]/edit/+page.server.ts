@@ -1,18 +1,27 @@
 import { prisma } from '$lib/server/db/client';
-import { hasPermission } from '$lib/server/utils';
-import { AuthScopes } from '$lib/client/constants';
+import { auth } from '$src/lib/server/auth';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import type { LiveInput } from '$lib/server/db/generated/client';
 
-export const load: PageServerLoad = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.BlocksEdit)) {
+export const load: PageServerLoad = async ({ request, params }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				blocks: ['update'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
 	const block = await prisma.block.findUnique({
-		where: { id: params.id },
+		where: {
+			id: params.id,
+		},
 		include: {
 			talents: true,
 		},
@@ -59,9 +68,17 @@ const UpdateActionSchema = z.object({
 });
 
 export const actions: Actions = {
-	update: async ({ request, locals, params }) => {
-		if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.BlocksEdit)) {
-			error(403, 'Forbidden: You do not have permission to edit blocks.');
+	update: async ({ request, params }) => {
+		const hasPermission = await auth.api.userHasPermission({
+			headers: request.headers,
+			body: {
+				permissions: {
+					blocks: ['update'],
+				},
+			},
+		});
+		if (!hasPermission.success) {
+			error(403, 'Forbidden: You do not have permission to access this resource.');
 		}
 
 		const formData = await request.formData();

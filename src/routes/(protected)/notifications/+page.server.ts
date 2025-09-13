@@ -1,21 +1,26 @@
-import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
+import { auth } from '$src/lib/server/auth';
 import { error } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { env } from '$env/dynamic/private';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['admin'])) {
+export const load: PageServerLoad = async ({ request, depends }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				notifications: ['read'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
-	depends('api:webhook');
-
-	const webhook = await prisma.webhook.findUnique({
-		where: {
-			accountId: env.CLOUDFLARE_ACCOUNT_ID,
-		},
+	const webhook = await prisma.webhook.findFirst({
+		where: {},
 	});
+
+	depends('api:webhook');
 
 	return {
 		webhook,
@@ -35,11 +40,7 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 // const WebhookUrlSchema = z.url();
 
 export const actions: Actions = {
-	update: ({ locals }) => {
-		if (!hasPermission(locals.user, ['admin'])) {
-			error(403, 'Forbidden: You do not have permission to edit notifications.');
-		}
-
+	update: () => {
 		return { status: 204 };
 	},
 };

@@ -2,7 +2,7 @@ generator client {
     provider = "prisma-client"
     output   = "../../src/lib/server/db/generated"
 
-    previewFeatures = ["queryCompiler", "driverAdapters"]
+    previewFeatures = ["relationJoins"]
 
     runtime      = "nodejs"
     moduleFormat = "esm"
@@ -16,9 +16,8 @@ datasource database {
 model Whitelist {
     id String @id @default(uuid())
 
-    email         String   @unique
-    defaultRole   String?
-    defaultScopes String[]
+    email       String  @unique
+    defaultRole String?
 
     @@map("whitelist")
 }
@@ -60,7 +59,7 @@ model Talent {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    name        String  @unique
+    name        String
     description String?
 
     imageId  String?
@@ -68,6 +67,7 @@ model Talent {
 
     blocks Block[]
 
+    @@unique([name])
     @@map("talent")
 }
 
@@ -76,11 +76,12 @@ model Location {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    name        String  @unique
+    name        String
     description String?
 
     blocks Block[]
 
+    @@unique([name])
     @@map("location")
 }
 
@@ -108,12 +109,12 @@ model Block {
     @@map("block")
 }
 
+// Remove?
 model Webhook {
     id        String   @id @default(uuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    accountId       String @unique
     notificationUrl String
     secret          String
 

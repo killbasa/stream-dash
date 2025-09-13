@@ -44,7 +44,7 @@
 	<form method="POST" action="?/update" use:enhance={handleUpdate}>
 		<Card class="p-4 gap-4" size="xl">
 			<div>
-				<Label for="webhook_url" class="mb-2">Webhook URL</Label>
+				<Label for="webhook_url" class="mb-1">Webhook URL</Label>
 				<Input
 					type="url"
 					id="webhook_url"

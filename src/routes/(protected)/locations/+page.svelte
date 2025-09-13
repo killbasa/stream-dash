@@ -55,7 +55,7 @@
 	};
 
 	const handleDelete = async (id: string) => {
-		const response = await fetch(`/api/locations/${id}`, {
+		const response = await fetch(`/api/$locations/${id}`, {
 			method: 'DELETE',
 		});
 
@@ -91,7 +91,7 @@
 			onaction={handleCreate}
 		>
 			<div>
-				<Label for="location_name">Name</Label>
+				<Label for="location_name" class="mb-1">Name</Label>
 				<Input
 					type="text"
 					id="location_name"
@@ -102,7 +102,7 @@
 			</div>
 
 			<div>
-				<Label for="location_description" class="mb-2">Description</Label>
+				<Label for="location_description" class="mb-1">Description</Label>
 				<Textarea
 					id="location_description"
 					name="location_description"

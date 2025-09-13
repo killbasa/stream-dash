@@ -15,31 +15,25 @@
 	} = $props();
 
 	let copied = $state<boolean>(false);
-</script>
 
-<svelte:window
-	onclick={() => {
-		if (document.activeElement?.id !== id) {
+	function copyTest(): void {
+		navigator.clipboard.writeText(content);
+
+		oncopy?.();
+		copied = true;
+
+		setTimeout(() => {
 			copied = false;
-		}
-	}}
-/>
+		}, 2000);
+	}
+</script>
 
 <div class="flex flex-col gap-1">
 	<span>{label}</span>
 	<div class="flex items-center border rounded px-1 bg-gray-700">
-		<button
-			type="button"
-			{id}
-			class="cursor-pointer"
-			onclick={() => {
-				navigator.clipboard.writeText(content);
-				oncopy?.();
-				copied = true;
-			}}
-		>
+		<button type="button" {id} class="cursor-pointer" onclick={copyTest}>
 			{#if copied}
-				<CheckCircleSolid class="shrink-0 h-6 w-6" />
+				<CheckCircleSolid class="shrink-0 h-6 w-6 fill-green-500" />
 			{:else}
 				<FileCopyAltSolid class="shrink-0 h-6 w-6" />
 			{/if}

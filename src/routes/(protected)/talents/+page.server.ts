@@ -1,25 +1,31 @@
-import { hasPermission } from '$lib/server/utils';
 import { prisma } from '$lib/server/db/client';
-import { AuthScopes } from '$lib/client/constants';
-import { cloudflare } from '$lib/server/cloudflare/client';
+import { getCloudflareServiceAccount } from '$src/lib/server/cloudflare/service-account';
+import { auth } from '$src/lib/server/auth';
 import { error, fail } from '@sveltejs/kit';
 import z from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 import type { Image } from 'cloudflare/resources/images.mjs';
-import { env } from '$env/dynamic/private';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.TalentsRead)) {
+export const load: PageServerLoad = async ({ request, depends }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				talents: ['read'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
-
-	depends('api:talents');
 
 	const talents = await prisma.talent.findMany({
 		orderBy: {
 			createdAt: 'desc',
 		},
 	});
+
+	depends('api:talents');
 
 	return {
 		talents,
@@ -32,9 +38,17 @@ const TalentPostBody = z.object({
 });
 
 export const actions: Actions = {
-	create: async ({ locals, request }) => {
-		if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.TalentsEdit)) {
-			error(403, 'Forbidden: You do not have permission to create talents.');
+	create: async ({ request }) => {
+		const hasPermission = await auth.api.userHasPermission({
+			headers: request.headers,
+			body: {
+				permissions: {
+					talents: ['create'],
+				},
+			},
+		});
+		if (!hasPermission.success) {
+			error(403, 'Forbidden: You do not have permission to access this resource.');
 		}
 
 		const formData = await request.formData();
@@ -63,11 +77,13 @@ export const actions: Actions = {
 			}
 		}
 
+		const { cloudflare, accountId } = getCloudflareServiceAccount();
+
 		await prisma.$transaction(async (tx) => {
 			let response: Image | undefined;
 			if (image instanceof File) {
 				response = await cloudflare.images.v1.create({
-					account_id: env.CLOUDFLARE_ACCOUNT_ID,
+					account_id: accountId,
 					file: image,
 				});
 			}

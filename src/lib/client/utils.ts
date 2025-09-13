@@ -25,3 +25,19 @@ export const updateParams = async (key: string, value: string) => {
 
 	await goto(`?${params}`);
 };
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+export const debounce = (func: Function, delay: number) => {
+	let timeoutId: number | undefined;
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	return (...args: any[]) => {
+		if (timeoutId) {
+			window.clearTimeout(timeoutId);
+		}
+
+		timeoutId = window.setTimeout(() => {
+			func(...args);
+		}, delay);
+	};
+};

@@ -1,17 +1,26 @@
 import { prisma } from '$lib/server/db/client';
-import { hasPermission } from '$lib/server/utils';
-import { AuthScopes } from '$lib/client/constants';
+import { auth } from '$src/lib/server/auth';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { LiveInput } from '$lib/server/db/generated/client';
 
-export const load: PageServerLoad = async ({ locals, params }) => {
-	if (!hasPermission(locals.user, ['admin', 'user'], AuthScopes.BlocksRead)) {
+export const load: PageServerLoad = async ({ request, params }) => {
+	const hasPermission = await auth.api.userHasPermission({
+		headers: request.headers,
+		body: {
+			permissions: {
+				blocks: ['read'],
+			},
+		},
+	});
+	if (!hasPermission.success) {
 		error(403, 'Forbidden: You do not have permission to access this resource.');
 	}
 
 	const block = await prisma.block.findUnique({
-		where: { id: params.id },
+		where: {
+			id: params.id,
+		},
 		include: {
 			talents: true,
 			location: true,

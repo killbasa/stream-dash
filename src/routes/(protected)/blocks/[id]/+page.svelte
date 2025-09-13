@@ -23,7 +23,7 @@
 
 	<Card class="p-4 gap-4" size="xl">
 		<div>
-			<Label for="block_name" class="mb-2">Name</Label>
+			<Label for="block_name" class="mb-1">Name</Label>
 			<Input
 				type="text"
 				id="block_name"
@@ -35,8 +35,9 @@
 		</div>
 
 		<div>
-			<Label class="mb-2">Date range:</Label>
+			<Label for="block_date_range" class="mb-1">Date range</Label>
 			<Datepicker
+				id="block_date_range"
 				range
 				rangeFrom={new Date(data.block.start)}
 				rangeTo={new Date(data.block.end)}
@@ -46,7 +47,7 @@
 
 		<div class="grid grid-cols-2 gap-4">
 			<div>
-				<Label for="block_start" class="mb-2">Start time:</Label>
+				<Label for="block_start" class="mb-1">Start time</Label>
 				<Timepicker
 					id="block_start"
 					divClass="w-full"
@@ -56,7 +57,7 @@
 			</div>
 
 			<div>
-				<Label for="block_end" class="mb-2">End time:</Label>
+				<Label for="block_end" class="mb-1">End time</Label>
 				<Timepicker
 					id="block_end"
 					divClass="w-full"
@@ -67,7 +68,7 @@
 		</div>
 
 		<div>
-			<Label for="block_talents" class="mb-2">Talents</Label>
+			<Label for="block_talents" class="mb-1">Talents</Label>
 			<MultiSelect
 				name="block_talents"
 				items={data.talents.map((talent) => ({ value: talent.id, name: talent.name }))}
@@ -77,7 +78,7 @@
 		</div>
 
 		<div>
-			<Label for="block_location" class="mb-2">Location</Label>
+			<Label for="block_location" class="mb-1">Location</Label>
 			<Select
 				name="block_location"
 				items={data.locations.map((location) => ({
@@ -90,7 +91,7 @@
 		</div>
 
 		<div>
-			<Label for="block_ingest" class="mb-2">Ingest Feed</Label>
+			<Label for="block_ingest" class="mb-1">Ingest Feed</Label>
 			<Select
 				name="block_ingest"
 				placeholder="Select a Live Input"
@@ -104,7 +105,7 @@
 		</div>
 
 		<div>
-			<Label for="block_return" class="mb-2">Return Feed</Label>
+			<Label for="block_return" class="mb-1">Return Feed</Label>
 			<Select
 				name="block_return"
 				placeholder="Select a Live Input"

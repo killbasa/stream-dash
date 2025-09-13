@@ -1,7 +1,13 @@
 import { prisma } from './db/client';
-import { AuthRoles } from '$lib/client/constants';
+import {
+	InstanceAccessControl,
+	InstanceAdminRole,
+	InstanceEditorRole,
+	InstanceUserRole,
+} from '../client/auth/permissions';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
+import { admin } from 'better-auth/plugins';
 import { env } from '$env/dynamic/private';
 
 export const auth = betterAuth({
@@ -16,26 +22,22 @@ export const auth = betterAuth({
 	},
 	socialProviders: {
 		google: {
-			clientId: env.GOOGLE_CLIENT_ID,
-			clientSecret: env.GOOGLE_CLIENT_SECRET,
+			clientId: env.GOOGLE_CLIENT_ID!,
+			clientSecret: env.GOOGLE_CLIENT_SECRET!,
 		},
 	},
-	user: {
-		additionalFields: {
-			role: {
-				type: [...Object.values(AuthRoles)],
-				required: false,
-				defaultValue: 'reader',
-				input: false,
+	plugins: [
+		admin({
+			ac: InstanceAccessControl,
+			adminRoles: ['admin'],
+			defaultRole: 'user',
+			roles: {
+				admin: InstanceAdminRole,
+				editor: InstanceEditorRole,
+				user: InstanceUserRole,
 			},
-			scopes: {
-				type: 'string[]',
-				required: false,
-				defaultValue: [],
-				input: false,
-			},
-		},
-	},
+		}),
+	],
 	databaseHooks: {
 		user: {
 			create: {
@@ -50,16 +52,14 @@ export const auth = betterAuth({
 							return false;
 						}
 
-						if (whitelist.defaultRole === 'superadmin') {
-							console.error('Attempt to create superadmin user from whitelist.');
-							return false;
-						}
+						await prisma.whitelist.delete({
+							where: { email: user.email },
+						});
 
 						return Promise.resolve({
 							data: {
 								...user,
 								role: whitelist.defaultRole,
-								scopes: whitelist.defaultScopes,
 							},
 						});
 					} catch (error) {

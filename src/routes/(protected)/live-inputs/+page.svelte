@@ -323,11 +323,11 @@
 									}}
 								>
 									<div>
-										<Label for="liveinput_type" class="mb-2">Type</Label>
+										<Label for="liveinput_type" class="mb-1">Type</Label>
 										<Select
 											name="liveinput_type"
 											placeholder="Select a type"
-											clearable
+											required
 										>
 											<option value="ingest">Ingest</option>
 											<option value="return">Return</option>
@@ -373,12 +373,12 @@
 	onaction={handleCreate}
 >
 	<div>
-		<Label for="liveinput_name" class="mb-2">Name</Label>
+		<Label for="liveinput_name" class="mb-1">Name</Label>
 		<Input type="text" id="liveinput_name" name="liveinput_name" required autocomplete="off" />
 	</div>
 
 	<div>
-		<Label for="liveinput_type" class="mb-2">Live Input Type</Label>
+		<Label for="liveinput_type" class="mb-1">Live Input Type</Label>
 		<Select name="liveinput_type" placeholder="Select a type" clearable>
 			<option value="ingest">Ingest</option>
 			<option value="return">Return</option>
@@ -386,7 +386,7 @@
 	</div>
 
 	<div>
-		<Label for="liveinput_description" class="mb-2">Description</Label>
+		<Label for="liveinput_description" class="mb-1">Description</Label>
 		<Textarea
 			id="liveinput_description"
 			name="liveinput_description"
