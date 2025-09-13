@@ -28,6 +28,7 @@ ENV NODE_ENV=production
 COPY --from=builder /temp/static static/
 COPY --from=builder /temp/node_modules node_modules/
 COPY --from=builder /temp/build build/
+COPY --from=builder /temp/src/lib/server/db/generated/libquery_engine-debian-openssl-1.1.x.so.node build/server/chunks/
 COPY --from=builder /temp/package.json ./
 
 CMD ["node", "--enable-source-maps", "build/index.js"]
